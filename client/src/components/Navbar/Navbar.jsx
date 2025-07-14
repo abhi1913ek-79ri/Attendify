@@ -6,6 +6,8 @@ import {
   Check,
   CheckCheckIcon,
   Download,
+  DownloadCloudIcon,
+  DownloadIcon,
   Home,
   Settings,
   User,
@@ -70,7 +72,7 @@ const Navbar = () => {
             `flex gap-2 ${isActive ? "nav-link active-link" : "nav-link"}`
           }
         >
-          <Download /> Export
+          <DownloadCloudIcon /> Export
         </NavLink>
       </div>
 
@@ -132,7 +134,7 @@ const Navbar = () => {
             to="/export"
             onClick={() => setIsMenuOpen(false)}
           >
-            <Download /> Export
+            <DownloadCloudIcon /> Export
           </NavLink>
           <hr className="text-gray-300" />
           <NavLink

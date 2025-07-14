@@ -9,8 +9,8 @@ const ReverseHorizontalCard = ({image,title,desc}) => {
                 <img src={image} alt="image" />
             </div>
             <div className="horizontal-card-content">
-                <h3 className='title flex flex-inline gap-1.5'><MilestoneIcon />{title}</h3>
-                <p className='desc'>{desc}</p>  
+                <h3 className='horizontal-card-title flex flex-inline gap-1.5'><MilestoneIcon />{title}</h3>
+                <p className='horizontal-card-desc'>{desc}</p>  
             </div>
         </div>
     )

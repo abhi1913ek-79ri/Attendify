@@ -13,7 +13,7 @@ const Home = () => {
         <HeroRight />
       </div>
       <hr className='text-gray-300' />
-      <div className="feature-section">
+      <div id='features' className="feature-section">
         <Features />
       </div>
       <hr className='text-gray-300' />

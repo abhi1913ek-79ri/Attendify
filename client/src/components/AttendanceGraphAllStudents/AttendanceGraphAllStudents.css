@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+
+.AttendanceStatsChart{
+    height:100%;
+}
+.AttendanceStatsChart-heading{
+    color: #080160;
+}

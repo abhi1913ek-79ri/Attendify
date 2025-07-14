@@ -8,6 +8,6 @@
 }
 
 .working-card-container{
-    @apply flex flex-col justify-between gap-3.5;
+    @apply flex flex-col justify-between gap-3.5 text-blue-950;
     @apply p-5;
 }

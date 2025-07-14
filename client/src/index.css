@@ -6,6 +6,8 @@
   padding: 0px;
   font-family:Outfit;
   box-sizing: border-box;
+  scroll-behavior: smooth;
+
 }
 
 

@@ -6,16 +6,16 @@
 }
 .horizontal-card-reverse{
     @apply flex flex-row-reverse max-md:flex-wrap;
-    @apply  lg:p-12;
+    @apply  px-5;
 }
 .horizontal-card-content{
     @apply flex flex-col justify-center text-center;
 }
-.title{
+.horizontal-card-title{
     @apply text-2xl text-blue-950;
     
 }
-.desc{
+.horizontal-card-desc{
     color: #605e7ada;
     @apply text-justify ;
 }

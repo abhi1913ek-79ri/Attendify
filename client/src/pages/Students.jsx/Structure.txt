@@ -1,0 +1,43 @@
+🧑‍🏫 All Students Dashboard – Overview & Stats
+
+1️⃣ Page Title
+   └── "🎓 Attendance Dashboard – All Students Overview"
+   └── Optional: "View and manage attendance across the entire class"
+
+2️⃣ Stats Summary Cards (Grid of 4 Cards)
+   ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐
+   │ Total Students      │ │ Avg Attendance %    │ │ Today’s Attendance │ │ Critical (<75%)    │
+   └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘
+
+3️⃣ Filters/Controls Section
+   └── 🔽 Subject Selector (dropdown)
+   └── 🔽 Date Range Picker
+   └── 🔍 Search Student (by name, roll no.)
+   └── 📤 Export Button (Excel/CSV)
+
+4️⃣ Students Attendance Table
+   ┌────────────┬────────┬──────────────┬──────────────┬───────┬──────────┐
+   │ Name       │ Roll   │ DBMS %       │ DSA %        │ Total │ Status   │
+   ├────────────┼────────┼──────────────┼──────────────┼───────┼──────────┤
+   │ Abhishek   │ 1913   │ 92%          │ 88%          │ 90%   │ ✅ Good  │
+   │ Deepanshu  │ 1914   │ 75%          │ 62%          │ 68%   │ ⚠️ Low   │
+   └────────────┴────────┴──────────────┴──────────────┴───────┴──────────┘
+
+5️⃣ Charts Section (Optional)
+   └── 📊 Bar/Pie chart showing:
+       - Overall distribution of attendance
+       - Count of students in Good/Low/Critical range
+
+6️⃣ Student Drilldown (Optional Modal/Page)
+   └── Click on row → Opens profile:
+       - Name, Photo
+       - Subject-wise detailed log
+       - Attendance history (date-wise)
+
+7️⃣ Notices & Alerts
+   └── Red alert: “5 students are below 75%”
+   └── Info: “Attendance for today is 78% complete”
+
+
+#baki 
+card- me content ke p tag ka color change karna ??

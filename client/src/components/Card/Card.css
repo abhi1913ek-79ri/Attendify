@@ -14,5 +14,5 @@
 
 .card-content{
     color: #605e7ada;
-    @apply text-justify font-light p-0 max-md:text-center;
+    @apply  font-light p-0 max-md:text-center;
 }

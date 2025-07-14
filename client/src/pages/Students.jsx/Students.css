@@ -1,5 +1,43 @@
 @import "tailwindcss";
 
 .students {
-  color: red;
+  height: 100%;
+  @apply border flex flex-col text-center p-5;
 }
+
+.students-heading{
+  color: #080160;
+  @apply border border-green-500 text-2xl font-semibold md:py-5;
+}
+
+.stats-summary{
+  @apply flex flex-col text-center border border-blue-500 p-5 text-3xl lg:mb-12;
+
+}
+
+.stats-summary-heading{
+  @apply  font-light text-blue-950 flex justify-center gap-3.5 md:py-2.5;
+}
+
+.stats-summary-cards-container{
+  @apply border grid lg:grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-2 text-lg;
+}
+
+.overall-attendance-graph{
+  @apply flex flex-col justify-center text-center p-5 lg:mb-12 border border-amber-200;
+  @apply min-h-[300px];
+}
+
+/* font-size: 2rem;
+font-weight: 600;
+color: #080160; */
+
+
+
+
+/* 
+.home {
+  width: 100%;
+  color: red;
+  @apply w-full flex flex-col justify-center text-center;
+} */
