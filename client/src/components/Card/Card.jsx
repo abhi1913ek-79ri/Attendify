@@ -3,7 +3,6 @@ import './Card.css'
 
 const Card = ({icon,title,desc,style=''}) => {
   style=(style==''?'text-justify text-gray-':style);
-  console.log(style);
   return (
     <div className='card'>
       <div className="card-header">

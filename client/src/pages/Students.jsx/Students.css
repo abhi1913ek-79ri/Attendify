@@ -1,13 +1,15 @@
 @import "tailwindcss";
 
 .students {
-  height: 100%;
-  @apply border flex flex-col text-center p-5;
+  /* Height ka Concept yahan nhi de rakha hin bhai wo grow hogi*/
+  @apply w-full flex flex-col justify-center text-center border border-red-700;
+
+  @apply border border-red-700;
 }
 
 .students-heading{
   color: #080160;
-  @apply border border-green-500 text-2xl font-semibold md:py-5;
+  @apply border border-green-500 text-3xl font-medium;
 }
 
 .stats-summary{
@@ -24,9 +26,19 @@
 }
 
 .overall-attendance-graph{
-  @apply flex flex-col justify-center text-center p-5 lg:mb-12 border border-amber-200;
+  @apply flex flex-col justify-center text-center p-5  border border-amber-200;
   @apply min-h-[300px];
 }
+
+.control-and-filter-section{
+  @apply border border-red-500 md:p-10;
+}
+
+
+.student-table{
+  @apply md:p-10  max-md:text-sm;
+}
+
 
 /* font-size: 2rem;
 font-weight: 600;

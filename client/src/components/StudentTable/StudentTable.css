@@ -1,0 +1,15 @@
+@import 'tailwindcss';
+
+.table-rows{
+    @apply md:py-3 md:px-3 font-normal text-center;
+    @apply max-md:py-3 max-md:px-3;
+}
+
+#table tbody tr{
+    @apply hover:shadow-xl hover:scale-y-[1.01] hover:z-10 transition-all duration-200 bg-white hover:bg-[#fefefe] relative;
+}
+
+#table tbody tr:hover{
+    box-shadow: 0 0 20px rgba(80, 80, 80, 0.4);
+}
+
