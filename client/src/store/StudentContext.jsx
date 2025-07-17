@@ -1,6 +1,8 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useEffect, useReducer } from "react";
 import { studentReducer } from "./StudenstReducer";
 import STUDENT_ACTIONS from "./Actions";
+import { dummyStudents } from "./dummyData";
+
 
 const StudentContext = createContext({
   students: [
@@ -27,21 +29,7 @@ export const StudentProvider = ({ children }) => {
 
   useEffect(() => {
     // Load dummy data on first render
-    const dummyData = [
-      {
-        id: 'stu001',
-        name: 'Abhishek Giri',
-        rollNo: 'IT23US001',
-        attendance: {
-          totalDays: 100,
-          present: 88,
-          percentage: 88,
-          lastMarked: '2025-07-16',
-        },
-        subjects: ['DBMS', 'OS'],
-        isCritical: false,
-      },
-    ];
+    const dummyData = dummyStudents;
     dispatch({ type: STUDENT_ACTIONS.SET_STUDENTS, payload: dummyData });
   }, []);
 

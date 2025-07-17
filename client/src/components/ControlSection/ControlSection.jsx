@@ -1,25 +1,21 @@
-import React, { useState } from 'react'
-import './ControlSection.css'
+import React from 'react';
+import './ControlSection.css';
 
-const ControlSection = () => {
-  const [subject, setSubject] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  
-
-  const handleSearch = (e) =>{
-    console.log({subject,fromDate,toDate,searchTerm});
-  }
-
+const ControlSection = ({ filters, setFilters, onSearch }) => {
+  const handleChange = (key, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [key]: value
+    }));
+  };
 
   return (
     <div className="control-section">
-
+      
       {/* 🔽 Subject Selector */}
       <select
-        value={subject}
-        onChange={(e) => setSubject(e.target.value)}
+        value={filters.subject}
+        onChange={(e) => handleChange('subject', e.target.value)}
         className="selector"
       >
         <option value="">All Subjects</option>
@@ -28,20 +24,29 @@ const ControlSection = () => {
         <option value="OS">Operating Systems</option>
         <option value="CN">Computer Networks</option>
       </select>
+      <select
+        value={filters.isCritical}
+        onChange={(e) => handleChange('isCritical', e.target.value)}
+        className="selector"
+      >
+        <option value="">All</option>
+        <option value="true">Critical</option>
+        <option value="false">Safe</option>
+      </select>
 
       {/* 📅 Date Range Picker */}
       <div className="date-range">
         <input
           type="date"
-          value={fromDate}
-          onChange={(e) => setFromDate(e.target.value)}
+          value={filters.fromDate}
+          onChange={(e) => handleChange('fromDate', e.target.value)}
           className="input-date"
         />
-        <span className="text-gray-500  text-sm">to</span>
+        <span className="text-gray-500 text-sm">to</span>
         <input
           type="date"
-          value={toDate}
-          onChange={(e) => setToDate(e.target.value)}
+          value={filters.toDate}
+          onChange={(e) => handleChange('toDate', e.target.value)}
           className="input-date"
         />
       </div>
@@ -49,20 +54,18 @@ const ControlSection = () => {
       {/* 🔍 Search */}
       <input
         type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        value={filters.searchTerm}
+        onChange={(e) => handleChange('searchTerm', e.target.value)}
         placeholder="Search by name or roll no."
         className="search-term"
       />
 
       {/* 📤 Search Button */}
-      <button className="search-btn" onClick={handleSearch}>
+      <button className="search-btn" onClick={onSearch}>
         Search
       </button>
-      
     </div>
+  );
+};
 
-  )
-}
-
-export default ControlSection
+export default ControlSection;

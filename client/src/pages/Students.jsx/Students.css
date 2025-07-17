@@ -36,7 +36,7 @@
 
 
 .student-table{
-  @apply md:p-10  max-md:text-sm;
+  @apply md:min-h-64 md:p-10  max-md:text-sm;
 }
 
 

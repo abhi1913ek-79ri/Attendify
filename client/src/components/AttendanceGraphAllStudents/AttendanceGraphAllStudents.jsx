@@ -10,17 +10,20 @@ import {
     ResponsiveContainer,
 } from "recharts";
 
-const data = [
-    { name: "Total Stud.", value: 100 },
-    { name: "Avg Atd %", value: 50 },
-    { name: "Today's ", value: 72 },
-    { name: "Critical", value: 32 },
-];
 
-const AttendanceStatsChart = () => {
+
+const AttendanceStatsChart = (props) => {
+    const data = [
+        { name: "Total Students.", value: props.totalStudents},
+        { name: "Present", value: props.presentToday},
+        { name: "Absent", value: props.absentToday},
+        { name: "Critical", value: props.numberOfCriticalStudents},
+        { name: "Absent + Critical", value: props.criticalAndAbsent},
+
+    ];
     return (
-        <div className="w-full -px-5">
-            <h2 className="text-2xl font-light text-[#080160] flex flex-col text-center "><div className="items-center w-full flex justify-center"><SquareKanbanIcon /></div>Attendance Overview</h2>
+        <div className="w-full -px-5 max-md:overflow-x-auto">
+            <h2 className="text-2xl font-light text-[#080160] flex flex-col text-center "><div className="items-center w-full flex justify-center"><SquareKanbanIcon /></div>Today Attendance</h2>
             <ResponsiveContainer width="100%" height={250}>
                 <BarChart
                     data={data}

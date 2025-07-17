@@ -1,11 +1,13 @@
 import React from 'react';
 import './StudentTable.css';
 import { AlertTriangle, SmileIcon } from 'lucide-react';
-const StudentTable = ({ students }) => {
+import Loader from '../Loader/Loader';
+
+const StudentTable = ({ students, loading }) => {
     return (
         <div id='table' className="overflow-x-auto  w-full shadow-md mt-4 border border-gray-200">
             <table className="min-w-full divide-y divide-gray-300  text-left max-md:min-w-[600px] table-auto border-collapse">
-                <thead className="text-[#F9F9FB] bg-[#080160]">
+                <thead className="text-[#F9F9FB] bg-blue-950">
                     <tr>
                         <th className="table-rows">#</th>
                         <th className="table-rows">Name</th>
@@ -17,7 +19,23 @@ const StudentTable = ({ students }) => {
                         <th className="table-rows">Critical?</th>
                     </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-200 bg-white">
+                {loading ? (
+                    <tbody className='no-scroll-loader'>
+                        <tr>
+                            <td colSpan="8" className="py-10">
+                                <Loader />
+                            </td>
+                        </tr>
+                    </tbody>
+                ) : students.length === 0 ? (
+                    <tbody>
+                        <tr>
+                            <td id='no-record' colSpan="8" className="py-6 text-center text-gray-500">
+                                No matching records found.
+                            </td>
+                        </tr>
+                    </tbody>
+                ) : (<tbody className="divide-y divide-gray-200 bg-white">
                     {students.map((student, index) => (
                         <tr key={student.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-[#EAF2FF]'}`}>
                             <td className="table-rows">{index + 1}</td>
@@ -37,6 +55,7 @@ const StudentTable = ({ students }) => {
                         </tr>
                     ))}
                 </tbody>
+                )}
             </table>
         </div>
     );

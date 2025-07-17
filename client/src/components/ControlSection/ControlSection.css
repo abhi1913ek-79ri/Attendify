@@ -3,7 +3,7 @@
 
 .control-section{
     /* border: 1px solid green; */
-    @apply  w-full bg-white  p-4 rounded-xl shadow border border-gray-200 flex flex-col md:flex-row flex-wrap items-center justify-between gap-4;
+    @apply  w-full bg-white  p-4 rounded-xl shadow border border-gray-200 flex flex-col md:flex-row max-md:flex-wrap items-center justify-between gap-4;
     @apply  text-blue-950;
 }
 .selector{

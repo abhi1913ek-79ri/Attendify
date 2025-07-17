@@ -13,3 +13,11 @@
     box-shadow: 0 0 20px rgba(80, 80, 80, 0.4);
 }
 
+.no-scroll-loader{
+  overflow-y: hidden;
+  max-height: fit-content;
+}
+
+#no-record{
+    @apply py-12;
+}

@@ -1,82 +1,40 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './Students.css'
 import Card from '../../components/Card/Card'
 import { CalendarDays, ChartNoAxesCombined, ShieldAlert, User, UserCheck } from 'lucide-react'
 import ControlSection from '../../components/ControlSection/ControlSection'
 import AttendanceStatsChart from '../../components/AttendanceGraphAllStudents/AttendanceGraphAllStudents'
 import StudentTable from '../../components/StudentTable/StudentTable'
-
-const students = [
-  {
-    id: 'stu001',
-    name: 'Aarav Sharma',
-    rollNo: '1001',
-    attendance: {
-      totalDays: 90,
-      present: 82,
-      percentage: 91.1,
-      lastMarked: '2025-07-15',
-    },
-    subjects: ['Math', 'Science'],
-    isCritical: false,
-  },
-  {
-    id: 'stu002',
-    name: 'Isha Mehra',
-    rollNo: '1002',
-    attendance: {
-      totalDays: 90,
-      present: 60,
-      percentage: 66.7,
-      lastMarked: '2025-07-15',
-    },
-    subjects: ['English', 'Science'],
-    isCritical: true,
-  },
-  {
-    id: 'stu003',
-    name: 'Rahul Verma',
-    rollNo: '1003',
-    attendance: {
-      totalDays: 90,
-      present: 75,
-      percentage: 83.3,
-      lastMarked: '2025-07-15',
-    },
-    subjects: ['Math', 'English'],
-    isCritical: false,
-  },
-  {
-    id: 'stu004',
-    name: 'Simran Kaur',
-    rollNo: '1004',
-    attendance: {
-      totalDays: 90,
-      present: 55,
-      percentage: 61.1,
-      lastMarked: '2025-07-15',
-    },
-    subjects: ['Science', 'Math'],
-    isCritical: true,
-  },
-  {
-    id: 'stu005',
-    name: 'Kabir Joshi',
-    rollNo: '1005',
-    attendance: {
-      totalDays: 90,
-      present: 88,
-      percentage: 97.8,
-      lastMarked: '2025-07-15',
-    },
-    subjects: ['English', 'Science'],
-    isCritical: false,
-  },
-];
-
+import { filterStudents } from '../../utils/filterStudent'
+import { dummyStudents } from '../../store/dummyData'
+import { useStudent } from '../../store/StudentContext'
+import studentsProperties from '../../utils/AllStundetsProperties'
 
 
 const Students = () => {
+  const {students} = useStudent();
+  const [filteredStudents, setFilteredStudents] = useState(students);
+  const [loading, setLoading] = useState(false);
+
+  //filter logic
+  const [filters, setFilters] = useState({
+    subject: '',
+    fromDate: '',
+    toDate: '',
+    searchTerm: '',
+    isCritical:''
+  });
+
+  const handleSearch = () => {
+  setLoading(true); // show loader
+
+  setTimeout(() => {
+    const result = filterStudents(students, filters); // filters apply kar
+    setFilteredStudents(result); // update table
+    setLoading(false); // hide loader
+  },1000); // simulate backend delay
+};
+
   return (
     <div className='students'>
       <div className="students-heading">
@@ -88,21 +46,24 @@ const Students = () => {
           <ChartNoAxesCombined />Stats Summary
         </div>
         <div className="stats-summary-cards-container">
-          <Card icon={<User />} title={'Total Students'} desc={'100'} style={'text-center'} />
-          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={'50 %'} style={'text-center'} />
-          <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={'72 %'} style={'text-center'} />
-          <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={'32'} style={'text-center text-red-500'} />
+          <Card icon={<User />} title={'Total Students'} desc={studentsProperties.len} style={'text-center'} />
+          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={studentsProperties.averageAttendance} style={'text-center'} />
+          <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={studentsProperties.numberOfTodaysAttendance} style={'text-center'} />
+          <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={studentsProperties.numberOfCriticalStudents} style={'text-center text-red-500'} />
         </div>
       </div>
       <div className="overall-attendance-graph mt-8 px-4">
-        <AttendanceStatsChart />
+        <AttendanceStatsChart totalStudents={studentsProperties.len} presentToday={studentsProperties.presentToday} absentToday={studentsProperties.absentToday} numberOfCriticalStudents={studentsProperties.numberOfCriticalStudents} criticalAndAbsent={studentsProperties.criticalButAbsentCount}/>
       </div>
       <hr className='text-gray-300' />
       <div className="control-and-filter-section">
-        <ControlSection />
+        <ControlSection
+          filters={filters} setFilters={setFilters} onSearch={handleSearch}
+        />
+
       </div>
       <div className="student-table">
-        <StudentTable students={students} />
+        <StudentTable students={filteredStudents} loading={loading} />
       </div>
     </div>
   )

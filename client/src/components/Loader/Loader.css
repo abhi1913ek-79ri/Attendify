@@ -1,0 +1,13 @@
+@import 'tailwindcss';
+
+.loader-wrapper {
+  @apply flex flex-col justify-center items-center py-6;
+}
+
+.spinner {
+  @apply w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin;
+}
+
+.loader-text {
+  @apply text-sm text-gray-600 mt-2;
+}
