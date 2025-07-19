@@ -13,6 +13,7 @@ import {
   User,
   View,
 } from "lucide-react";
+import DateTimeComponent from "../DateTimeComponent/DateTimeComponent";
 
 const Navbar = () => {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
@@ -51,12 +52,12 @@ const Navbar = () => {
           Home
         </NavLink>
         <NavLink
-          to="/mark"
+          to="/mark-attendance"
           className={({ isActive }) =>
             `flex gap-2 ${isActive ? "nav-link active-link" : "nav-link"}`
           }
         >
-          <CheckCheckIcon /> Mark
+          <CheckCheckIcon /> Mark-Attendance
         </NavLink>
         <NavLink
           to="/view"
@@ -77,6 +78,7 @@ const Navbar = () => {
       </div>
 
       {/* Right - Avatar */}
+      
       <div className="navbar-avatar">
         <img
           src={assets.avatar}
@@ -117,10 +119,10 @@ const Navbar = () => {
           </NavLink>
           <NavLink
             className="flex gap-2"
-            to="/mark"
+            to="/mark-attendance"
             onClick={() => setIsMenuOpen(false)}
           >
-            <CheckCheckIcon /> Mark
+            <CheckCheckIcon /> Mark-Attendance
           </NavLink>
           <NavLink
             className="flex gap-2"

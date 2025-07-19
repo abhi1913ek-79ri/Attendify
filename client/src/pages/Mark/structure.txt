@@ -1,0 +1,25 @@
+1. Navbar (already reusable – just import it)
+
+2. Page Heading:
+   - Title: "Mark Attendance"
+   - Sub-heading (optional): Date selector (defaults to today)
+
+3. Filters Section (optional but helpful):
+   - Dropdown for Subject
+   - Date Picker (to mark attendance for previous days if allowed)
+
+4. Student List Section:
+   - Table/List of Students
+     - Roll No.
+     - Name
+     - Attendance Toggle or Checkbox (Present/Absent)
+
+5. Stats Summary (live update):
+   - Total Students
+   - Marked Present
+   - Marked Absent
+
+6. Submit Button:
+   - OnClick: Save attendance data
+
+7. Toast/Alert for successful submission or error

@@ -2,10 +2,11 @@ import React from 'react';
 import './StudentTable.css';
 import { AlertTriangle, SmileIcon } from 'lucide-react';
 import Loader from '../Loader/Loader';
+import { v4 as uuidv4 } from 'uuid';
 
 const StudentTable = ({ students, loading }) => {
     return (
-        <div id='table' className="overflow-x-auto  w-full shadow-md mt-4 border border-gray-200">
+        <div id='table' className="overflow-x-auto  w-full shadow-md  border border-gray-200">
             <table className="min-w-full divide-y divide-gray-300  text-left max-md:min-w-[600px] table-auto border-collapse">
                 <thead className="text-[#F9F9FB] bg-blue-950">
                     <tr>
@@ -37,7 +38,7 @@ const StudentTable = ({ students, loading }) => {
                     </tbody>
                 ) : (<tbody className="divide-y divide-gray-200 bg-white">
                     {students.map((student, index) => (
-                        <tr key={student.id} className={`${index % 2 === 0 ? 'bg-white' : 'bg-[#EAF2FF]'}`}>
+                        <tr key={uuidv4()} className={`${index % 2 === 0 ? 'bg-white' : 'bg-[#EAF2FF]'}`}>
                             <td className="table-rows">{index + 1}</td>
                             <td className="px-3 text-start">{student.name}</td>
                             <td className="table-rows">{student.rollNo}</td>

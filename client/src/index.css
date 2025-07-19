@@ -10,6 +10,21 @@
 
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* bhai ye graph pe baar baar click karne par jo border tha usko hatane ke liye hain*/
+svg:focus,
+rect:focus {
+  outline: none;
+}
 
 *,
 *::before,

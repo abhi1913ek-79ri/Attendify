@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
 .footer {
-  @apply border-t border-gray-300 flex text-center justify-center p-5;
+  @apply border-t border-gray-300 flex text-center justify-between p-5;
+}
+
+.date-time{
+  @apply text-[#007bff];
 }

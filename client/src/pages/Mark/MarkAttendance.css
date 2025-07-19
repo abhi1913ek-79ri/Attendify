@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+.mark-attendance {
+  /* Height ka Concept yahan nhi de rakha hin bhai wo grow hogi*/
+  @apply w-full flex flex-col justify-center text-center;
+  /* from students */
+  /* w-full flex flex-col justify-center text-center gap-2.5 md:py-5  */
+  @apply border border-red-700;
+}
+
+.mark-attendance-heading{
+  color: #080160;
+  @apply  text-3xl font-medium md:py-5;
+  @apply flex justify-center items-center gap-2.5;
+  @apply border border-green-500;
+}
+
+.mark-attendance-filter-section{
+
+}

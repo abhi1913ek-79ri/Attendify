@@ -11,7 +11,6 @@ const ControlSection = ({ filters, setFilters, onSearch }) => {
 
   return (
     <div className="control-section">
-      
       {/* 🔽 Subject Selector */}
       <select
         value={filters.subject}

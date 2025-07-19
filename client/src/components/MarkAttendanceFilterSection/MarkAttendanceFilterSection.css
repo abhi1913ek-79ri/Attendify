@@ -1,0 +1,5 @@
+@import 'tailwindcss';
+
+.mark-attendance-filterSection{
+    @apply text-red-500;
+}

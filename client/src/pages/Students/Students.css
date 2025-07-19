@@ -2,18 +2,19 @@
 
 .students {
   /* Height ka Concept yahan nhi de rakha hin bhai wo grow hogi*/
-  @apply w-full flex flex-col justify-center text-center border border-red-700;
-
-  @apply border border-red-700;
+  @apply w-full flex flex-col justify-center text-center gap-2.5 md:py-5;
+  /* @apply border border-red-700; */
 }
 
 .students-heading{
   color: #080160;
-  @apply border border-green-500 text-3xl font-medium;
+  @apply  text-3xl font-medium md:py-5;
+  /* @apply border border-green-500; */
 }
 
 .stats-summary{
-  @apply flex flex-col text-center border border-blue-500 p-5 text-3xl lg:mb-12;
+  @apply flex flex-col text-center  p-5 text-3xl lg:mb-12;
+  /* @apply border border-blue-500; */
 
 }
 
@@ -22,16 +23,20 @@
 }
 
 .stats-summary-cards-container{
-  @apply border grid lg:grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-2 text-lg;
+  @apply  grid lg:grid-cols-4 max-lg:grid-cols-2 max-md:grid-cols-1 gap-2 text-lg;
+  /* @apply border; */
 }
 
 .overall-attendance-graph{
-  @apply flex flex-col justify-center text-center p-5  border border-amber-200;
+  overflow-y: auto;
+  @apply flex flex-col justify-center text-center p-5 pt-0;
   @apply min-h-[300px];
+  /* @apply border border-amber-200; */
 }
 
 .control-and-filter-section{
-  @apply border border-red-500 md:p-10;
+  @apply md:px-10  md:py-3;
+  /* @apply border border-red-500 ; */
 }
 
 
