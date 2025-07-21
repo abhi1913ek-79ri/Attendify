@@ -6,11 +6,12 @@
 }
 
 #table tbody tr{
-    @apply hover:shadow-xl hover:scale-y-[1.01] hover:z-10 transition-all duration-200 bg-white hover:bg-[#fefefe] relative;
+    @apply hover:shadow-xl  hover:z-10 transition-all duration-200 bg-white hover:bg-[#fefefe] relative;
 }
 
 #table tbody tr:hover{
     box-shadow: 0 0 20px rgba(80, 80, 80, 0.4);
+    scale: 1 1.05;
 }
 
 .no-scroll-loader{

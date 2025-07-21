@@ -1,9 +1,9 @@
 export const dummyStudents = [
   {
     id: '100001',
-    name: 'Aarav Sharma',
+    name: 'Abhishek Kumar Giri',
     rollNo: '1001',
-    attendance: { totalDays: 90, present: 90, percentage: 100.00, lastMarked: '2025-07-15' },
+    attendance: { totalDays: 90, present: 90, percentage: 100.00, lastMarked: '2025-07-20' },
     subjects: ['DBMS', 'OS'],
     isCritical: false,
   },

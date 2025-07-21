@@ -16,6 +16,7 @@ import Login from './pages/Login/Login'
 import Logout from './pages/Logout/Logout'
 import Register from './pages/Register/Register'
 import MarkAttendance from './pages/Mark/MarkAttendance'
+import StudentProfile from './components/StudentProfileWithoutLogin/StudentProfileWithoutLogin'
 
 const App = () => {
   return (
@@ -36,6 +37,7 @@ const App = () => {
               <Route path='/login' element={<Login />} />
               <Route path='/logout' element={<Logout />} />
               <Route path='/register' element={<Register />} />
+              <Route path="/students/:id" element={<StudentProfile />} />
             </Routes>
           </Container>
           <Footer />
