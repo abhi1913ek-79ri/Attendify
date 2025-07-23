@@ -1,7 +1,7 @@
 import React from 'react';
 import './ControlSection.css';
 
-const ControlSection = ({ filters, setFilters, onSearch }) => {
+const ControlSection = ({ filters, setFilters, onSearch , subjects}) => {
   const handleChange = (key, value) => {
     setFilters(prev => ({
       ...prev,
@@ -18,10 +18,11 @@ const ControlSection = ({ filters, setFilters, onSearch }) => {
         className="selector"
       >
         <option value="">All Subjects</option>
-        <option value="DBMS">DBMS</option>
-        <option value="DSA">DSA</option>
-        <option value="OS">Operating Systems</option>
-        <option value="CN">Computer Networks</option>
+        {subjects.map((subject) => (
+          <option key={subject} value={subject}>
+            {subject}
+          </option>
+        ))}
       </select>
       <select
         value={filters.isCritical}

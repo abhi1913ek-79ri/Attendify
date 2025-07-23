@@ -11,9 +11,9 @@
 
 #table tbody tr:hover{
     box-shadow: 0 0 20px rgba(80, 80, 80, 0.4);
-    scale: 1 1.05;
+    transform: scale(1.02);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
-
 .no-scroll-loader{
   overflow-y: hidden;
   max-height: fit-content;

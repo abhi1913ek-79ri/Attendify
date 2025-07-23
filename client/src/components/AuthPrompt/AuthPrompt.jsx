@@ -3,17 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import { AccessibilityIcon, Ban, LockKeyhole, LogIn, UserPlus } from 'lucide-react';
 import './AuthPrompt.css';
 import { assets } from '../../assets/assets';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
 const AuthPrompt = () => {
   const navigate = useNavigate();
 
   return (
     <div className="auth-prompt-container">
-      <img
-        src={assets.ilustrations.login_illustration}
-        alt="Please login"
-        className="auth-illustration"
-      />
+      <div className="w-4/12">
+        <LazyLoadImage
+          src={assets.ilustrations.login_illustration}
+          alt="Please login"
+          className="auth-illustration"
+          effect="blur"
+        />
+      </div>
       <h2 className="text-2xl flex gap-2.5 justify-center items-center py-3 text-red-500 font-semibold mt-4"><span>Access Denied</span><Ban /></h2>
       <p className="text-gray-600 mt-2">Please login or register to mark attendance.</p>
       <div className="login_signup flex gap-2.5">

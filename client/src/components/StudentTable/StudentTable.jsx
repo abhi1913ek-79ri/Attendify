@@ -46,10 +46,10 @@ const StudentTable = ({ students, loading }) => {
                             <td className="table-rows">{index + 1}</td>
                             <td className="px-3 text-start">{student.name}</td>
                             <td className="table-rows">{student.rollNo}</td>
-                            <td className="table-rows">{student.attendance.totalDays}</td>
-                            <td className="table-rows">{student.attendance.present}</td>
-                            <td className="table-rows">{student.attendance.percentage}%</td>
-                            <td className="table-rows">{student.attendance.lastMarked}</td>
+                            <td className="table-rows">{student.overall.totalClasses}</td>
+                            <td className="table-rows">{student.overall.present}</td>
+                            <td className="table-rows">{student.overall.percentage}%</td>
+                            <td className="table-rows">{student.overall.lastMarked}</td>
                             <td className="text-center align-middle">
                                 {student.isCritical ? (
                                     <AlertTriangle className="text-red-500 inline-block w-5 h-5" />

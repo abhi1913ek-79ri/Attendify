@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+
+/* Overall Layout */
+.profile-page {
+  @apply w-full flex flex-col justify-center text-center;
+}
+
+.profile-page button {
+  @apply pb-1.5;
+}
+
+.profile-container {
+  @apply py-10 space-y-1 md:px-10 max-md:px-1 bg-white rounded shadow border border-gray-300;
+}
+
+.profile-image-container {
+  @apply flex items-center justify-center p-4 bg-gray-100 rounded-lg shadow-md;
+}
+
+.profile-image {
+  @apply w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg hover:scale-105 transition-transform duration-300;
+}
+
+.profile-heading {
+  @apply md:text-3xl text-2xl py-3 text-blue-950;
+}
+
+/* Profile Content */
+.profile-content-section {
+  @apply grid md:grid-cols-2;
+}
+.profile-content-section p {
+  @apply text-start grid grid-cols-3;
+}
+.profile-content-section p .label {
+  @apply pr-2 col-span-1 font-medium text-blue-950;
+}
+.profile-content-section p .value {
+  @apply pr-2 col-span-2;
+}
+
+.last-marked-plus-isCritical {
+  @apply py-5 flex flex-col gap-1.5 justify-center;
+}
+
+/* Subject Attendance */
+.student-subjects {
+  @apply flex flex-col;
+}
+.student-subjects-heading {
+  @apply text-xl text-blue-950 font-medium py-2.5;
+}
+.student-subject-list {
+  @apply overflow-x-auto w-full shadow-lg;
+}
+
+/* Hide scrollbars */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Table Styling */
+.table-data {
+  @apply md:py-3 md:px-3 font-normal text-center;
+  @apply max-md:py-3 max-md:px-3;
+}
+
+#table {
+  @apply table-auto min-w-full text-left max-md:min-w-[600px] border-collapse;
+}
+
+#table thead {
+  @apply bg-blue-950 text-[#F9F9FB];
+}
+
+#table tbody {
+  @apply divide-y divide-gray-200 bg-white;
+}
+
+/* Hover effect: make this last so it overrides properly */
+#table tbody tr:hover {
+  box-shadow: 0 0 20px rgba(80, 80, 80, 0.4) !important;
+  transform: scale(1.02) !important;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out !important;
+  z-index: 10;
+  position: relative;
+}
+
+/* Important to avoid hover shadow override */
+#table tbody tr {
+  @apply transition-all duration-200 bg-white hover:bg-[#fefefe] relative;
+}
+
+/* Total row customization */
+#student-subject-total .total {
+  @apply text-end;
+}
+
+/* Optional: for no data */
+#no-record {
+  @apply py-12;
+}
+
+/* Prevent vertical scroll on some screens */
+.no-scroll-loader {
+  overflow-y: hidden;
+  max-height: fit-content;
+}

@@ -7,12 +7,11 @@ import AttendanceStatsChart from '../../components/AttendanceGraphAllStudents/At
 import StudentTable from '../../components/StudentTable/StudentTable'
 import { filterStudents } from '../../utils/filterStudent'
 import { useStudent } from '../../store/StudentContext'
+import { SUBJECTS } from '../../config/subjectConfig'
 
 const Students = () => {
   const { students,studentsProperties } = useStudent();
-  console.log(studentsProperties);
-  console.log(students);
-  
+  const subjects = SUBJECTS;
   const [filteredStudents, setFilteredStudents] = useState(students);
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +34,8 @@ const Students = () => {
     }, 1000); // simulate backend delay
   };
 
+  console.log(studentsProperties);
+
   return (
     <div className='students'>
       <div className="students-heading">
@@ -46,8 +47,8 @@ const Students = () => {
           <ChartNoAxesCombined />Stats Summary
         </div>
         <div className="stats-summary-cards-container">
-          <Card icon={<User />} title={'Total Students'} desc={studentsProperties?.len} style={'text-center'} />
-          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={studentsProperties?.average} style={'text-center'} />
+          <Card icon={<User />} title={'Total Students'} desc={studentsProperties.len} style={'text-center'} />
+          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={studentsProperties.averageAttendance} style={'text-center'} />
           <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={studentsProperties?.presentToday} style={'text-center'} />
           <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={studentsProperties?.numberOfCriticalStudents} style={'text-center text-red-500'} />
         </div>
@@ -61,7 +62,7 @@ const Students = () => {
       </div>
       <div className="control-and-filter-section">
         <ControlSection
-          filters={filters} setFilters={setFilters} onSearch={handleSearch}
+          filters={filters} setFilters={setFilters} onSearch={handleSearch} subjects={subjects}
         />
       </div>
       <div className="student-table">

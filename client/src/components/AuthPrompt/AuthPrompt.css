@@ -12,11 +12,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
-.auth-illustration {
-  width: 250px;
-  height: auto;
-  object-fit: contain;
-}
+
 
 .login-btn {
   background-color: #3b82f6;
@@ -24,7 +20,7 @@
   border-radius: 8px;
   font-weight: 500;
   transition: background-color 0.2s ease;
-  @apply md:px-5 md:py-2 md:mt-3.5;
+  @apply px-5 py-2 md:mt-3.5;
 }
 
 .login-btn:hover {
