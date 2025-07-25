@@ -105,8 +105,30 @@ export function getCriticalButAbsentStudents(students, todayDateStr) {
 
 // ✅ Add overall attendance to each student
 export const enhanceStudentsWithOverall = (students) => {
-  return students.map((student) => ({
-    ...student,
-    overall: getStudentOverallStats(student.attendance),
-  }));
+  return students.map((student) => {
+    const enhancedAttendance = {};
+
+    for (const subject of Object.keys(student.attendance || {})) {
+      const record = student.attendance[subject];
+      const percentage =
+        record.totalClasses > 0
+          ? parseFloat(((record.present / record.totalClasses) * 100).toFixed(2))
+          : 0;
+
+      enhancedAttendance[subject] = {
+        ...record,
+        percentage, // ✅ computed here
+      };
+    }
+
+    const overall = getStudentOverallStats(enhancedAttendance);
+    const isCritical = overall.percentage < 75; // ✅ computed here
+
+    return {
+      ...student,
+      attendance: enhancedAttendance,
+      overall,
+      isCritical,
+    };
+  });
 };

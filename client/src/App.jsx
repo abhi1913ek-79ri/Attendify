@@ -17,6 +17,8 @@ import Logout from './pages/Logout/Logout'
 import Register from './pages/Register/Register'
 import MarkAttendance from './pages/Mark/MarkAttendance'
 import StudentProfile from './pages/StudentProfileWithoutLogin/StudentProfileWithoutLogin'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   return (
@@ -44,6 +46,18 @@ const App = () => {
         </div>
 
       </div>
+      <ToastContainer
+        position="top-right"           
+        autoClose={2000}               
+        hideProgressBar={false}        
+        newestOnTop={true}            
+        closeOnClick={true}            
+        rtl={false}                    
+        pauseOnFocusLoss={true}
+        draggable={true}               
+        pauseOnHover={true}
+        theme="light"           
+      />
     </div>
   )
 }

@@ -1,5 +1,21 @@
+// utils/attendanceUtils.js
+export function markStudentAttendance({ student, subject, isPresent,today }) {
+  const current = student.attendance[subject] || { totalClasses: 0, present: 0 };
+
+  return {
+    ...student.attendance,
+    [subject]: {
+      ...current,
+      totalClasses: current.totalClasses + 1,
+      present: current.present + (isPresent ? 1 : 0),
+      lastMarked: today,
+    },
+  };
+}
+
 // attendanceUtils.js
 import { SUBJECTS } from "../config/subjectConfig.js";
+
 
 // Creates a blank attendance object for all subjects
 export const createEmptyAttendance = () => {
