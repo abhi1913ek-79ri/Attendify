@@ -102,6 +102,19 @@ export function getCriticalButAbsentStudents(students, todayDateStr) {
   });
 }
 
+// Merge all subject-wise presentDates into one overall list (deduplicated)
+const getOverallPresentDates = (attendance) => {
+  const dateSet = new Set();
+
+  for (const subject of Object.keys(attendance)) {
+    const dates = attendance[subject]?.presentDates || [];
+    dates.forEach(date => dateSet.add(date));
+  }
+
+  return Array.from(dateSet).sort(); // return sorted array of dates
+};
+
+
 
 // ✅ Add overall attendance to each student
 export const enhanceStudentsWithOverall = (students) => {
@@ -122,12 +135,16 @@ export const enhanceStudentsWithOverall = (students) => {
     }
 
     const overall = getStudentOverallStats(enhancedAttendance);
+    const presentDates = getOverallPresentDates(enhancedAttendance);
     const isCritical = overall.percentage < 75; // ✅ computed here
 
     return {
       ...student,
       attendance: enhancedAttendance,
-      overall,
+      overall: {
+        ...overall,
+        presentDates, // ✅ placed under "overall"
+      },
       isCritical,
     };
   });

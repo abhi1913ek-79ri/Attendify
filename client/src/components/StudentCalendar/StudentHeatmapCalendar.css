@@ -1,0 +1,90 @@
+@import 'tailwindcss';
+
+/* Layout containers */
+.heatmap-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+.month-labels {
+  display: flex;
+  gap: 3px;
+  padding-left: 40px; /* Align with weekday labels */
+}
+
+.month-label {
+  flex: 1;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #4b5563; /* gray-600 */
+}
+
+.heatmap-body {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.weekday-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 112px;
+}
+
+.weekday-cell {
+  font-size: 0.75rem;
+  color: #6b7280; /* gray-500 */
+  height: 14px;
+}
+
+.weeks {
+  display: flex;
+  gap: 3px;
+}
+
+/* Day Cells */
+.week-column {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.day-cell {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  transition: 0.3s ease;
+}
+
+.present {
+  background-color: #3a94c5; /* green-500 */
+}
+
+.absent {
+  background-color: #e5e7eb; /* gray-200 */
+}
+
+.future {
+  background-color: #f3f4f6; /* gray-100 */
+}
+
+/* Tooltip */
+.react-tooltip {
+  font-size: 12px !important;
+  background-color: #111827 !important; /* dark bg */
+  color: #f9fafb !important;
+  border-radius: 4px !important;
+  padding: 6px 10px !important;
+}
+
+.week-lable{
+  @apply pt-6 pr-5;
+}
+
+.heat-calendar{
+  @apply p-5;
+}

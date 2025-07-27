@@ -5,7 +5,8 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // null means not logged in - bhai ek trick -!! object={} or NULL ko true ya false me convert karne ka
 
-  const login = () => setUser({"id": "100001","name": "Abhishek Kumar Giri" });
+  const login = () => setUser({"id": "100001",
+    "name": "Abhisek Kumar Giri"});
   const logout = () => setUser(null);
 
   return (

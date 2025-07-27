@@ -8,14 +8,16 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import useAutoUpdatingTodayDate from '../../utils/useAutoUpdatingTodayDate';
+import { updateAttendanceRecord } from '../../utils/attendanceUtils';
 
 const MarkAttendance = () => {
   const { isLoggedIn, user } = useAuth();
   const { students, dispatch } = useStudent();
-  const today = useAutoUpdatingTodayDate(); // ✅ moved here
+  const today = useAutoUpdatingTodayDate();
 
   const [selectedSubject, setSelectedSubject] = useState('');
 
+  // Agar user logged in nahi hai
   if (!isLoggedIn) {
     return (
       <div className="mark-attendance">
@@ -29,6 +31,7 @@ const MarkAttendance = () => {
     );
   }
 
+  // Current student ka data
   const currentStudent = students.find((s) => s.name === user.name);
 
   if (!currentStudent) {
@@ -46,31 +49,27 @@ const MarkAttendance = () => {
     );
   }
 
+  // Attendance mark karne ka function
   const handleMarkAttendance = () => {
-    if (!selectedSubject) {
-      toast.error('⚠️ Please select a subject.');
+    // Utils ka function call
+    const updatedAttendance = updateAttendanceRecord(
+      { ...currentStudent.attendance },
+      selectedSubject,
+      today
+    );
+
+    // Agar error mila toh toast dikhao
+    if (updatedAttendance.error) {
+      toast.error(updatedAttendance.error);
       return;
     }
 
-    const attendance = { ...currentStudent.attendance };
-
-    if (attendance[selectedSubject]?.lastMarked === today) {
-      toast.error('Attendance already marked for today.');
-      return;
-    }
-
-    attendance[selectedSubject] = {
-      ...attendance[selectedSubject],
-      totalClasses: (attendance[selectedSubject]?.totalClasses || 0) + 1,
-      present: (attendance[selectedSubject]?.present || 0) + 1,
-      lastMarked: today,
-    };
-
+    // Dispatch to reducer
     dispatch({
       type: 'UPDATE_ATTENDANCE',
       payload: {
         id: currentStudent.id,
-        attendance,
+        attendance: updatedAttendance,
       },
     });
 

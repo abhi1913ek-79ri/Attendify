@@ -4,6 +4,7 @@ import { BadgeCheck, CalendarDays, ArrowLeft, User2, User, UserRound } from "luc
 import './StudentProfileWithoutLogin.css';
 import { assets } from "../../assets/assets.js";
 import { v4 as uuidv4 } from 'uuid';
+import StudentHeatmapCalendar from "../../components/StudentCalendar/StudentHeatmapCalendar.jsx";
 
 const StudentProfile = () => {
   const { id } = useParams();
@@ -114,6 +115,10 @@ const StudentProfile = () => {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="student-calendar">
+        <StudentHeatmapCalendar presentDates={student.overall.presentDates} />
       </div>
     </div>
 
