@@ -47,10 +47,10 @@ const Students = () => {
           <ChartNoAxesCombined />Stats Summary
         </div>
         <div className="stats-summary-cards-container">
-          <Card icon={<User />} title={'Total Students'} desc={studentsProperties.len} style={'text-center'} />
-          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={studentsProperties.averageAttendance} style={'text-center'} />
-          <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={studentsProperties?.presentToday} style={'text-center'} />
-          <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={studentsProperties?.numberOfCriticalStudents} style={'text-center text-red-500'} />
+          <Card icon={<User />} title={'Total Students'} desc={studentsProperties.len} style={'text-center bg-white'} />
+          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={studentsProperties.averageAttendance} style={'text-center bg-white'} />
+          <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={studentsProperties?.presentToday} style={'text-center bg-white'} />
+          <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={studentsProperties?.numberOfCriticalStudents} style={'text-center text-red-500 bg-white'} />
         </div>
       </div>
       <div className="overall-attendance-graph px-4">

@@ -19,7 +19,8 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-  @apply w-full p-0 m-0  overflow-y-auto max-md:justify-center max-md:text-center;
+  /* background: #f0f3f5; */
+  @apply w-full p-0 m-0  overflow-y-auto max-md:justify-center max-md:text-center ;
  
 }
 

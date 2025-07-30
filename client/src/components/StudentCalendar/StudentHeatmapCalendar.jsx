@@ -55,8 +55,8 @@ const StudentHeatmapCalendar = ({ presentDates }) => {
   const monthLabels = getMonthLabels();
 
   return (
-    <div className="heat-calendar bg-white p-4 rounded-lg shadow-xl overflow-x-auto">
-      <h2 className="text-2xl font-semibold text-blue-950 mb-6 flex justify-center items-center gap-0.5">
+    <div className="heat-calendar bg-white p-4 rounded-lg shadow-2xl ">
+      <h2 className="heat-calendar-heading text-2xl font-semibold text-blue-950  flex justify-center items-center gap-0.5">
         <CalendarSearch /> Attendance History
       </h2>
 
@@ -69,7 +69,7 @@ const StudentHeatmapCalendar = ({ presentDates }) => {
         </div>
 
         {/* Heatmap grid */}
-        <div className="flex gap-1">
+        <div className="flex gap-1 overflow-x-auto">
           {weeks.map((week, weekIdx) => (
             <div key={weekIdx} className="flex flex-col gap-1 items-center">
               <div className="text-[10px] text-gray-500 mb-1">{monthLabels[weekIdx]}</div>
@@ -80,7 +80,7 @@ const StudentHeatmapCalendar = ({ presentDates }) => {
                   <div
                     key={dayIdx}
                     className={`w-5 h-5 rounded-sm border border-gray-200 ${
-                      isFuture ? 'bg-black' : isPresent ? 'bg-blue-400' : 'bg-gray-300'
+                      isFuture ? 'bg-black' : isPresent ? 'bg-green-300' : 'bg-gray-100'
                     }`}
                     data-tooltip-id="attendance-tooltip"
                     data-tooltip-content={

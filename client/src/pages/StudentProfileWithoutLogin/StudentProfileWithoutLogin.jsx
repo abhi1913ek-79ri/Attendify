@@ -27,7 +27,7 @@ const StudentProfile = () => {
       </button>
 
       {/* Profile Box */}
-      <div className="profile-container bg-white rounded shadow border border-gray-300">
+      <div className="profile-container">
         <div className="flex flex-col justify-between items-center space-y-2">
           <div className="profile-image-container">
             <img src={assets.placeHolder.profile_placeholder_image} alt="profile" className="profile-image" />
@@ -60,10 +60,27 @@ const StudentProfile = () => {
         </div>
         <hr className='text-gray-300' />
         {/* Students Subject */}
-        <div className="student-subjects">
+        <div className="last-marked-plus-isCritical">
+          <div className="flex items-center gap-1.5">
+            <CalendarDays className="w-5 h-5 mr-2 text-blue-600" />
+            <span className="text-blue-950"><span className="font-medium">Last Marked :</span> {student.overall.lastMarked || 'Not Marked'}</span>
+          </div>
+          <div className="">
+            {student.isCritical ? (
+              <span className="text-red-500 font-medium flex items-center">⚠️ Critical Attendance</span>
+            ) : (
+              <span className="text-green-600 font-semibold flex items-center">
+                <BadgeCheck className="w-5 h-5 mr-2" /> All Good
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="student-subjects">
           <h3 className="student-subjects-heading">Subject Wise Attendance of <span className="font-bold">{student.name}</span></h3>
           <div className="student-subject-list scrollbar-hide">
-            <table id="table" className="min-w-full divide-y divide-gray-300  text-left max-md:min-w-[600px] table-auto border-collapse">
+            <table id="student-subject-table" className="min-w-full divide-y divide-gray-300  text-left max-md:min-w-[600px] table-auto border-collapse">
               <thead className="text-[#F9F9FB] bg-blue-950">
                 <tr>
                   <th className="table-data">#</th>
@@ -100,22 +117,6 @@ const StudentProfile = () => {
           </div>
 
         </div>
-        <div className="last-marked-plus-isCritical">
-          <div className="flex items-center gap-1.5">
-            <CalendarDays className="w-5 h-5 mr-2 text-blue-600" />
-            <span className="text-blue-950"><span className="font-medium">Last Marked :</span> {student.overall.lastMarked || 'Not Marked'}</span>
-          </div>
-          <div className="">
-            {student.isCritical ? (
-              <span className="text-red-500 font-medium flex items-center">⚠️ Critical Attendance</span>
-            ) : (
-              <span className="text-green-600 font-semibold flex items-center">
-                <BadgeCheck className="w-5 h-5 mr-2" /> All Good
-              </span>
-            )}
-          </div>
-        </div>
-      </div>
 
       <div className="student-calendar">
         <StudentHeatmapCalendar presentDates={student.overall.presentDates} />

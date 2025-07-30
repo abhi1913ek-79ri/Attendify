@@ -7,18 +7,19 @@
 
 #table {
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: none;
 }
 
-#table tbody tr{
-    @apply hover:shadow-xl  hover:z-10 transition-all duration-200 bg-white hover:bg-[#fefefe] relative;
+#table tbody tr {
+  @apply hover:bg-[#fefefe] relative hover:z-10 bg-white;
 }
 
-#table tbody tr:hover{
+#table tbody tr:hover {
     box-shadow: 0 0 20px rgba(80, 80, 80, 0.4);
-    transform: scale(1.02);
+    transform: scaleY(1.02); /* Only scale in Y-direction */
     transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
+
 .no-scroll-loader{
   overflow-y: hidden;
   max-height: fit-content;
@@ -26,4 +27,15 @@
 
 #no-record{
     @apply py-12;
+}
+
+.hover-scale-y-only {
+  transform-origin: center top; /* Prevents overflow-shift on Y-scale */
+  will-change: transform;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.hover-scale-y-only:hover {
+  transform: scaleY(1.02);
+  box-shadow: 0 0 20px rgba(80, 80, 80, 0.4);
 }

@@ -2,7 +2,7 @@
 
 /* Overall Layout */
 .profile-page {
-  @apply w-full flex flex-col justify-center text-center;
+  @apply w-full flex flex-col justify-center text-center gap-5;
 }
 
 .profile-page button {
@@ -10,7 +10,7 @@
 }
 
 .profile-container {
-  @apply py-10 space-y-1 md:px-10 max-md:px-1 bg-white rounded shadow border border-gray-300;
+  @apply py-10 space-y-1 md:px-10 max-md:px-3 bg-white rounded-lg shadow-2xl;
 }
 
 .profile-image-container {
@@ -29,12 +29,15 @@
 .profile-content-section {
   @apply grid md:grid-cols-2;
 }
+
 .profile-content-section p {
   @apply text-start grid grid-cols-3;
 }
+
 .profile-content-section p .label {
   @apply pr-2 col-span-1 font-medium text-blue-950;
 }
+
 .profile-content-section p .value {
   @apply pr-2 col-span-2;
 }
@@ -45,67 +48,95 @@
 
 /* Subject Attendance */
 .student-subjects {
-  @apply flex flex-col;
+  @apply flex flex-col bg-white rounded-lg shadow-2xl;
 }
+
 .student-subjects-heading {
   @apply text-xl text-blue-950 font-medium py-2.5;
 }
+
 .student-subject-list {
-  @apply overflow-x-auto w-full shadow-lg;
+  @apply w-full overflow-x-auto shadow-lg scrollbar-hide;
 }
 
 /* Hide scrollbars */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
 
-/* Table Styling */
-.table-data {
-  @apply md:py-3 md:px-3 font-normal text-center;
-  @apply max-md:py-3 max-md:px-3;
+/* 📦 Wrapper */
+.student-subjects {
+  @apply flex flex-col bg-white rounded-lg shadow-2xl p-4 md:p-6;
 }
 
-#table {
-  @apply table-auto min-w-full text-left max-md:min-w-[600px] border-collapse;
+.student-subjects-heading {
+  @apply text-xl text-blue-950 font-medium pb-4 text-center;
 }
 
-#table thead {
-  @apply bg-blue-950 text-[#F9F9FB];
+.student-subject-list {
+  @apply w-full overflow-x-auto shadow-lg;
 }
 
-#table tbody {
-  @apply divide-y divide-gray-200 bg-white;
+.student-subject-list::-webkit-scrollbar {
+  display: none;
+}
+.student-subject-list {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Hover effect: make this last so it overrides properly */
-#table tbody tr:hover {
-  box-shadow: 0 0 20px rgba(80, 80, 80, 0.4) !important;
-  transform: scale(1.02) !important;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out !important;
+/* 🎯 Scoped Table Styling */
+#student-subject-table {
+  @apply table-auto w-full border border-gray-300 border-collapse text-left;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+#student-subject-table thead {
+  @apply bg-blue-950 text-[#F9F9FB] border-b border-gray-300;
+}
+
+#student-subject-table thead th {
+  @apply border border-gray-300 px-4 py-2 text-center font-semibold whitespace-nowrap;
+}
+
+#student-subject-table tbody td {
+  @apply border border-gray-300 px-4 py-2 text-center whitespace-nowrap;
+}
+
+/* #student-subject-table tbody tr {
+  @apply transition-all duration-200 relative transform;
+  transform-origin: center top;
+  will-change: transform;
+}
+
+#student-subject-table tbody tr:hover {
+  transform: scaleY(1.02);
+  box-shadow: 0 0 12px rgba(80, 80, 80, 0.25);
+  z-index: 5;
+} */
+
+#student-subject-table tbody .table-data{
+  @apply border border-gray-300 px-4 py-2 text-center whitespace-nowrap transition duration-200;
+}
+
+#student-subject-table tbody tr:hover .table-data{
+  @apply bg-gray-100; /* light highlight on row hover */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* shadow on each td */
+  transform: scale(1.01); /* smooth zoom effect on each cell */
   z-index: 10;
-  position: relative;
 }
 
-/* Important to avoid hover shadow override */
-#table tbody tr {
-  @apply transition-all duration-200 bg-white hover:bg-[#fefefe] relative;
-}
 
-/* Total row customization */
-#student-subject-total .total {
+#student-subject-table #student-subject-total .total {
   @apply text-end;
 }
-
-/* Optional: for no data */
-#no-record {
-  @apply py-12;
-}
-
-/* Prevent vertical scroll on some screens */
+/* Prevent vertical scroll */
 .no-scroll-loader {
   overflow-y: hidden;
   max-height: fit-content;

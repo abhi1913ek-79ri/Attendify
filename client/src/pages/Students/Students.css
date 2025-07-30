@@ -41,8 +41,11 @@
 
 
 .student-table{
+  overflow-x: auto;
   @apply md:min-h-64 md:p-10  max-md:text-sm;
 }
+
+
 
 
 /* font-size: 2rem;

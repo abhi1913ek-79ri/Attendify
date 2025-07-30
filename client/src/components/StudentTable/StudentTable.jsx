@@ -25,7 +25,7 @@ const StudentTable = ({ students, loading }) => {
           </tr>
         </thead>
         {loading ? (
-          <tbody className="no-scroll-loader">
+          <tbody className="no-scroll-loader w-full ">
             <tr>
               <td colSpan="8" className="py-10">
                 <Loader />
@@ -48,7 +48,7 @@ const StudentTable = ({ students, loading }) => {
                 key={uuidv4()}
                 className={`${
                   index % 2 === 0 ? 'bg-white' : 'bg-[#aecaf5]'
-                } cursor-pointer`}
+                } cursor-pointer hover-scale-y-only`}
               >
                 <td className="table-rows">{index + 1}</td>
                 <td className="px-3 text-start">{student.name}</td>

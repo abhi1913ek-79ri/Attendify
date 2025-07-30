@@ -22,7 +22,7 @@ const AttendanceStatsChart = (props) => {
 
     ];
     return (
-        <div className="w-full max-md:overflow-x-auto">
+        <div className=" w-full max-md:overflow-x-auto">
             <h2 className="text-2xl font-light text-[#080160] flex flex-col text-center "><div className="items-center w-full flex justify-center"><SquareKanbanIcon /></div>Today Attendance</h2>
             <ResponsiveContainer width="100%" height={250}>
                 <BarChart

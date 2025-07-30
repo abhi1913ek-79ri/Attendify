@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 .card{
-    @apply text-gray-500 border border-gray-300 rounded-md shadow-sm shadow-gray-300 flex flex-col justify-between text-center p-5 m-1;
+    @apply bg-white text-gray-500 border border-gray-300 rounded-md shadow-sm shadow-gray-300 flex flex-col justify-between text-center p-5 m-1;
     @apply hover:m-0 hover:shadow-gray-900;
     transition: 0.15s ease-in;
 }
