@@ -1,0 +1,85 @@
+@import 'tailwindcss';
+
+/* 🎯 Wrapper Container */
+.student-subjects {
+  @apply flex flex-col bg-white  shadow-2xl p-4 md:p-6;
+}
+
+/* 🧾 Heading */
+.student-subjects-heading {
+  @apply text-xl text-blue-950 font-medium pb-4 text-center;
+}
+
+/* 📜 Scrollable List */
+.student-subject-list {
+  @apply w-full overflow-x-auto  shadow-lg;
+}
+
+/* 🚫 Hide Scrollbar */
+.student-subject-list::-webkit-scrollbar {
+  display: none;
+}
+.student-subject-list {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* 📊 Table Setup */
+#student-subject-table {
+  @apply table-auto w-full border border-gray-300 border-collapse text-left;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* 🧠 Table Header */
+#student-subject-table thead {
+  @apply bg-blue-950 text-[#F9F9FB] border-b border-gray-300;
+}
+#student-subject-table thead th {
+  @apply px-4 py-2 text-center font-semibold whitespace-nowrap;
+}
+
+/* 📦 Table Body */
+#student-subject-table tbody td {
+  @apply px-4 py-2 text-center whitespace-nowrap transition duration-200;
+}
+
+/* 🖱️ Hover Effect on Row */
+#student-subject-table tbody tr {
+  @apply transition duration-200 ease-in-out;
+}
+#student-subject-table tbody tr:hover {
+  background-color: #f1f5f9; /* same as Tailwind bg-gray-100 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 
+              0 -2px 6px rgba(0, 0, 0, 0.06), 
+              2px 0 6px rgba(0, 0, 0, 0.04), 
+              -2px 0 6px rgba(0, 0, 0, 0.04); /* all sides */
+  transform: scale(1.01);
+  z-index: 10;
+  position: relative;
+  border-radius: 0.375rem; /* optional rounded corners */
+}
+
+/* 📌 Total Row Custom Styling */
+#student-subject-table #student-subject-total td {
+  @apply font-medium bg-gray-50;
+}
+#student-subject-table #student-subject-total .total {
+  @apply text-end;
+}
+
+/* 🛑 Prevent Vertical Scroll in some areas */
+.no-scroll-loader {
+  overflow-y: hidden;
+  max-height: fit-content;
+}
+
+
+#student-subject-table tbody tr:nth-child(odd) {
+  @apply bg-white;
+}
+
+#student-subject-table tbody tr:nth-child(even) {
+  @apply bg-blue-50;
+}
+

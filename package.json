@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "client": "npm --prefix client run dev"
+    "dev": "npm --prefix client run dev"
   }
 }

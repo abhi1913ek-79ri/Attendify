@@ -5,6 +5,7 @@ import './StudentProfileWithoutLogin.css';
 import { assets } from "../../assets/assets.js";
 import { v4 as uuidv4 } from 'uuid';
 import StudentHeatmapCalendar from "../../components/StudentCalendar/StudentHeatmapCalendar.jsx";
+import StudentSubjectTable from "../../components/StudentSubjectTable/StudentSubjectTable.jsx";
 
 const StudentProfile = () => {
   const { id } = useParams();
@@ -78,45 +79,9 @@ const StudentProfile = () => {
       </div>
 
       <div className="student-subjects">
-          <h3 className="student-subjects-heading">Subject Wise Attendance of <span className="font-bold">{student.name}</span></h3>
-          <div className="student-subject-list scrollbar-hide">
-            <table id="student-subject-table" className="min-w-full divide-y divide-gray-300  text-left max-md:min-w-[600px] table-auto border-collapse">
-              <thead className="text-[#F9F9FB] bg-blue-950">
-                <tr>
-                  <th className="table-data">#</th>
-                  <th className="table-data">Subject</th>
-                  <th className="table-data">Total Classes</th>
-                  <th className="table-data">Present</th>
-                  <th className="table-data">%</th>
-                  <th className="table-data">Last Marked</th>
-
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 bg-white ">
-                {student.subjects.map((subject, index) => {
-                  const record = student.attendance[subject] || {};
-                  return (
-                    <tr key={uuidv4()} >
-                      <td className="table-data">{index + 1}</td>
-                      <td className="table-data">{subject}</td>
-                      <td className="table-data">{record.totalClasses ?? '-'}</td>
-                      <td className="table-data">{record.present ?? '-'}</td>
-                      <td className="table-data">{record.percentage ?? '-'}</td>
-                      <td className="table-data">{record.lastMarked ?? '-'}</td>
-                    </tr>
-                  );
-                })}
-                <tr id="student-subject-total" key={uuidv4()}>
-                  <td colSpan={2} className="table-data total"><span className="font-medium">Total</span></td>
-                  <td className="table-data"><span className="font-medium">{student.overall.totalClasses}</span></td>
-                  <td className="table-data"><span className="font-medium">{student.overall.present}</span></td>
-                  <td className="table-data"><span className="font-medium">{student.overall.percentage}</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-        </div>
+        <h3 className="student-subjects-heading">Subject Wise Attendance of <span className="font-bold">{student.name}</span></h3>
+        <StudentSubjectTable student={student} />
+      </div>
 
       <div className="student-calendar">
         <StudentHeatmapCalendar presentDates={student.overall.presentDates} />

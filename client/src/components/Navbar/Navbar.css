@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 
-
 /* Base Styles */
 .navbar {
   display: flex;
@@ -9,6 +8,7 @@
   background: white;
   position: relative;
   @apply md:px-28 max-md:p-3.5 border border-gray-300;
+  z-index: 1000;
 }
 
 .navbar-logo {
@@ -21,8 +21,6 @@
 .logo-image{
     width: max(1vw,100px);
 }
-
-
 
 .hamburger {
   display: none;
@@ -99,6 +97,7 @@
 .avatar-dropdown button:hover {
   background: #b9b9b91b;
 }
+
 .logout-btn {
   color: red;
 }
@@ -121,10 +120,12 @@
   top: 56px;
   left: 0;
   right: 0;
-  background: white;
+  background: rgb(255, 255, 255);
   display: flex;
   flex-direction: column;
   border-top: 1px solid #eee;
+  min-height: calc(100vh - 56px);
+  height: auto;
 }
 
 .mobile-menu a {
@@ -157,5 +158,30 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+  }
+}
+
+
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }

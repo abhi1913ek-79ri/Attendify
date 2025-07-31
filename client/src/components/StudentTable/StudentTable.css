@@ -1,41 +1,58 @@
 @import 'tailwindcss';
 
-.table-rows{
-    @apply md:py-3 md:px-3 font-normal text-center;
-    @apply max-md:py-3 max-md:px-3;
+@import 'tailwindcss';
+
+/* 📌 Table Cell Styling */
+.table-rows {
+  @apply py-3 px-3 font-normal text-center whitespace-nowrap;
 }
 
+/* 🔳 Wrapper Overflow Control */
 #table {
   overflow-x: auto;
-  -webkit-overflow-scrolling: none;
+  -webkit-overflow-scrolling: touch;
 }
 
+/* 🎯 Base Row Styling */
 #table tbody tr {
-  @apply hover:bg-[#fefefe] relative hover:z-10 bg-white;
+  @apply transition duration-200 ease-in-out bg-white;
 }
 
+/* 🧊 Alternate Row Colors */
+#table tbody tr:nth-child(even) {
+  @apply bg-blue-50;
+}
+
+/* 🎯 Hover Styling */
 #table tbody tr:hover {
-    box-shadow: 0 0 20px rgba(80, 80, 80, 0.4);
-    transform: scaleY(1.02); /* Only scale in Y-direction */
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+              0 -2px 6px rgba(0, 0, 0, 0.06),
+              2px 0 6px rgba(0, 0, 0, 0.04),
+              -2px 0 6px rgba(0, 0, 0, 0.04);
+  position: relative;
+  z-index: 10;
+  border-radius: 0.375rem;
 }
 
-.no-scroll-loader{
-  overflow-y: hidden;
-  max-height: fit-content;
-}
-
-#no-record{
-    @apply py-12;
-}
-
+/* 🌀 Hover Animation Setup */
 .hover-scale-y-only {
-  transform-origin: center top; /* Prevents overflow-shift on Y-scale */
+  transform-origin: center top;
   will-change: transform;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .hover-scale-y-only:hover {
-  transform: scaleY(1.02);
-  box-shadow: 0 0 20px rgba(80, 80, 80, 0.4);
+  transform: scale(1.01);
+}
+
+/* 🚫 Vertical Scroll Loader */
+.no-scroll-loader {
+  overflow-y: hidden;
+  max-height: fit-content;
+}
+
+/* 😐 Empty Record Message */
+#no-record {
+  @apply py-12 text-center text-gray-500;
 }
