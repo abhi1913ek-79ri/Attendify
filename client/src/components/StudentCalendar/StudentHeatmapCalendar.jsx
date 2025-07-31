@@ -4,7 +4,7 @@ import useAutoUpdatingTodayDate from '../../utils/useAutoUpdatingTodayDate';
 import './StudentHeatmapCalendar.css';
 import { CalendarSearch } from 'lucide-react';
 
-const StudentHeatmapCalendar = ({ presentDates }) => {
+const StudentHeatmapCalendar = ({ presentDates ,title}) => {
   const todayStr = useAutoUpdatingTodayDate();
   const today = new Date(todayStr);
 
@@ -57,7 +57,7 @@ const StudentHeatmapCalendar = ({ presentDates }) => {
   return (
     <div className="heat-calendar bg-white p-4 rounded-lg shadow-2xl ">
       <h2 className="heat-calendar-heading text-2xl font-semibold text-blue-950  flex justify-center items-center gap-0.5">
-        <CalendarSearch /> Attendance History
+        <CalendarSearch /> {title}
       </h2>
 
       <div className="flex gap-1">

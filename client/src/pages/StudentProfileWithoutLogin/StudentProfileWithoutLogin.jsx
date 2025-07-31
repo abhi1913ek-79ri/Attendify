@@ -84,7 +84,7 @@ const StudentProfile = () => {
       </div>
 
       <div className="student-calendar">
-        <StudentHeatmapCalendar presentDates={student.overall.presentDates} />
+        <StudentHeatmapCalendar presentDates={student.overall.presentDates} title={'Attendance History'}/>
       </div>
     </div>
 

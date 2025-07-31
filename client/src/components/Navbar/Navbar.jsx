@@ -98,8 +98,8 @@ const Navbar = () => {
             <NavLink to="/register" onClick={() => setIsAvatarOpen(false)}>
               Register
             </NavLink>
-            <NavLink to="/dashboard" onClick={() => setIsAvatarOpen(false)}>
-              Dashboard
+            <NavLink to="/user-profile" onClick={() => setIsAvatarOpen(false)}>
+              Profile
             </NavLink>
             <button className="logout-btn">Logout</button>
           </div>

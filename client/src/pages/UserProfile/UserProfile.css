@@ -1,0 +1,41 @@
+@import 'tailwindcss';
+
+.user-profile{
+    @apply w-full  flex flex-col justify-center  ;
+}
+
+.user-profile-not-logged{
+    @apply min-h-full bg-white  flex flex-col justify-center  rounded-lg shadow-2xl;
+}
+
+.user-profile-student-not-found{
+    @apply min-h-full flex flex-col justify-center items-center py-5;
+}
+
+.no-data-illustration{
+    @apply w-1/3;
+}
+
+.user-profile-student-not-found-haeding{
+    padding: 1rem  0px;
+}
+
+
+/* if student find and loged in */
+.user-profile-heading{
+    @apply text-3xl font-semibold text-blue-950 text-center pt-3;
+}
+.user-profile-sub-heading{
+    @apply  text-gray-500 text-center;
+}
+.user-details{
+    @apply flex flex-col justify-center gap-7;
+}
+.student-subjects{
+    @apply shadow-2xl rounded-lg;
+}
+
+
+.profile-container {
+  @apply py-10 space-y-1 md:px-10 max-md:px-3 bg-white rounded-lg shadow-2xl;
+}

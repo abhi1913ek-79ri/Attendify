@@ -9,7 +9,6 @@ import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home/Home'
 import View from './pages/View/View'
 import Export from './pages/Export/Export'
-import Dashboard from './pages/Dashboard/Dashboard'
 import Students from './pages/Students/Students'
 import Settings from './pages/Settings/Settings'
 import Login from './pages/Login/Login'
@@ -19,6 +18,7 @@ import MarkAttendance from './pages/Mark/MarkAttendance'
 import StudentProfile from './pages/StudentProfileWithoutLogin/StudentProfileWithoutLogin'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import UserProfile from './pages/UserProfile/UserProfile'
 
 const App = () => {
   return (
@@ -33,7 +33,7 @@ const App = () => {
               <Route path='/mark-attendance' element={<MarkAttendance />} />
               <Route path='/view' element={<View />} />
               <Route path='/export' element={<Export />} />
-              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/user-profile' element={<UserProfile />} />
               <Route path='/students' element={<Students />} />
               <Route path='/settings' element={<Settings />} />
               <Route path='/login' element={<Login />} />

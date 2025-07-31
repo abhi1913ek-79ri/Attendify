@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { v4 as uuidv4 } from 'uuid';
 import './StudentSubjectTable.css'
 
@@ -21,7 +21,14 @@ const StudentSubjectTable = ({ student }) => {
                     {student?.subjects?.length > 0 && student.subjects.map((subject, index) => {
                         const record = student.attendance[subject] || {};
                         return (
-                            <tr key={subject}>
+                            <tr key={subject}
+                                className="cursor-pointer"
+                                onClick={() => {
+                                    const target = document.getElementById(`subject-${subject.replace(/\s+/g, '-')}`);
+                                    if (target) {
+                                        target.scrollIntoView({ behavior: 'instant' });
+                                    }
+                                }}>
                                 <td className="table-data">{index + 1}</td>
                                 <td className="table-data">{subject}</td>
                                 <td className="table-data">{record.totalClasses ?? '-'}</td>
@@ -47,4 +54,4 @@ const StudentSubjectTable = ({ student }) => {
     )
 }
 
-export default StudentSubjectTable
+export default StudentSubjectTable;

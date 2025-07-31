@@ -6,6 +6,7 @@ import daily_attendance_mark_illustration from './daily_attendance_mark_illustra
 import analys_and_export_illustration from './analys_and_export_illustration.webp'
 import login_illustration from './login_illustration.webp'
 import profile_placeholder_image from './profile_placeholder_image.webp';
+import no_data_illustration from './no_data_illustration.png'
 
 
 export const assets = {
@@ -16,7 +17,8 @@ export const assets = {
         create_account_illustration,
         daily_attendance_mark_illustration,
         analys_and_export_illustration,
-        login_illustration
+        login_illustration,
+        no_data_illustration
     },
     placeHolder:
     {

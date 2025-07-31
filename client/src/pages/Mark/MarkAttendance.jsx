@@ -26,13 +26,13 @@ const MarkAttendance = () => {
           <h2 className="text-xl font-semibold">Mark Attendance</h2>
         </div>
         <hr className="text-gray-300" />
-        <AuthPrompt />
+        <AuthPrompt message={"Access Denied"} purpose={"mark your attendnace"}/>
       </div>
     );
   }
 
   // Current student ka data
-  const currentStudent = students.find((s) => s.name === user.name);
+  const currentStudent = students.find((s) => s.id === user.id);
 
   if (!currentStudent) {
     return (

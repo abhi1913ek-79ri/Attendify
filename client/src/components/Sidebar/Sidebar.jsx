@@ -1,7 +1,7 @@
 import React from 'react'
 import './Sidebar.css'
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, User, Settings, LogOut, Users, UserCheck, School } from "lucide-react";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -11,15 +11,15 @@ const Sidebar = () => {
     <div className='sidebar'>
       <ul className="sidebar-links">
         <Link
-          className={currentPath === '/dashboard' ? 'active-sidebar': ""}
-          to='/dashboard'>
-          <LayoutDashboard /> Dashboard
+          className={currentPath === '/user-profile' ? 'active-sidebar': ""}
+          to='/user-profile'>
+          <UserCheck /> Profile
         </Link>
 
         <Link
           className={currentPath === '/students' ? 'active-sidebar': ""}
           to='/students'>
-          <User /> Students
+          <School /> Students
         </Link>
 
         <Link

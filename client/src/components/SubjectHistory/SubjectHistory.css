@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+
+/* 🎯 Subject History Section */
+
+.subject-wise-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  @apply text-blue-950;
+}
+
+.subject-wise-history-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.subject-history {
+  width: 100%;
+  @apply shadow-2xl;
+}
+
+.subject-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  @apply text-blue-950 text-center;
+}
+
+/* Table Base */
+.subject-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  table-layout: fixed;
+  @apply text-sm;
+}
+
+.subject-thead {
+  @apply bg-blue-950  text-white;
+}
+
+.subject-th {
+  padding: 12px;
+  font-weight: 600;
+  text-align: left;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.subject-th:last-child {
+  border-right: none;
+}
+
+.subject-td {
+  padding: 12px;
+  font-size: 14px;
+  color: #111827;
+  background-color: white;
+  text-align: left;
+}
+
+.subject-td:last-child {
+  border-right: none;
+}
+
+/* Alternate Row Color */
+.subject-table tbody tr:nth-child(even) td {
+  background-color: #f0f9ff;
+}
+
+/* Hover Effect - Smooth Scale + Shadow */
+/* Hover Effect - 4-Side Shadow + Smooth Scale */
+.subject-table tbody tr {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.2s ease;
+}
+
+.subject-table tbody tr:hover {
+  transform: translateY(-1px) scale(1.01);
+  box-shadow: 0 4px 15px rgba(168, 166, 166, 0.2),
+              0 -2px 8px rgba(168, 166, 166, 0.2),
+              2px 0 8px rgba(168, 166, 166, 0.2),
+              -2px 0 8px rgba(168, 166, 166, 0.2);
+  background-color: #ffffff; /* subtle highlight */
+  border-radius: 6px;
+  position: relative;
+  z-index: 10;
+}
