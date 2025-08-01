@@ -17,7 +17,7 @@
 
 .subject-history {
   width: 100%;
-  @apply shadow-2xl;
+  @apply shadow-2xl bg-white rounded-lg pt-5;
 }
 
 .subject-title {

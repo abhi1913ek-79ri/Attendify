@@ -111,7 +111,7 @@ const UserProfile = () => {
                 <div className="student-calendar">
                     <StudentHeatmapCalendar presentDates={student.overall.presentDates} title={'Overall Attendance History'} />
                 </div>
-                <div className="">
+                <div className="subject-wise-attendance-history">
                     <SubjectHistory student={student} />
                 </div>
             </div>

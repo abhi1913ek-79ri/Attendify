@@ -1,20 +1,339 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/* Professional MarkAttendance.css */
 
 .mark-attendance {
-  /* Height ka Concept yahan nhi de rakha hin bhai wo grow hogi*/
-  @apply w-full flex flex-col justify-center text-center;
-  /* from students */
-  /* w-full flex flex-col justify-center text-center gap-2.5 md:py-5  */
-  @apply border border-red-700;
+  @apply min-h-screen py-6;
 }
 
-.mark-attendance-heading{
-  color: #080160;
-  @apply  text-3xl font-medium md:py-5;
-  @apply flex justify-center items-center gap-2.5;
-  @apply border border-green-500;
+/* Page Header */
+.page-header {
+  @apply mb-6;
 }
 
-.mark-attendance-filter-section{
+.header-content {
+  @apply flex justify-center text-3xl items-center gap-3 bg-white rounded-lg shadow-sm p-5 border border-gray-200;
+}
+
+.header-icon {
+  @apply w-6 h-6 text-blue-600;
+}
+
+.header-title {
+  @apply text-3xl font-medium text-blue-950;
+}
+
+/* Page Content */
+.page-content {
+  @apply space-y-6 max-w-7xl mx-auto;
+}
+
+/* Card Base Styles */
+.student-details-card,
+.date-picker-card,
+.attendance-table-card {
+  @apply bg-white rounded-lg shadow-2xl border border-gray-200;
+}
+
+.mark-attendance-card-header {
+  @apply flex text-xl justify-center items-center gap-3 bg-slate-200 px-5 py-4 border-b border-gray-200 rounded-t-lg max-md:justify-center;
+}
+
+.card-icon {
+  @apply w-5 h-5 text-blue-950;
+}
+
+.card-title {
+  @apply text-base font-medium text-blue-950 ;
+}
+
+/* Student Details Card */
+.student-info {
+  @apply p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+}
+
+.info-item {
+  @apply flex flex-col space-y-1;
+}
+
+.info-label {
+  @apply text-xs font-medium text-gray-500 uppercase tracking-wide;
+}
+
+.info-value {
+  @apply text-sm font-medium text-gray-900;
+}
+
+/* Status specific colors */
+.info-value.text-red-600 {
+  @apply text-red-600 bg-red-50 px-2 py-1 rounded text-xs font-medium;
+}
+
+.info-value.text-green-600 {
+  @apply text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-medium;
+}
+
+/* Date Picker Card */
+.date-input-container {
+  @apply p-5;
+}
+
+.date-input {
+  @apply px-3 py-2 border border-gray-300 rounded-md focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white text-gray-700 w-full max-w-xs;
+}
+
+.date-input:focus {
+  @apply outline-none;
+}
+
+/* Table Styles - Professional Look */
+.table-container {
+  @apply overflow-x-auto ;
+}
+
+.attendance-table {
+  @apply w-full table-auto;
+}
+
+.attendance-table thead {
+  @apply bg-blue-950;
+}
+
+.attendance-table th {
+  @apply px-4 py-3 text-left text-xs font-medium text-white uppercase ;
+}
+
+.attendance-table td {
+  @apply px-4 py-3 text-sm text-gray-900 border-b border-gray-100;
+}
+
+.attendance-table tbody tr {
+  @apply hover:bg-gray-300 cursor-cell;
+}
+
+.attendance-table tbody tr:nth-child(even) {
+  @apply bg-blue-50;
+}
+
+/* Table Cell Styles */
+.subject-cell {
+  @apply flex items-center gap-2;
+}
+
+.subject-icon {
+  @apply w-4 h-4 text-blue-500;
+}
+
+.subject-cell span {
+  @apply font-medium text-gray-900;
+}
+
+.date-cell {
+  @apply py-2;
+}
+
+.table-date-input {
+  @apply px-2 py-1 border border-gray-300 rounded text-xs bg-white focus:ring-1 focus:ring-blue-500 focus:border-blue-500;
+}
+
+.status-cell {
+  @apply py-2;
+}
+
+/* Professional Status Badges */
+.status-badge {
+  @apply inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium;
+}
+
+.status-present {
+  @apply bg-green-100 text-green-700;
+}
+
+.status-absent {
+  @apply bg-red-100 text-red-700;
+}
+
+.status-icon {
+  @apply w-3 h-3;
+}
+
+/* Professional Action Buttons */
+.actions-cell {
+  @apply py-2;
+}
+
+.action-buttons {
+  @apply flex gap-2;
+}
+
+.btn {
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded text-xs font-medium transition-colors border;
+}
+
+.btn-icon {
+  @apply w-3 h-3;
+}
+
+.btn-mark {
+  @apply bg-green-600 text-white border-green-600 hover:bg-green-700;
+}
+
+.btn-mark:disabled {
+  @apply bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed;
+}
+
+.btn-unmark {
+  @apply bg-red-600 text-white border-red-600 hover:bg-red-700;
+}
+
+.btn-unmark:disabled {
+  @apply bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed;
+}
+
+/* Today's Actions Table - Professional */
+.attendance-table tbody tr:has(.card-title:contains("Today's Actions")) + * .attendance-table thead {
+  @apply bg-indigo-800;
+}
+
+/* Summary Table - Professional */  
+.attendance-table tbody tr:has(.card-title:contains("Attendance Summary")) + * .attendance-table thead {
+  @apply bg-slate-700;
+}
+
+/* Summary Stats at Bottom */
+.summary-stats {
+  @apply p-5 bg-gray-50 border-t rounded-b-lg border-gray-200;
+}
+
+.summary-stat-card {
+  @apply text-center p-3 bg-white rounded-lg border border-gray-200;
+}
+
+.summary-value {
+  @apply text-xl font-semibold;
+}
+
+.summary-label {
+  @apply text-xs text-gray-500 uppercase tracking-wide mt-1;
+}
+
+/* Error Card */
+.error-card {
+  @apply p-5 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm;
+}
+
+/* Professional Typography */
+.font-mono {
+  @apply font-mono text-xs;
+}
+
+.text-center.font-medium {
+  @apply text-center font-medium text-sm;
+}
+
+.text-center.font-medium.text-green-600 {
+  @apply text-center font-medium text-sm text-green-600;
+}
+
+.font-bold.text-red-600,
+.font-bold.text-green-600 {
+  @apply font-semibold text-sm;
+}
+
+/* Responsive Design - Cleaner */
+@media (max-width: 768px) {
+  .mark-attendance {
+  }
   
+  .header-content {
+    @apply p-4;
+  }
+  
+  .header-title {
+    @apply text-lg;
+  }
+  
+  .page-content {
+    @apply space-y-4;
+  }
+  
+  .student-info {
+    @apply p-4 grid-cols-1;
+  }
+  
+  .date-input-container {
+    @apply p-4;
+  }
+  
+  .attendance-table th,
+  .attendance-table td {
+    @apply px-3 py-2;
+  }
+  
+  .action-buttons {
+    @apply flex-col gap-1;
+  }
+}
+
+@media (max-width: 640px) {
+  .table-container {
+    
+  }
+  
+  .attendance-table-card {
+    @apply mx-0 rounded-lg;
+  }
+  
+  .subject-cell {
+    @apply flex-col items-start gap-1 text-xs;
+  }
+}
+
+/* Clean Animations */
+.btn:active {
+  @apply transform scale-95;
+}
+
+/* Professional Scrollbar */
+.table-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded;
+}
+
+/* Critical/Good Status in Summary */
+.text-red-600 {
+  @apply text-red-600;
+}
+
+.text-green-600 {
+  @apply text-green-600;
+}
+
+/* Additional Professional Touches */
+.attendance-table tbody tr:hover {
+  @apply bg-blue-50;
+}
+/* Number formatting in tables */
+.attendance-table td.text-center {
+  @apply font-medium;
+}
+
+/* Professional percentage display */
+.attendance-table td span.font-bold {
+  @apply font-semibold px-2 py-1 rounded text-xs;
+}
+
+.attendance-table td span.font-bold.text-red-600 {
+  @apply bg-red-50 text-red-700;
+}
+
+.attendance-table td span.font-bold.text-green-600 {
+  @apply bg-green-50 text-green-700;
 }
