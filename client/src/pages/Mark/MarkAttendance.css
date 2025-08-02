@@ -25,7 +25,7 @@
 
 /* Page Content */
 .page-content {
-  @apply space-y-6 max-w-7xl mx-auto;
+  @apply space-y-8 max-w-7xl mx-auto;
 }
 
 /* Card Base Styles */
@@ -36,7 +36,7 @@
 }
 
 .mark-attendance-card-header {
-  @apply flex text-xl justify-center items-center gap-3 bg-slate-200 px-5 py-4 border-b border-gray-200 rounded-t-lg max-md:justify-center;
+  @apply flex text-xl justify-center items-center gap-3 bg-white px-5 py-4 border-b border-gray-200 rounded-t-lg max-md:justify-center;
 }
 
 .card-icon {
@@ -49,19 +49,19 @@
 
 /* Student Details Card */
 .student-info {
-  @apply p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4;
+  @apply p-5 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4;
 }
 
 .info-item {
-  @apply flex flex-col space-y-1;
+  @apply grid grid-cols-3;
 }
 
 .info-label {
-  @apply text-xs font-medium text-gray-500 uppercase tracking-wide;
+  @apply text-xs font-medium text-gray-500 uppercase tracking-wide flex items-center col-span-1;
 }
 
 .info-value {
-  @apply text-sm font-medium text-gray-900;
+  @apply text-sm font-medium text-gray-900 col-span-2 flex items-center;
 }
 
 /* Status specific colors */
@@ -254,11 +254,11 @@
   }
   
   .page-content {
-    @apply space-y-4;
+    @apply space-y-6;
   }
   
   .student-info {
-    @apply p-4 grid-cols-1;
+    @apply p-4 grid-cols-2;
   }
   
   .date-input-container {

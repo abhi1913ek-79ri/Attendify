@@ -1,0 +1,36 @@
+───────────────────────────────────────────────
+                ATTENDANCE STATEMENT
+───────────────────────────────────────────────
+Student Name     : Abhishek Kumar Giri  
+Roll Number      : 1001  
+Statement Period : 01 Jul 2025 – 01 Aug 2025  
+Generated On     : 01 Aug 2025  
+
+───────────────────────────────────────────────
+SUMMARY:
+───────────────────────────────────────────────
+Total Subjects        : 2  
+Total Classes         : 90  
+Total Present Days    : 39  
+Overall Attendance    : 43.3%
+
+───────────────────────────────────────────────
+SUBJECT-WISE ATTENDANCE
+───────────────────────────────────────────────
+| Subject | Total | Present | Absent | %     |
+|---------|-------|---------|--------|-------|
+|   AI    |  45   |   30    |  15    | 66.7% |
+|   OS    |  45   |   9     |  36    | 20.0% |
+
+───────────────────────────────────────────────
+DETAILED RECORDS (AI)
+───────────────────────────────────────────────
+| S.No | Date       | Day      | Status   | Remarks        |
+|------|------------|----------|----------|----------------|
+|  1   | 13 Jul 25  | Sunday   | Present  | Attended class |
+|  2   | 14 Jul 25  | Monday   | Present  | Attended class |
+...
+
+───────────────────────────────────────────────
+Thank you for using Attendify!
+This statement is auto-generated.

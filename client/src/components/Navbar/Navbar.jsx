@@ -138,6 +138,13 @@ const Navbar = () => {
           >
             <DownloadCloudIcon /> Export
           </NavLink>
+          <NavLink
+            className="flex gap-2"
+            to="logged-user-export"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <DownloadCloudIcon /> Export Your Record
+          </NavLink>
           <hr className="text-gray-300" />
           <NavLink
             className="flex gap-2"

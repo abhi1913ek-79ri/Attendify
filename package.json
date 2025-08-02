@@ -4,5 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "npm --prefix client run dev"
+  },
+  "dependencies": {
+    "jspdf": "^3.0.1",
+    "jspdf-autotable": "^5.0.2"
   }
 }

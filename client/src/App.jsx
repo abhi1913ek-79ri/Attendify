@@ -19,6 +19,7 @@ import StudentProfile from './pages/StudentProfileWithoutLogin/StudentProfileWit
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserProfile from './pages/UserProfile/UserProfile'
+import LoggedUserExport from './pages/LoggedUserExport/LoggedUserExport'
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
               <Route path='/export' element={<Export />} />
               <Route path='/user-profile' element={<UserProfile />} />
               <Route path='/students' element={<Students />} />
+              <Route path='/logged-user-export' element={<LoggedUserExport />} />
               <Route path='/settings' element={<Settings />} />
               <Route path='/login' element={<Login />} />
               <Route path='/logout' element={<Logout />} />

@@ -23,6 +23,12 @@ const Sidebar = () => {
         </Link>
 
         <Link
+          className={currentPath === '/logged-user-export' ? 'active-sidebar': ""}
+          to='/logged-user-export'>
+          <School /> Export Your Record
+        </Link>
+
+        <Link
           className={currentPath === '/settings' ? 'active-sidebar': ""}
           to='/settings'>
           <Settings /> Settings
