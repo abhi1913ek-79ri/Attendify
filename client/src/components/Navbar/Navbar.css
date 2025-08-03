@@ -1,16 +1,17 @@
 @import 'tailwindcss';
 
-/* Base Styles */
+/* Base Navbar Styles */
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: white;
   position: relative;
-  @apply md:px-28 max-md:p-3.5 border border-gray-300;
   z-index: 1000;
+  @apply md:px-28 max-md:p-3.5 border border-gray-300 md:py-1.5;
 }
 
+/* Logo Styles */
 .navbar-logo {
   font-weight: bold;
   text-align: center;
@@ -18,18 +19,42 @@
   color: #333;
 }
 
-.logo-image{
-    width: max(1vw,100px);
+.logo-image {
+  width: 200px;
+  height: auto;
+  object-fit: contain;
+  margin: 0.5rem 1rem;
 }
 
+/* Hamburger Menu */
 .hamburger {
-  display: none;
-  font-size: 22px;
+  display: none; /* Default hidden on desktop */
   background: none;
   border: none;
   cursor: pointer;
+  color: #333;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
 }
 
+.hamburger:hover {
+  color: #007bff;
+  background: rgba(0, 123, 255, 0.1);
+}
+
+.hamburger:focus {
+  outline: none;
+  background: rgba(0, 123, 255, 0.1);
+}
+
+.hamburger:active {
+  transform: scale(0.95);
+}
+
+/* Desktop Navigation */
 .navbar-links {
   display: flex;
   gap: 20px;
@@ -44,18 +69,18 @@
   text-decoration: none;
   padding-bottom: 4px;
   position: relative;
+  transition: color 0.3s ease;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
 }
 
-.active-link {
-  border-bottom: 2px solid #007bff;
-  color: #007bff;
-  font-weight: 600;
+.navbar-links a:hover {
+  color: #007bff !important;
 }
 
-.navbar-links a:not(.active-link):hover{
-  color: #007bff;
-}
-
+/* Avatar Section */
 .navbar-avatar {
   position: relative;
 }
@@ -66,8 +91,15 @@
   border-radius: 9999px;
   border: 2px solid #007bff;
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.avatar-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Avatar Dropdown */
 .avatar-dropdown {
   position: absolute;
   top: 48px;
@@ -78,6 +110,7 @@
   border-radius: 6px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  animation: fadeIn 0.2s ease-in-out;
 }
 
 .avatar-dropdown a,
@@ -91,15 +124,23 @@
   border: none;
   width: 100%;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
 }
 
 .avatar-dropdown a:hover,
 .avatar-dropdown button:hover {
-  background: #b9b9b91b;
+  background: rgba(185, 185, 185, 0.1);
 }
 
 .logout-btn {
-  color: red;
+  color: #dc3545;
+  border-top: 1px solid #eee;
+}
+
+.logout-btn:hover {
+  background: rgba(220, 53, 69, 0.1);
+  color: #c82333;
 }
 
 .dropdown-arrow {
@@ -126,6 +167,8 @@
   border-top: 1px solid #eee;
   min-height: calc(100vh - 56px);
   height: auto;
+  animation: slideDown 0.3s ease-in-out;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .mobile-menu a {
@@ -133,35 +176,57 @@
   text-decoration: none;
   color: #333;
   border-bottom: 1px solid #f2f2f2;
+  transition: all 0.2s ease;
 }
 
 .mobile-menu a:hover {
-  background: #b9b9b91b;
+  background: rgba(185, 185, 185, 0.1);
   color: #007bff;
+  padding-left: 20px;
 }
 
-/* Media Queries */
+.mobile-menu hr {
+  margin: 8px 16px;
+  border: none;
+  border-top: 1px solid #e0e0e0;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .hamburger {
-    display: block;
+    display: flex;
   }
-
+  
   .navbar-links {
     display: none;
   }
-
+  
   .navbar {
     justify-content: space-between;
+    min-height: 60px;
+    padding: 8px 14px;
   }
-
+  
   .navbar-logo {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  .logo-image {
+    width: 120px;
+    height: 35px;
+    margin: 0;
+    object-fit: contain;
+  }
+  
+  .avatar-img {
+    width: 32px;
+    height: 32px;
   }
 }
-
-
 
 /* Animations */
 @keyframes slideDown {
@@ -184,4 +249,29 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* Focus States for Accessibility */
+.avatar-img:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.nav-link:focus,
+.navbar-links a:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.avatar-dropdown a:focus,
+.avatar-dropdown button:focus,
+.mobile-menu a:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+/* Loading State (Optional) */
+.navbar.loading {
+  opacity: 0.7;
+  pointer-events: none;
 }

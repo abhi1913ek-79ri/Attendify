@@ -1,7 +1,7 @@
 import React from 'react'
 import './Sidebar.css'
 import { Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, User, Settings, LogOut, Users, UserCheck, School } from "lucide-react";
+import { LayoutDashboard, User, Settings, LogOut, Users, UserCheck, School, ArrowBigDownDash } from "lucide-react";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -25,7 +25,7 @@ const Sidebar = () => {
         <Link
           className={currentPath === '/logged-user-export' ? 'active-sidebar': ""}
           to='/logged-user-export'>
-          <School /> Export Your Record
+          <ArrowBigDownDash /> Export Your Record
         </Link>
 
         <Link

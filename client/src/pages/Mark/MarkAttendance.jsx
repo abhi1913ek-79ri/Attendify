@@ -10,14 +10,13 @@ import 'react-toastify/dist/ReactToastify.css';
 import useAutoUpdatingTodayDate from '../../utils/useAutoUpdatingTodayDate';
 import { updateAttendanceRecord } from '../../utils/attendanceUtils';
 
-const MarkAttendance = () => {
+const MarkAttendance = ({todaysActions, setTodaysActions}) => {
   const { isLoggedIn, user } = useAuth();
   const { students, dispatch } = useStudent();
   const today = useAutoUpdatingTodayDate();
 
   const [selectedDate, setSelectedDate] = useState(today);
   const [subjectDates, setSubjectDates] = useState({});
-  const [todaysActions, setTodaysActions] = useState([]);
 
   // Agar user logged in nahi hai
   if (!isLoggedIn) {

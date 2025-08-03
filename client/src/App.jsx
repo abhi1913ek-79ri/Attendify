@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { assets } from './assets/assets'
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
@@ -22,6 +22,7 @@ import UserProfile from './pages/UserProfile/UserProfile'
 import LoggedUserExport from './pages/LoggedUserExport/LoggedUserExport'
 
 const App = () => {
+  const [todaysActions, setTodaysActions] = useState([]);
   return (
     <div className='app'>
       <Navbar />
@@ -31,7 +32,7 @@ const App = () => {
           <Container >
             <Routes >
               <Route path='/' element={<Home />} />
-              <Route path='/mark-attendance' element={<MarkAttendance />} />
+              <Route path='/mark-attendance' element={<MarkAttendance todaysActions={todaysActions} setTodaysActions={setTodaysActions} />} />
               <Route path='/view' element={<View />} />
               <Route path='/export' element={<Export />} />
               <Route path='/user-profile' element={<UserProfile />} />
