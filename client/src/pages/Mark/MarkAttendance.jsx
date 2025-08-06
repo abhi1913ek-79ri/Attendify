@@ -11,7 +11,7 @@ import useAutoUpdatingTodayDate from '../../utils/useAutoUpdatingTodayDate';
 import { updateAttendanceRecord } from '../../utils/attendanceUtils';
 
 const MarkAttendance = ({todaysActions, setTodaysActions}) => {
-  const { isLoggedIn, user } = useAuth();
+  const { user } = useAuth();
   const { students, dispatch } = useStudent();
   const today = useAutoUpdatingTodayDate();
 
@@ -19,7 +19,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
   const [subjectDates, setSubjectDates] = useState({});
 
   // Agar user logged in nahi hai
-  if (!isLoggedIn) {
+  if (!user) {
     return (
       <div className="mark-attendance">
         <div className="page-header">

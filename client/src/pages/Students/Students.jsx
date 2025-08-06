@@ -47,14 +47,14 @@ const Students = () => {
           <ChartNoAxesCombined />Stats Summary
         </div>
         <div className="stats-summary-cards-container">
-          <Card icon={<User />} title={'Total Students'} desc={studentsProperties.len} style={'text-center bg-white'} />
-          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={studentsProperties.averageAttendance} style={'text-center bg-white'} />
+          <Card icon={<User />} title={'Total Students'} desc={studentsProperties?.len} style={'text-center bg-white'} />
+          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={studentsProperties?.averageAttendance} style={'text-center bg-white'} />
           <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={studentsProperties?.presentToday} style={'text-center bg-white'} />
           <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={studentsProperties?.numberOfCriticalStudents} style={'text-center text-red-500 bg-white'} />
         </div>
       </div>
       <div className="overall-attendance-graph px-4">
-        <AttendanceStatsChart totalStudents={studentsProperties.len} presentToday={studentsProperties.presentToday} absentToday={studentsProperties.absentToday} numberOfCriticalStudents={studentsProperties.numberOfCriticalStudents} criticalAndAbsent={studentsProperties.criticalButAbsentCount} />
+        <AttendanceStatsChart totalStudents={studentsProperties?.len} presentToday={studentsProperties?.presentToday} absentToday={studentsProperties?.absentToday} numberOfCriticalStudents={studentsProperties?.numberOfCriticalStudents} criticalAndAbsent={studentsProperties?.criticalButAbsentCount} />
       </div>
       <hr className='text-gray-300' />
       <div className=" font-light text-blue-950 flex flex-col justify-between items-center text-center gap-2.5  text-3xl">

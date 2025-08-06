@@ -20,10 +20,14 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserProfile from './pages/UserProfile/UserProfile'
 import LoggedUserExport from './pages/LoggedUserExport/LoggedUserExport'
+import { AuthProvider } from './store/AuthContext'
+import { StudentProvider } from './store/StudentContext'
 
 const App = () => {
   const [todaysActions, setTodaysActions] = useState([]);
   return (
+    <AuthProvider>
+        <StudentProvider>
     <div className='app'>
       <Navbar />
       <div className="sidebar-plus-content">
@@ -62,6 +66,8 @@ const App = () => {
         theme="light"           
       />
     </div>
+    </StudentProvider>
+    </AuthProvider>
   )
 }
 

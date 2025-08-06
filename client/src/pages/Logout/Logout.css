@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
-.logout {
-  color: red;
+.input-box{
+  padding: 20px;
+  border-radius: 5px;
+  text-align: right;
+  font-size: 20px;
+}
+.logout-bt{
+  border-radius: 5px;
+  background-color: rgb(255, 0, 0);
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  padding: 3px;
+  margin: 15px;
+}
+.logout-bt:hover{
+   opacity: 0.5;
 }

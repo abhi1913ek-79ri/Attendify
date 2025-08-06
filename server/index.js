@@ -1,14 +1,21 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const connectDB = require('./config/db');
+const studentRoutes = require('./routes/studentRoutes');
+const authRoutes = require('./routes/authroutes')
+
 require("dotenv").config();
+
+connectDB();
 
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Welcome to the Attendify backend server!');
-});
+app.use('/api/auth', authRoutes);
+app.use('/api/student', studentRoutes);
+// app.use('/api/attendance', attendanceRoutes);
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () =>{

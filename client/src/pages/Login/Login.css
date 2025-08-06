@@ -1,5 +1,86 @@
-@import "tailwindcss";
+/* style.css */
 
-.login {
+.login-container {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-card {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 420px;
+  transition: 0.3s ease-in-out;
+}
+
+.login-card:hover {
+  transform: translateY(-4px);
+}
+
+.login-title {
+  text-align: center;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 28px;
+  color: #333;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #555;
+  font-size: 16px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: border-color 0.2s ease;
+}
+
+.input-group input:focus {
+  border-color: #667eea;
+  outline: none;
+}
+
+.login-form button {
+  padding: 12px;
+  background-color: #667eea;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #5a67d8;
+}
+
+.message {
+  margin-top: 16px;
+  text-align: center;
   color: red;
+  font-size: 14px;
 }

@@ -9,13 +9,13 @@ import { useAuth } from '../../store/AuthContext';
 import AuthPrompt from '../../components/AuthPrompt/AuthPrompt';
 
 const LoggedUserExport = () => {
-  const { isLoggedIn, user } = useAuth();
+  const { user } = useAuth();
   const {students} = useStudent();
   const [fromDate, setFromDate] = useState('2025-07-01');
   const [toDate, setToDate] = useState('2025-08-01');
   const [isGenerating, setIsGenerating] = useState(false);
 
-  if (!isLoggedIn) {
+  if (!user) {
     return (
       <div className="mark-attendance">
         <div className="page-header">
