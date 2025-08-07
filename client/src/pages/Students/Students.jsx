@@ -10,11 +10,10 @@ import { useStudent } from '../../store/StudentContext'
 import { SUBJECTS } from '../../config/subjectConfig'
 
 const Students = () => {
-  const { students,studentsProperties } = useStudent();
-  const subjects = SUBJECTS;
-  const [filteredStudents, setFilteredStudents] = useState(students);
+  // const subjects = SUBJECTS;
+  const [filteredStudents, setFilteredStudents] = useState(allStudents);
   const [loading, setLoading] = useState(false);
-
+  const { allStudents } = useStudent();
   //filter logic
   const [filters, setFilters] = useState({
     subject: '',
@@ -28,7 +27,7 @@ const Students = () => {
     setLoading(true); // show loader
 
     setTimeout(() => {
-      const result = filterStudents(students, filters); // filters apply kar
+      const result = filterStudents(allStudents, filters); // filters apply kar
       setFilteredStudents(result); // update table
       setLoading(false); // hide loader
     }, 1000); // simulate backend delay

@@ -1,0 +1,84 @@
+@import 'tailwindcss';
+.form-container {
+  padding: 24px;
+  max-width: 640px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.form-input {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.subject-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.remove-subject-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer;
+}
+.img-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.add-subject-btn {
+  color: #007bff;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.submit-btn {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}

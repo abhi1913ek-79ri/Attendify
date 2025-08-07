@@ -5,11 +5,10 @@ import { useNavigate, Link } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import "./Register.css";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 function Register() {
   const navigate = useNavigate();
-
 
   const [formData, setFormData] = useState({
     name: "",
@@ -22,8 +21,7 @@ function Register() {
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-    const [formErrors, setFormErrors] = useState({});
-
+  const [formErrors, setFormErrors] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,48 +35,44 @@ function Register() {
     setShowPassword(!showPassword);
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setFormErrors({}); // Clear old errors
-  setMessage("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setFormErrors({}); // Clear old errors
+    setMessage("");
 
-  // Basic client-side validation
-  if (formData.password !== formData.confirmPassword) {
-    setFormErrors({ confirmPassword: "Passwords do not match" });
-    toast.error("Passwords do not match");
-    return;
-  }
+    // Basic client-side validation
+    if (formData.password !== formData.confirmPassword) {
+      setFormErrors({ confirmPassword: "Passwords do not match" });
+      toast.error("Passwords do not match");
+      return;
+    }
 
-  setIsLoading(true);
+    setIsLoading(true);
 
-  try {
-    const res = await axiosInstance.post(API_PATHS.AUTH.REGISTER, formData);
-    setMessage(res.data.message || "User registered successfully!");
-    toast.success("User registered successfully!");
-    navigate("/login");
-  } catch (error) {
-  const msg = error.response?.data?.message || "Invalid input";
-  setMessage(msg);
-  toast.error(msg);
+    try {
+      const res = await axiosInstance.post(API_PATHS.AUTH.REGISTER, formData);
+      setMessage(res.data.message || "User registered successfully!");
+      toast.success("User registered successfully!");
+      navigate("/login");
+    } catch (error) {
+      const backendErrors = error.response?.data?.errors;
 
-  const serverErrors = error.response?.data?.errors;
-  if (Array.isArray(serverErrors)) {
-    const formattedErrors = {};
-    serverErrors.forEach(err => {
-      if (err.path) {
-        // Only keep the first error for each field (or accumulate if needed)
-        if (!formattedErrors[err.path]) {
-          formattedErrors[err.path] = err.msg;
-        }
+      if (Array.isArray(backendErrors)) {
+        const fieldErrors = {};
+        backendErrors.forEach((err) => {
+          if (!fieldErrors[err.path]) {
+            fieldErrors[err.path] = err.msg; // take only first error per field
+          }
+        });
+        setFormErrors(fieldErrors);
+      } else {
+        toast.error(error.response?.data?.message || "Something went wrong");
+        setFormErrors(error.response?.data?.message);
       }
-    });
-    setFormErrors(formattedErrors);
-  }
-}
- finally {
-    setIsLoading(false);
-  }
-};
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="register-container">
@@ -86,7 +80,6 @@ function Register() {
         <h2 className="register-title">Create an Account</h2>
 
         <form onSubmit={handleSubmit} className="register-form">
-
           {/* Name */}
           <div className="input-group">
             <FaUser className="input-icon" />
@@ -99,9 +92,7 @@ function Register() {
               required
             />
           </div>
- {formErrors.email && (
-    <p className="error-text">{formErrors.name}</p>
-  )}
+          {formErrors.name && <p className="error-text">{formErrors.name}</p>}
 
           {/* Email */}
           <div className="input-group">
@@ -115,9 +106,7 @@ function Register() {
               required
             />
           </div>
- {formErrors.email && (
-    <p className="error-text">{formErrors.email}</p>
-  )}
+          {formErrors.email && <p className="error-text">{formErrors.email}</p>}
 
           {/* Password */}
           <div className="input-group relative">
@@ -142,9 +131,9 @@ function Register() {
               />
             )}
           </div>
-        {formErrors.email && (
-    <p className="error-text">{formErrors.password}</p>
-  )}
+          {formErrors.password && (
+            <p className="error-text">{formErrors.password}</p>
+          )}
 
           {/* Confirm Password */}
           <div className="input-group relative">
@@ -158,13 +147,15 @@ function Register() {
               required
             />
           </div>
- {formErrors.email && (
-    <p className="error-text">{formErrors.confirmPassword}</p>
-  )}
+          {formErrors.confirmPassword && (
+            <p className="error-text">{formErrors.confirmPassword}</p>
+          )}
 
           {/* Role Selection */}
           <div className="role-selection">
-            <label className="text-sm font-medium text-gray-700">Register as:</label>
+            <label className="text-sm font-medium text-gray-700">
+              Register as:
+            </label>
             <div className="role-options">
               <label className="radio-label">
                 <input
@@ -189,9 +180,7 @@ function Register() {
               </label>
             </div>
           </div>
- {formErrors.email && (
-    <p className="error-text">{formErrors.role}</p>
-  )}
+          {formErrors.role && <p className="error-text">{formErrors.role}</p>}
           {/* Submit Button */}
           <button type="submit" disabled={isLoading}>
             {isLoading ? <Loader /> : "Register"}

@@ -11,10 +11,10 @@ const AuthButtons = () => {
       {user ? (
         <div className='flex gap-2.5'>
           <p>👋 Welcome, <strong>{user.name}</strong></p>
-          <button onClick={()=>navigate('/logout')} className="bg-red-500 text-white px-4 py-3 rounded">Logout</button>
+          <button onClick={()=>navigate('/logout')} className="bg-red-500 text-white px-4 py-3 rounded cursor-pointer">Logout</button>
         </div>
       ) : (
-        <button onClick={()=>navigate('/login')} className="bg-green-500 text-white px-4 py-3 rounded">Login</button>
+        <button onClick={()=>navigate('/login')} className="bg-green-500 text-white px-4 py-3 rounded cursor-pointer">Login</button>
       )}
     </div>
   );
