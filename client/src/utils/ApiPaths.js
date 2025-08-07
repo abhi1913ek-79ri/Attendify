@@ -10,5 +10,6 @@ export const API_PATHS = {
     GET_PROFILE: "/api/student/profile", // Get student profile for logged-in user
     ADD: "/api/student/add",
     GET_ALL_STUDENTS: "/api/student/getAllStudents",
+    GET_BY_ID: (id) => `/api/student/${id}`, // Get student by ID
   }
 };

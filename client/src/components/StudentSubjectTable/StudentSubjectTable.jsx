@@ -18,8 +18,8 @@ const StudentSubjectTable = ({ student }) => {
                     </tr>
                 </thead>
                 <tbody className=" bg-white ">
-                    {student?.subjects?.length > 0 && student.subjects.map((subject, index) => {
-                        const record = student.attendance[subject] || {};
+                    {student?.subjects?.length > 0 && student?.subjects.map((subject, index) => {
+                        const record = student?.attendance[subject] || {};
                         return (
                             <tr key={subject}
                                 className="cursor-pointer"
@@ -43,9 +43,9 @@ const StudentSubjectTable = ({ student }) => {
 
                     <tr id="student-subject-total" key={uuidv4()}>
                         <td colSpan={2} className="table-data total"><span className="font-medium">Total</span></td>
-                        <td className="table-data"><span className="font-medium">{student.overall.totalClasses}</span></td>
-                        <td className="table-data"><span className="font-medium">{student.overall.present}</span></td>
-                        <td className="table-data"><span className="font-medium">{student.overall.percentage}</span></td>
+                        <td className="table-data"><span className="font-medium">{student?.overall?.totalClasses}</span></td>
+                        <td className="table-data"><span className="font-medium">{student?.overall?.present}</span></td>
+                        <td className="table-data"><span className="font-medium">{student?.overall?.percentage}</span></td>
                         <td className="table-data"></td>
                     </tr>
                 </tbody>

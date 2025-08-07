@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 const StudentTable = ({ students, loading }) => {
     const navigate = useNavigate();
-
+    
     return (
   <div className="w-full overflow-x-auto">
     <div id="table" className="min-w-full shadow-md border border-gray-200">
@@ -32,7 +32,7 @@ const StudentTable = ({ students, loading }) => {
               </td>
             </tr>
           </tbody>
-        ) : students.length === 0 ? (
+        ) : (students.length === 0 ? (
           <tbody>
             <tr>
               <td id="no-record" colSpan="8" className="py-6 text-center text-gray-500">
@@ -44,21 +44,21 @@ const StudentTable = ({ students, loading }) => {
           <tbody className="divide-y divide-gray-200 bg-white">
             {students.map((student, index) => (
               <tr
-                onClick={() => navigate(`/students/${student.id}`)}
+                onClick={() => navigate(`/student/${student?.studentId}`)}
                 key={uuidv4()}
                 className={`${
                   index % 2 === 0 ? 'bg-white' : 'bg-[#aecaf5]'
                 } cursor-pointer hover-scale-y-only`}
               >
                 <td className="table-rows">{index + 1}</td>
-                <td className="px-3 text-start">{student.name}</td>
-                <td className="table-rows">{student.rollNo}</td>
-                <td className="table-rows">{student.overall.totalClasses}</td>
-                <td className="table-rows">{student.overall.present}</td>
-                <td className="table-rows">{student.overall.percentage}%</td>
-                <td className="table-rows">{student.overall.lastMarked}</td>
+                <td className="px-3 text-start">{student?.name}</td>
+                <td className="table-rows">{student?.rollNo}</td>
+                <td className="table-rows">{student?.overall?.totalClasses}</td>
+                <td className="table-rows">{student?.overall?.present}</td>
+                <td className="table-rows">{student?.overall?.percentage}%</td>
+                <td className="table-rows">{student?.overall?.lastMarked}</td>
                 <td className="text-center align-middle">
-                  {student.isCritical ? (
+                  {student?.isCritical ? (
                     <AlertTriangle className="text-red-500 inline-block w-5 h-5" />
                   ) : (
                     <SmileIcon className="text-green-600 inline-block w-5 h-5" />
@@ -67,7 +67,7 @@ const StudentTable = ({ students, loading }) => {
               </tr>
             ))}
           </tbody>
-        )}
+       ) )}
       </table>
     </div>
   </div>

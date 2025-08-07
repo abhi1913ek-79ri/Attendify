@@ -54,6 +54,7 @@ export const StudentProvider = ({ children }) => {
       setLoading(false);
   }, []); // ✅ Depend on user
 
+ 
   const clearStudent = () => setStudent(null);
 
   return (

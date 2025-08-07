@@ -12,6 +12,7 @@ import { updateAttendanceRecord } from '../../utils/attendanceUtils';
 
 const MarkAttendance = ({todaysActions, setTodaysActions}) => {
   const { user } = useAuth();
+  const {student} = useStudent();
   const { students, dispatch } = useStudent();
   const today = useAutoUpdatingTodayDate();
 
@@ -35,10 +36,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
     );
   }
 
-  // Current student ka data
-  const currentStudent = students.find((s) => s.id === user.id);
-
-  if (!currentStudent) {
+  if (!student) {
     return (
       <div className="mark-attendance">
         <div className="page-header">
@@ -82,8 +80,8 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
     setSelectedDate(date);
     // Update all subject dates to the selected overall date
     const newSubjectDates = {};
-    if (currentStudent.subjects && Array.isArray(currentStudent.subjects)) {
-      currentStudent.subjects.forEach(subject => {
+    if (student?.subjects && Array.isArray(student?.subjects)) {
+      student?.subjects.forEach(subject => {
         newSubjectDates[subject] = date;
       });
     }
@@ -95,7 +93,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
     const dateToUse = subjectDates[subject] || selectedDate;
 
     // Get current subject attendance data
-    const currentSubjectAttendance = currentStudent.attendance[subject] || {
+    const currentSubjectAttendance = student?.attendance[subject] || {
       totalClasses: 0,
       present: 0,
       lastMarked: null,
@@ -118,7 +116,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
     };
 
     const updatedAttendance = {
-      ...currentStudent.attendance,
+      ...student?.attendance,
       [subject]: updatedSubjectAttendance
     };
 
@@ -126,7 +124,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
     dispatch({
       type: 'UPDATE_ATTENDANCE',
       payload: {
-        id: currentStudent.id,
+        id: student?.id,
         attendance: updatedAttendance,
       },
     });
@@ -142,7 +140,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
     const dateToUse = subjectDates[subject] || selectedDate;
 
     // Get current subject attendance data
-    const currentSubjectAttendance = currentStudent.attendance[subject];
+    const currentSubjectAttendance = student?.attendance[subject];
 
     if (!currentSubjectAttendance || !currentSubjectAttendance.presentDates) {
       toast.error('No attendance record found for this subject!');
@@ -168,7 +166,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
     };
 
     const updatedAttendance = {
-      ...currentStudent.attendance,
+      ...student.attendance,
       [subject]: updatedSubjectAttendance
     };
 
@@ -176,7 +174,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
     dispatch({
       type: 'UPDATE_ATTENDANCE',
       payload: {
-        id: currentStudent.id,
+        id: student?.id,
         attendance: updatedAttendance,
       },
     });
@@ -189,7 +187,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
 
   // Check if attendance is marked for a subject on a specific date
   const isAttendanceMarked = (subject, date) => {
-    const subjectAttendance = currentStudent.attendance[subject];
+    const subjectAttendance = student?.attendance[subject];
     // Check if subject attendance exists and has presentDates array
     if (!subjectAttendance || !Array.isArray(subjectAttendance.presentDates)) {
       return false;
@@ -199,15 +197,15 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
 
   // Calculate overall attendance - HELPER FUNCTION
   const calculateOverallAttendance = () => {
-    if (!currentStudent.subjects || !Array.isArray(currentStudent.subjects)) {
+    if (!student.subjects || !Array.isArray(student.subjects)) {
       return { totalClasses: 0, present: 0, percentage: 0 };
     }
 
     let totalClasses = 0;
     let totalPresent = 0;
 
-    currentStudent.subjects.forEach(subject => {
-      const subjectAttendance = currentStudent.attendance[subject];
+    student?.subjects.forEach(subject => {
+      const subjectAttendance = student?.attendance[subject];
       if (subjectAttendance) {
         totalClasses += subjectAttendance.totalClasses || 0;
         totalPresent += subjectAttendance.present || 0;
@@ -246,20 +244,20 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
           <div className="student-info">
             <div className="info-item">
               <span className="info-label">Name</span>
-              <span className="info-value">{user.name}</span>
+              <span className="info-value">{student?.name}</span>
             </div>
             <div className="info-item">
               <span className="info-label">Student ID</span>
-              <span className="info-value">{user.id}</span>
+              <span className="info-value">{student?.studentId}</span>
             </div>
             <div className="info-item">
               <span className="info-label">Total Subjects</span>
-              <span className="info-value">{currentStudent.subjects?.length || 0}</span>
+              <span className="info-value">{student?.subjects ? Object.keys(student.subjects).length : 0}</span>
             </div>
             <div className="info-item">
               <span className="info-label">Overall Attendance</span>
               <span className="info-value">
-                {overallStats.percentage.toFixed(1)}%
+                {overallStats?.percentage.toFixed(1)}%
               </span>
             </div>
             <div className="info-item">
@@ -306,8 +304,8 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
                 </tr>
               </thead>
               <tbody>
-                {currentStudent.subjects && Array.isArray(currentStudent.subjects) ?
-                  currentStudent.subjects.map((subject) => {
+                {student.subjects && Array.isArray(student.subjects) ?
+                  student?.subjects.map((subject) => {
                     const currentDate = subjectDates[subject] || selectedDate;
                     const isMarked = isAttendanceMarked(subject, currentDate);
 
@@ -366,7 +364,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
                   }) : (
                     <tr>
                       <td colSpan="4" className="text-center py-8 text-gray-500">
-                        No subjects found for this student.
+                        No subjects found for this student?.
                       </td>
                     </tr>
                   )
@@ -456,9 +454,9 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
                 </tr>
               </thead>
               <tbody>
-                {currentStudent.subjects && Array.isArray(currentStudent.subjects) ?
-                  currentStudent.subjects.map((subject) => {
-                    const subjectAttendance = currentStudent.attendance[subject] || {
+                {student?.subjects && Array.isArray(student?.subjects) ?
+                  student?.subjects.map((subject) => {
+                    const subjectAttendance = student?.attendance[subject] || {
                       totalClasses: 0,
                       present: 0,
                       lastMarked: null,
@@ -511,7 +509,7 @@ const MarkAttendance = ({todaysActions, setTodaysActions}) => {
                   }) : (
                     <tr>
                       <td colSpan="6" className="text-center py-8 text-gray-500">
-                        No subjects found for this student.
+                        No subjects found for this student?.
                       </td>
                     </tr>
                   )

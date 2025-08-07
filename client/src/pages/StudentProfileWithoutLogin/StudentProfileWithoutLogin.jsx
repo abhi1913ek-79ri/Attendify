@@ -1,125 +1,117 @@
-import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate } from "react-router-dom";
+import { useStudent } from "../../store/StudentContext.jsx";
+import { BadgeCheck, CalendarDays, ArrowLeft, User2, User, UserRound } from "lucide-react";
 import './StudentProfileWithoutLogin.css';
-import { useAuth } from '../../store/AuthContext';
-import { BadgeCheck, CalendarDays, UserCheck } from 'lucide-react';
-import AuthPrompt from '../../components/AuthPrompt/AuthPrompt';
-import axios from 'axios';
-import StudentSubjectTable from '../../components/StudentSubjectTable/StudentSubjectTable';
-import StudentHeatmapCalendar from '../../components/StudentCalendar/StudentHeatmapCalendar';
-import SubjectHistory from '../../components/SubjectHistory/SubjectHistory';
-import { assets } from '../../assets/assets';
-import axiosInstance from '../../utils/axiosInstance';
-import { API_PATHS } from '../../utils/ApiPaths';
+import { assets } from "../../assets/assets.js";
+import { v4 as uuidv4 } from 'uuid';
+import StudentHeatmapCalendar from "../../components/StudentCalendar/StudentHeatmapCalendar.jsx";
+import StudentSubjectTable from "../../components/StudentSubjectTable/StudentSubjectTable.jsx";
+import axios from "axios";
+import axiosInstance from "../../utils/axiosInstance.js";
+import { API_PATHS } from "../../utils/ApiPaths.js";
+import { useState, useEffect } from "react";
+import SkeletonLoader from '../../components/Loader/SkeletonLoader.jsx'
 
-const UserProfile = () => {
-  const { user } = useAuth();
-  const [student, setStudent] = useState(null);
-  const [loading, setLoading] = useState(true);
+const StudentProfile = () => {
+  const { studentId } = useParams();
+  const [currentStudent, setCurrentStudent] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  // fetch from backend
-  useEffect(() => {
-    const fetchStudent = async () => {
-      try {
-        const res = await axiosInstance.get(API_PATHS.STUDENT.GET_PROFILE);
-        setStudent(res.data);
-      } catch (error) {
-        console.error('Error fetching student:', error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (user) {
-      fetchStudent();
+  const getStudentById = async () => {
+    setLoading(true);
+    try {
+      const res = await axiosInstance.get(API_PATHS.STUDENT.GET_BY_ID(studentId));
+      setCurrentStudent(res.data.currentStudent);
+    } catch(err) {
+      console.error('Failed to fetch students:', err);
+      setCurrentStudent([]);
+    } finally {
+      setLoading(false);
     }
-  }, [user]);
+  };
 
-  if (!user) {
-    return (
-      <div className="user-profile-not-logged">
-        <AuthPrompt message="You are not logged in" purpose="view your profile" />
-      </div>
-    );
-  }
+  useEffect(() => {
+      getStudentById();
+  }, []);
 
-  if (loading) return <p className="text-center p-5">Loading...</p>;
+  if(loading) return <SkeletonLoader />;
 
-  if (!user) {
-    return (
-      <div className="user-profile-student-not-found">
-        <div className="user-profile-student-not-found-haeding flex flex-col items-center gap-2">
-          <UserCheck />
-          <h2 className="text-3xl font-semibold text-blue-950 my-5">Hi, {user.name} </h2>
-        </div>
-        <hr className="text-gray-300" />
-        <div className="p-4 text-lg bg-red-100 rounded">
-          <p>⚠️ You are logged in but not found in the student list.</p>
-        </div>
-        <div className="no-data-illustration">
-          <img src={assets.ilustrations.no_data_illustration} alt="no-data" />
-        </div>
-        <p className="text-red-500">Please contact the admin.</p>
-      </div>
-    );
-  }
+  if (!currentStudent) return <div className="text-center text-red-500">Student not found 😢</div>;
 
   return (
-    <div className="user-profile">
-      <h1 className="user-profile-heading">Hi, {student.name}</h1>
-      <p className="user-profile-sub-heading">Your Details are here</p>
-      <div className="user-details">
-        <div className="profile-container">
-          <div className="flex flex-col justify-between items-center space-y-2">
-            <div className="profile-image-container">
-              <img src={assets.placeHolder.profile_placeholder_image} alt="profile" className="profile-image" />
-            </div>
-            <h2 className="profile-heading">
-              {student.name} ( {student.rollNo} )
-            </h2>
+    <div className="profile-page">
+      {/* Back Button */}
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="py-5 flex items-center text-blue-700 hover:text-blue-900 transition cursor-pointer"
+      >
+        <ArrowLeft className="w-4 h-4 mr-2" /> Back
+      </button>
+
+      {/* Profile Box */}
+      <div className="profile-container">
+        <div className="flex flex-col justify-between items-center space-y-2">
+          <div className="profile-image-container">
+            <img src={assets.placeHolder.profile_placeholder_image} alt="profile" className="profile-image" />
           </div>
-          <div className="profile-content-section">
-            <p><span className="label">Name:</span> {student.name}</p>
-            <p><span className="label">Student ID:</span> {student._id}</p>
-            <p><span className="label">Roll No:</span> {student.rollNo}</p>
-            <p><span className="label">Total Days:</span> {student.overall.totalClasses}</p>
-            <p><span className="label">Present:</span> {student.overall.present}</p>
-            <p><span className="label">Attendance:</span> {student.overall.percentage}%</p>
+          <h2 className="profile-heading">{currentStudent?.name} ( {currentStudent?.rollNo} )</h2>
+        </div>
+        <div className="profile-content-section">
+          <p className="text-gray-600">
+            <span className="label">Name : </span><span className="value">{currentStudent?.name}</span>
+          </p>
+          <p className="text-gray-600">
+            <span className="label">Student ID : </span><span className="value">{currentStudent?.studentId}</span>
+          </p>
+          <p className="text-gray-600">
+            <span className="label">Roll No : </span><span className="value">{currentStudent?.rollNo}</span>
+          </p>
+
+          <p className="text-gray-600">
+            <span className="label">Total Days : </span><span className="value">{currentStudent?.overall?.totalClasses}</span>
+          </p>
+
+          <p className="text-gray-600">
+            <span className="label">Present: </span><span className="value">{currentStudent?.overall?.present}</span>
+          </p>
+
+          <p className="text-gray-600">
+            <span className="label">Attendance:</span><span className="value">{currentStudent?.overall?.percentage}%</span>
+          </p>
+
+        </div>
+        <hr className='text-gray-300' />
+        {/* Students Subject */}
+        <div className="last-marked-plus-isCritical">
+          <div className="flex items-center gap-1.5">
+            <CalendarDays className="w-5 h-5 mr-2 text-blue-600" />
+            <span className="text-blue-950"><span className="font-medium">Last Marked :</span> {currentStudent?.overall?.lastMarked || 'Not Marked'}</span>
           </div>
-          <hr className="text-gray-300" />
-          <div className="last-marked-plus-isCritical">
-            <div className="flex items-center gap-1.5">
-              <CalendarDays className="w-5 h-5 mr-2 text-blue-600" />
-              <span className="text-blue-950">
-                <span className="font-medium">Last Marked :</span> {student.overall.lastMarked || 'Not Marked'}
+          <div className="">
+            {currentStudent?.isCritical ? (
+              <span className="text-red-500 font-medium flex items-center">⚠️ Critical Attendance</span>
+            ) : (
+              <span className="text-green-600 font-semibold flex items-center">
+                <BadgeCheck className="w-5 h-5 mr-2" /> All Good
               </span>
-            </div>
-            <div>
-              {student.isCritical ? (
-                <span className="text-red-500 font-medium flex items-center">⚠️ Critical Attendance</span>
-              ) : (
-                <span className="text-green-600 font-semibold flex items-center">
-                  <BadgeCheck className="w-5 h-5 mr-2" /> All Good
-                </span>
-              )}
-            </div>
+            )}
           </div>
-        </div>
-
-        <div className="student-subjects">
-          <h3 className="student-subjects-heading">Subject Wise Attendance of <span className="font-bold">{student.name}</span></h3>
-          <StudentSubjectTable student={student} />
-        </div>
-
-        <div className="student-calendar">
-          <StudentHeatmapCalendar presentDates={student.overall.presentDates} title="Overall Attendance History" />
-        </div>
-
-        <div className="subject-wise-attendance-history">
-          <SubjectHistory student={student} />
         </div>
       </div>
+
+      <div className="student-subjects">
+        <h3 className="student-subjects-heading">Subject Wise Attendance of <span className="font-bold">{currentStudent?.name}</span></h3>
+        <StudentSubjectTable student={currentStudent} />
+      </div>
+
+      <div className="student-calendar">
+        <StudentHeatmapCalendar presentDates={currentStudent?.overall?.presentDates} title={'Attendance History'}/>
+      </div>
     </div>
+
   );
 };
 
-export default UserProfile;
+export default StudentProfile;

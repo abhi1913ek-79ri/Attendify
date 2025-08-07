@@ -3,14 +3,13 @@ import { Calendar, FileText, Download, User, BookOpen, Clock, CheckCircle, XCirc
 import { toast } from 'react-toastify';
 import styles from './LoggedUserExport.module.css';
 import { useStudent } from '../../store/StudentContext';
-import { filterAttendanceByDate } from '../../utils/filterAttendanceUtility';
 import { generateAttendancePDF } from '../../utils/generatePDFStatement';
 import { useAuth } from '../../store/AuthContext';
 import AuthPrompt from '../../components/AuthPrompt/AuthPrompt';
 
 const LoggedUserExport = () => {
   const { user } = useAuth();
-  const {students} = useStudent();
+  const { student } = useStudent();
   const [fromDate, setFromDate] = useState('2025-07-01');
   const [toDate, setToDate] = useState('2025-08-01');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -30,29 +29,8 @@ const LoggedUserExport = () => {
       </div>
     );
   }
-
-  const student = students.find((s) => s.id === user.id);
-
-  if (!student) {
-    return (
-      <div className="mark-attendance">
-        <div className="page-header">
-          <div className="header-content">
-            <CalendarCheck className="header-icon" />
-            <h2 className="header-title">Mark Attendance</h2>
-          </div>
-        </div>
-        <div className="page-content">
-          <div className="error-card">
-            <p>⚠️ You are logged in but not found in the student list.</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Check if student data is available
-  if (!student || !student.subjects || !student.attendance) {
+//previous statement ->  if (!student || !student?.subjects || !student?.Attendance)
+  if (!student || !student?.subjects) {
     return (
       <div className={styles.exportContainer}>
         <div className={styles.errorCard}>
@@ -64,8 +42,6 @@ const LoggedUserExport = () => {
     );
   }
 
-  const studentData = student;
-
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-IN', {
@@ -75,35 +51,15 @@ const LoggedUserExport = () => {
     });
   };
 
-  const calculateAttendancePercentage = (present, total) => {
-    return total === 0 ? '0.0' : ((present / total) * 100).toFixed(1);
-  };
-
-  // Safe calculation with error handling
-  let filteredAttendance = {};
-  let totalPresentDays = 0;
-  let totalClasses = 0;
-  let overallPercentage = '0.0';
-
-  try {
-    filteredAttendance = filterAttendanceByDate(studentData, fromDate, toDate);
-    totalPresentDays = Object.values(filteredAttendance).reduce((sum, subject) => sum + (subject.present || 0), 0);
-    totalClasses = Object.values(filteredAttendance).reduce((sum, subject) => sum + (subject.totalClasses || 0), 0);
-    overallPercentage = calculateAttendancePercentage(totalPresentDays, totalClasses);
-  } catch (error) {
-    console.error('Error calculating attendance:', error);
-  }
-
   const generatePDF = async () => {
     setIsGenerating(true);
-    
+
     try {
       await generateAttendancePDF(
-        studentData, 
-        fromDate, 
+        student,
+        fromDate,
         toDate,
         (fileName) => {
-          // Success callback
           toast.success(`${fileName} downloaded successfully!`, {
             position: "top-right",
             autoClose: 3000,
@@ -115,7 +71,6 @@ const LoggedUserExport = () => {
           setIsGenerating(false);
         },
         (error) => {
-          // Error callback
           toast.error(`Download failed: ${error.message}`, {
             position: "top-right",
             autoClose: 4000,
@@ -158,25 +113,26 @@ const LoggedUserExport = () => {
         <div className={styles.studentInfo}>
           <User className="w-5 h-5" />
           <div>
-            <h3>{studentData.name}</h3>
-            <p>Roll No: {studentData.rollNo}</p>
+            <h3>{student?.name}</h3>
+            <p>Roll No: {student?.rollNo}</p>
           </div>
         </div>
         <div className={styles.overallStats}>
           <div className={styles.stat}>
             <BookOpen className="w-4 h-4" />
-            <span>{studentData.subjects.length} Subjects</span>
+           <span>{student?.subjects ? Object.keys(student.subjects).length : 0} Subjects</span>
+
           </div>
           <div className={styles.stat}>
             <Clock className="w-4 h-4" />
-            <span>{totalClasses} Total Classes</span>
+            <span>{student?.totalClasses} Total Classes</span>
           </div>
-          <div className={`${styles.stat} ${parseFloat(overallPercentage) >= 75 ? styles.good : styles.critical}`}>
-            {parseFloat(overallPercentage) >= 75 ? 
+          <div className={`${styles.stat} ${parseFloat(student?.attendancePercentage) >= 75 ? styles.good : styles.critical}`}>
+            {parseFloat(student.attendancePercentage) >= 75 ? 
               <CheckCircle className="w-4 h-4" /> : 
               <XCircle className="w-4 h-4" />
             }
-            <span>{overallPercentage}% Attendance</span>
+            <span>{student?.attendancePercentage}% Attendance</span>
           </div>
         </div>
       </div>
@@ -187,7 +143,6 @@ const LoggedUserExport = () => {
           <Calendar className="w-5 h-5" />
           Select Report Period
         </h3>
-        
         <div className={styles.dateInputs}>
           <div className={styles.dateGroup}>
             <label htmlFor="fromDate">From Date</label>
@@ -199,7 +154,6 @@ const LoggedUserExport = () => {
               className={styles.dateInput}
             />
           </div>
-          
           <div className={styles.dateGroup}>
             <label htmlFor="toDate">To Date</label>
             <input
@@ -211,71 +165,10 @@ const LoggedUserExport = () => {
             />
           </div>
         </div>
-
-        <div className={styles.periodInfo}>
-          <p>📅 Selected Period: <strong>{formatDate(fromDate)} to {formatDate(toDate)}</strong></p>
-          <p>📋 Classes in Period: <strong>{totalClasses}</strong> | Present: <strong>{totalPresentDays}</strong></p>
-        </div>
       </div>
 
-      {/* Subject Preview */}
-      <div className={styles.previewSection}>
-        <h3 className={styles.sectionTitle}>Subject-wise Preview</h3>
-        <div className={styles.subjectGrid}>
-          {studentData.subjects.map((subject) => {
-            const subjectData = filteredAttendance[subject];
-            
-            // Safety check for subject data
-            if (!subjectData) {
-              return (
-                <div key={subject} className={`${styles.subjectCard} ${styles.error}`}>
-                  <div className={styles.subjectHeader}>
-                    <BookOpen className="w-4 h-4" />
-                    <h4>{subject}</h4>
-                  </div>
-                  <div className={styles.subjectStats}>
-                    <div className={styles.subjectStat}>
-                      <span className={styles.label}>Status:</span>
-                      <span className={styles.value}>No Data</span>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-            
-            const percentage = calculateAttendancePercentage(subjectData.present || 0, subjectData.totalClasses || 0);
-            const isCritical = parseFloat(percentage) < 75;
-            
-            return (
-              <div key={subject} className={`${styles.subjectCard} ${isCritical ? styles.critical : styles.good}`}>
-                <div className={styles.subjectHeader}>
-                  <BookOpen className="w-4 h-4" />
-                  <h4>{subject}</h4>
-                </div>
-                <div className={styles.subjectStats}>
-                  <div className={styles.subjectStat}>
-                    <span className={styles.label}>Classes:</span>
-                    <span className={styles.value}>{subjectData.totalClasses || 0}</span>
-                  </div>
-                  <div className={styles.subjectStat}>
-                    <span className={styles.label}>Present:</span>
-                    <span className={styles.value}>{subjectData.present || 0}</span>
-                  </div>
-                  <div className={styles.subjectStat}>
-                    <span className={styles.label}>Percentage:</span>
-                    <span className={`${styles.value} ${isCritical ? styles.criticalText : styles.goodText}`}>
-                      {percentage}%
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Critical Warning */}
-      {parseFloat(overallPercentage) < 75 && (
+      {/* Warning */}
+      {parseFloat(student.attendancePercentage) < 75 && (
         <div className={styles.warningBanner}>
           <AlertTriangle className="w-5 h-5" />
           <div>
@@ -295,7 +188,6 @@ const LoggedUserExport = () => {
           <Download className="w-4 h-4" />
           {isGenerating ? 'Generating PDF...' : 'Export Statement'}
         </button>
-        
         <p className={styles.exportInfo}>
           The PDF will include detailed attendance records, verification seal, and daily attendance logs for the selected period.
         </p>

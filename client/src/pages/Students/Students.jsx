@@ -1,20 +1,27 @@
-import React, { useState } from 'react'
-import './Students.css'
-import Card from '../../components/Card/Card'
-import { CalendarDays, ChartNoAxesCombined, NotebookIcon, NotebookPenIcon, Receipt, ShieldAlert, User, UserCheck } from 'lucide-react'
-import ControlSection from '../../components/ControlSection/ControlSection'
-import AttendanceStatsChart from '../../components/AttendanceGraphAllStudents/AttendanceGraphAllStudents'
-import StudentTable from '../../components/StudentTable/StudentTable'
-import { filterStudents } from '../../utils/filterStudent'
-import { useStudent } from '../../store/StudentContext'
-import { SUBJECTS } from '../../config/subjectConfig'
+import React, { useState, useEffect } from 'react';
+import './Students.css';
+import Card from '../../components/Card/Card';
+import {
+  CalendarDays,
+  ChartNoAxesCombined,
+  NotebookPenIcon,
+  ShieldAlert,
+  User,
+  UserCheck,
+} from 'lucide-react';
+import ControlSection from '../../components/ControlSection/ControlSection';
+import AttendanceStatsChart from '../../components/AttendanceGraphAllStudents/AttendanceGraphAllStudents';
+import StudentTable from '../../components/StudentTable/StudentTable';
+import { filterStudents } from '../../utils/filterStudent';
+import { useStudent } from '../../store/StudentContext';
+// import { SUBJECTS } from '../../config/subjectConfig';
 
 const Students = () => {
-  // const subjects = SUBJECTS;
-  const [filteredStudents, setFilteredStudents] = useState(allStudents);
-  const [loading, setLoading] = useState(false);
   const { allStudents } = useStudent();
-  //filter logic
+  const [loading, setLoading] = useState(false);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+
+  // filter logic
   const [filters, setFilters] = useState({
     subject: '',
     fromDate: '',
@@ -23,9 +30,13 @@ const Students = () => {
     isCritical: ''
   });
 
+  // Set filtered students initially
+  useEffect(() => {
+    setFilteredStudents(allStudents);
+  }, [allStudents]);
+
   const handleSearch = () => {
     setLoading(true); // show loader
-
     setTimeout(() => {
       const result = filterStudents(allStudents, filters); // filters apply kar
       setFilteredStudents(result); // update table
@@ -33,7 +44,31 @@ const Students = () => {
     }, 1000); // simulate backend delay
   };
 
-  console.log(studentsProperties);
+  // ----------- 📊 Calculations ------------
+  const totalStudents = allStudents.length;
+
+  const averageAttendance = totalStudents > 0
+    ? Math.round(
+        allStudents.reduce((sum, student) => sum + (student?.overall?.percentage || 0), 0) / totalStudents
+      )
+    : 0;
+
+  const numberOfCriticalStudents = allStudents.filter(
+    (student) => student?.overall?.percentage < 75
+  ).length;
+
+  const presentToday = allStudents.filter(
+    (student) => student?.attendance?.[new Date().toDateString()] === 'present'
+  ).length;
+
+  const absentToday = totalStudents - presentToday;
+
+  const criticalButAbsentCount = allStudents.filter(
+    (student) =>
+      student?.overall?.percentage < 75 &&
+      student?.attendance?.[new Date().toDateString()] !== 'present'
+  ).length;
+  // ----------------------------------------
 
   return (
     <div className='students'>
@@ -41,34 +76,50 @@ const Students = () => {
         🎓 Attendance Dashboard – All Students Overview
       </div>
       <hr className='text-gray-300' />
+
       <div className="stats-summary">
         <div className="stats-summary-heading">
-          <ChartNoAxesCombined />Stats Summary
+          <ChartNoAxesCombined /> Stats Summary
         </div>
         <div className="stats-summary-cards-container">
-          <Card icon={<User />} title={'Total Students'} desc={studentsProperties?.len} style={'text-center bg-white'} />
-          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={studentsProperties?.averageAttendance} style={'text-center bg-white'} />
-          <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={studentsProperties?.presentToday} style={'text-center bg-white'} />
-          <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={studentsProperties?.numberOfCriticalStudents} style={'text-center text-red-500 bg-white'} />
+          <Card icon={<User />} title={'Total Students'} desc={totalStudents} style={'text-center bg-white'} />
+          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={averageAttendance} style={'text-center bg-white'} />
+          <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={presentToday} style={'text-center bg-white'} />
+          <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={numberOfCriticalStudents} style={'text-center text-red-500 bg-white'} />
         </div>
       </div>
+
       <div className="overall-attendance-graph px-4">
-        <AttendanceStatsChart totalStudents={studentsProperties?.len} presentToday={studentsProperties?.presentToday} absentToday={studentsProperties?.absentToday} numberOfCriticalStudents={studentsProperties?.numberOfCriticalStudents} criticalAndAbsent={studentsProperties?.criticalButAbsentCount} />
-      </div>
-      <hr className='text-gray-300' />
-      <div className=" font-light text-blue-950 flex flex-col justify-between items-center text-center gap-2.5  text-3xl">
-        <NotebookPenIcon />Records
-      </div>
-      <div className="control-and-filter-section">
-        <ControlSection
-          filters={filters} setFilters={setFilters} onSearch={handleSearch} subjects={subjects}
+        <AttendanceStatsChart
+          totalStudents={totalStudents}
+          presentToday={presentToday}
+          absentToday={absentToday}
+          numberOfCriticalStudents={numberOfCriticalStudents}
+          criticalAndAbsent={criticalButAbsentCount}
         />
       </div>
+
+      <hr className='text-gray-300' />
+
+      <div className="font-light text-blue-950 flex flex-col justify-between items-center text-center gap-2.5 text-3xl">
+        <NotebookPenIcon /> Records
+      </div>
+
+      <div className="control-and-filter-section">
+        {/* Uncomment when ControlSection is working */}
+        {/* <ControlSection
+          filters={filters}
+          setFilters={setFilters}
+          onSearch={handleSearch}
+          subjects={SUBJECTS}
+        /> */}
+      </div>
+
       <div className="student-table">
         <StudentTable students={filteredStudents} loading={loading} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Students
+export default Students;

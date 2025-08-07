@@ -46,9 +46,26 @@ exports.addStudent = async (req, res) => {
 exports.getAllStudents = async(req,res) => {
   try {
     const students = await Student.find()
-    if (!students || students.length === 0) return res.status(404).json({ message: "No students found" });
+    if (!students || students.length === 0) return res.status(404).json({ message: "No student found" });
     res.status(200).json(students);
   } catch (error) {
     res.status(500).json({ message: "Server Error", error });
   }
 }
+
+// controller/studentController.js
+
+exports.getStudentById = async (req, res) => {
+  try {
+    const currentStudent = await Student.findOne({ studentId: req.params.studentId });
+
+    if (!currentStudent) {
+      return res.status(404).json({ message: "Student not found", success: false });
+    }
+
+    res.status(200).json({ currentStudent, success: true });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error", success: false });
+  }
+};
