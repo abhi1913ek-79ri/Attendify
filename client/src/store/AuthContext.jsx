@@ -6,17 +6,18 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("token");
     if (!accessToken) {
       setUser(null);
-      setLoading(false);
+      setIsAuthLoading(false);
       return;
     }
 
     const fetchUser = async () => {
+      setIsAuthLoading(true);
       try {
         const response = await axiosInstance.get(API_PATHS.AUTH.GET_PROFILE);
         setUser(response.data);
@@ -24,7 +25,7 @@ export const AuthProvider = ({ children }) => {
         console.error("User not authenticated", error);
         clearUser();
       } finally {
-        setLoading(false);
+        setIsAuthLoading(false);
       }
     };
 
@@ -36,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     if (userData.token) {
       localStorage.setItem("token", userData.token);
     }
-    setLoading(false);
+    setIsAuthLoading(false);
   };
 
   const clearUser = () => {
@@ -45,7 +46,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, updateUser, clearUser, loading }}>
+    <AuthContext.Provider value={{ user, updateUser, clearUser, isAuthLoading }}>
       {children}
     </AuthContext.Provider>
   );

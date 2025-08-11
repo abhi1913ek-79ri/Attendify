@@ -1,20 +1,70 @@
-@import "tailwindcss";
+.logout-container {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6; /* light gray background */
+}
 
-.input-box{
-  padding: 20px;
-  border-radius: 5px;
-  text-align: right;
-  font-size: 20px;
+.logout-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  border: 1px solid #e5e7eb;
 }
-.logout-bt{
-  border-radius: 5px;
-  background-color: rgb(255, 0, 0);
+
+.logout-card h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937; /* dark gray */
+  margin-bottom: 0.75rem;
+}
+
+.logout-card p {
+  font-size: 0.95rem;
+  color: #6b7280; /* medium gray */
+  margin-bottom: 1.5rem;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.logout-btn {
+  background-color: #dc2626; /* red */
   color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-  padding: 3px;
-  margin: 15px;
+  transition: all 0.2s ease-in-out;
 }
-.logout-bt:hover{
-   opacity: 0.5;
+
+.logout-btn:hover {
+  background-color: #f61f1f; /* darker red */
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #d1d5db; /* light gray */
+  color: #1f2937;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.cancel-btn:hover {
+  background-color: #9ca3af; /* darker gray */
 }

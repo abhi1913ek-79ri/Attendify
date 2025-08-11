@@ -3,7 +3,8 @@ const cors = require('cors');
 const app = express();
 const connectDB = require('./config/db');
 const studentRoutes = require('./routes/studentRoutes');
-const authRoutes = require('./routes/authroutes')
+const authRoutes = require('./routes/authRoutes');
+const attendanceRoutes = require('./routes/attendanceRoutes');
 
 require("dotenv").config();
 
@@ -14,7 +15,7 @@ app.use(express.json());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/student', studentRoutes);
-// app.use('/api/attendance', attendanceRoutes);
+app.use('/api/attendance', attendanceRoutes);
 
 
 const port = process.env.PORT || 3000;

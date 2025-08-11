@@ -9,12 +9,12 @@ const StudentContext = createContext();
 export const StudentProvider = ({ children }) => {
   const [student, setStudent] = useState(null);
   const [allStudents, setAllStudents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isStudentLoading, setIsStudentLoading] = useState(true);
 
   const { user } = useAuth(); // ✅ Grab user from AuthContext
 
   const fetchStudent = async () => {
-    setLoading(true);
+    setIsStudentLoading(true);
     try {
       const res = await axiosInstance.get(API_PATHS.STUDENT.GET_PROFILE);
       setStudent(res.data);
@@ -22,7 +22,7 @@ export const StudentProvider = ({ children }) => {
       console.error('Failed to fetch student:', err);
       setStudent(null);
     } finally {
-      setLoading(false);
+      setIsStudentLoading(false);
     }
   };
 
@@ -31,13 +31,13 @@ export const StudentProvider = ({ children }) => {
       fetchStudent();
     } else {
       setStudent(null);
-      setLoading(false);
+      setIsStudentLoading(false);
     }
   }, [user]); // ✅ Depend on user
 
 
   const fetchAllStudents = async () => {
-    setLoading(true);
+    setIsStudentLoading(true);
     try {
       const res = await axiosInstance.get(API_PATHS.STUDENT.GET_ALL_STUDENTS);
       setAllStudents(res.data);
@@ -45,20 +45,20 @@ export const StudentProvider = ({ children }) => {
       console.error('Failed to fetch students:', err);
       setAllStudents([]);
     } finally {
-      setLoading(false);
+      setIsStudentLoading(false);
     }
   };
 
   useEffect(() => {
       fetchAllStudents();
-      setLoading(false);
+      setIsStudentLoading(false);
   }, []); // ✅ Depend on user
 
  
   const clearStudent = () => setStudent(null);
 
   return (
-    <StudentContext.Provider value={{ student, loading, clearStudent, allStudents }}>
+    <StudentContext.Provider value={{ student, setStudent, isStudentLoading, clearStudent, allStudents, fetchStudent }}>
       {children}
     </StudentContext.Provider>
   );

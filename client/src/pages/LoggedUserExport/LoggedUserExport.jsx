@@ -6,10 +6,12 @@ import { useStudent } from '../../store/StudentContext';
 import { generateAttendancePDF } from '../../utils/generatePDFStatement';
 import { useAuth } from '../../store/AuthContext';
 import AuthPrompt from '../../components/AuthPrompt/AuthPrompt';
+import { useAttendance } from '../../store/AttendanceContext';
 
 const LoggedUserExport = () => {
   const { user } = useAuth();
   const { student } = useStudent();
+  const { attendanceData, overallStats, isOverallCritical } = useAttendance();
   const [fromDate, setFromDate] = useState('2025-07-01');
   const [toDate, setToDate] = useState('2025-08-01');
   const [isGenerating, setIsGenerating] = useState(false);
@@ -29,7 +31,7 @@ const LoggedUserExport = () => {
       </div>
     );
   }
-//previous statement ->  if (!student || !student?.subjects || !student?.Attendance)
+
   if (!student || !student?.subjects) {
     return (
       <div className={styles.exportContainer}>
@@ -57,6 +59,9 @@ const LoggedUserExport = () => {
     try {
       await generateAttendancePDF(
         student,
+        attendanceData,
+        overallStats,
+        isOverallCritical,
         fromDate,
         toDate,
         (fileName) => {
@@ -125,14 +130,16 @@ const LoggedUserExport = () => {
           </div>
           <div className={styles.stat}>
             <Clock className="w-4 h-4" />
-            <span>{student?.totalClasses} Total Classes</span>
+            <span>{overallStats?.totalClasses ?? 0} Total Classes</span>
           </div>
-          <div className={`${styles.stat} ${parseFloat(student?.attendancePercentage) >= 75 ? styles.good : styles.critical}`}>
+          <div className={`${styles.stat} ${parseFloat(overallStats?.percentage) >= 75 ? styles.good : styles.critical}`}>
             {parseFloat(student.attendancePercentage) >= 75 ? 
               <CheckCircle className="w-4 h-4" /> : 
               <XCircle className="w-4 h-4" />
             }
-            <span>{student?.attendancePercentage}% Attendance</span>
+            <span> {overallStats?.percentage != null
+                  ? `${overallStats.percentage.toFixed(1)}%`
+                  : "0.0%"}% Attendance</span>
           </div>
         </div>
       </div>
@@ -168,7 +175,7 @@ const LoggedUserExport = () => {
       </div>
 
       {/* Warning */}
-      {parseFloat(student.attendancePercentage) < 75 && (
+      {parseFloat(overallStats?.percentage) < 75 && (
         <div className={styles.warningBanner}>
           <AlertTriangle className="w-5 h-5" />
           <div>

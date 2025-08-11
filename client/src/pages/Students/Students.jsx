@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import './Students.css';
-import Card from '../../components/Card/Card';
+import React, { useState, useEffect } from "react";
+import "./Students.css";
+import Card from "../../components/Card/Card";
 import {
   CalendarDays,
   ChartNoAxesCombined,
@@ -8,106 +8,131 @@ import {
   ShieldAlert,
   User,
   UserCheck,
-} from 'lucide-react';
-import ControlSection from '../../components/ControlSection/ControlSection';
-import AttendanceStatsChart from '../../components/AttendanceGraphAllStudents/AttendanceGraphAllStudents';
-import StudentTable from '../../components/StudentTable/StudentTable';
-import { filterStudents } from '../../utils/filterStudent';
-import { useStudent } from '../../store/StudentContext';
-// import { SUBJECTS } from '../../config/subjectConfig';
+} from "lucide-react";
+import ControlSection from "../../components/ControlSection/ControlSection";
+import AttendanceStatsChart from "../../components/AttendanceGraphAllStudents/AttendanceGraphAllStudents";
+import StudentTable from "../../components/StudentTable/StudentTable";
+import { filterStudents } from "../../utils/filterStudent";
+import { useAllStudentsAttendance } from "../../store/AllStudentsAttendanceContext";
 
 const Students = () => {
-  const { allStudents } = useStudent();
+  const { 
+    allStudentsAttendance, 
+    isLoading: isLoadingAttendance, 
+    stats,
+    fetchAllStudentsAttendance 
+  } = useAllStudentsAttendance();
+  
   const [loading, setLoading] = useState(false);
   const [filteredStudents, setFilteredStudents] = useState([]);
 
   // filter logic
   const [filters, setFilters] = useState({
-    subject: '',
-    fromDate: '',
-    toDate: '',
-    searchTerm: '',
-    isCritical: ''
+    subject: "",
+    fromDate: "",
+    toDate: "",
+    searchTerm: "",
+    isCritical: "",
   });
 
   // Set filtered students initially
   useEffect(() => {
-    setFilteredStudents(allStudents);
-  }, [allStudents]);
+    setFilteredStudents(allStudentsAttendance);
+  }, [allStudentsAttendance]);
+
 
   const handleSearch = () => {
-    setLoading(true); // show loader
+    setLoading(true);
     setTimeout(() => {
-      const result = filterStudents(allStudents, filters); // filters apply kar
-      setFilteredStudents(result); // update table
-      setLoading(false); // hide loader
-    }, 1000); // simulate backend delay
+      const result = filterStudents(allStudentsAttendance, filters);
+      setFilteredStudents(result);
+      setLoading(false);
+    }, 1000);
   };
 
-  // ----------- 📊 Calculations ------------
-  const totalStudents = allStudents.length;
+  // Refresh button handler
+  const handleRefresh = () => {
+    fetchAllStudentsAttendance(true); // Force refresh
+  };
 
-  const averageAttendance = totalStudents > 0
-    ? Math.round(
-        allStudents.reduce((sum, student) => sum + (student?.overall?.percentage || 0), 0) / totalStudents
-      )
-    : 0;
-
-  const numberOfCriticalStudents = allStudents.filter(
-    (student) => student?.overall?.percentage < 75
-  ).length;
-
-  const presentToday = allStudents.filter(
-    (student) => student?.attendance?.[new Date().toDateString()] === 'present'
-  ).length;
-
-  const absentToday = totalStudents - presentToday;
-
-  const criticalButAbsentCount = allStudents.filter(
-    (student) =>
-      student?.overall?.percentage < 75 &&
-      student?.attendance?.[new Date().toDateString()] !== 'present'
-  ).length;
-  // ----------------------------------------
+  // Show loading state while fetching attendance data
+  if (isLoadingAttendance) {
+    return (
+      <div className="students">
+        <div className="students-heading">
+          🎓 Attendance Dashboard – All Students Overview
+        </div>
+        <div className="flex justify-center items-center py-20">
+          <div className="text-lg">Loading attendance data...</div>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className='students'>
+    <div className="students">
       <div className="students-heading">
         🎓 Attendance Dashboard – All Students Overview
+        <button 
+          onClick={handleRefresh}
+          className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+        >
+          Refresh Data
+        </button>
       </div>
-      <hr className='text-gray-300' />
+      <hr className="text-gray-300" />
 
       <div className="stats-summary">
         <div className="stats-summary-heading">
           <ChartNoAxesCombined /> Stats Summary
         </div>
         <div className="stats-summary-cards-container">
-          <Card icon={<User />} title={'Total Students'} desc={totalStudents} style={'text-center bg-white'} />
-          <Card icon={<UserCheck />} title={'Avg Attendance %'} desc={averageAttendance} style={'text-center bg-white'} />
-          <Card icon={<CalendarDays />} title={'Today’s Attendance'} desc={presentToday} style={'text-center bg-white'} />
-          <Card icon={<ShieldAlert />} title={'Critical (<75%)'} desc={numberOfCriticalStudents} style={'text-center text-red-500 bg-white'} />
+          <Card
+            icon={<User />}
+            title={"Total Students"}
+            desc={stats.totalStudents}
+            style={"text-center bg-white"}
+          />
+          <Card
+            icon={<UserCheck />}
+            title={"Avg Attendance %"}
+            desc={`${stats.averageAttendance}%`}
+            style={"text-center bg-white"}
+          />
+          <Card
+            icon={<CalendarDays />}
+            title={"Today's Attendance"}
+            desc={`${stats.presentToday}/${stats.totalStudents}`}
+            style={"text-center bg-white"}
+          />
+          <Card
+            icon={<ShieldAlert />}
+            title={"Critical (<75%)"}
+            desc={stats.criticalStudents}
+            style={"text-center text-red-500 bg-white"}
+          />
         </div>
       </div>
 
       <div className="overall-attendance-graph px-4">
         <AttendanceStatsChart
-          totalStudents={totalStudents}
-          presentToday={presentToday}
-          absentToday={absentToday}
-          numberOfCriticalStudents={numberOfCriticalStudents}
-          criticalAndAbsent={criticalButAbsentCount}
+          totalStudents={stats.totalStudents}
+          presentToday={stats.presentToday}
+          absentToday={stats.absentToday}
+          numberOfCriticalStudents={stats.criticalStudents}
+          criticalAndAbsent={stats.criticalAndAbsent}
         />
       </div>
 
-      <hr className='text-gray-300' />
+      <hr className="text-gray-300" />
 
       <div className="font-light text-blue-950 flex flex-col justify-between items-center text-center gap-2.5 text-3xl">
         <NotebookPenIcon /> Records
       </div>
 
       <div className="control-and-filter-section">
-        {/* Uncomment when ControlSection is working */}
-        {/* <ControlSection
+        {/* Uncomment when ControlSection is working
+        <ControlSection
           filters={filters}
           setFilters={setFilters}
           onSearch={handleSearch}
@@ -116,7 +141,10 @@ const Students = () => {
       </div>
 
       <div className="student-table">
-        <StudentTable students={filteredStudents} loading={loading} />
+        <StudentTable 
+          students={filteredStudents} 
+          loading={loading} 
+        />
       </div>
     </div>
   );

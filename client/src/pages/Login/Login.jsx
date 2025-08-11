@@ -39,7 +39,7 @@ function Login() {
     if (token) {
       localStorage.setItem("token", token);
       updateUser(res.data); // use 'res' not 'response'
-      navigate("/user-profile");
+      navigate('/user-profile');
     } else {
       setMessage("Login failed: No token received");
     }

@@ -11,5 +11,9 @@ export const API_PATHS = {
     ADD: "/api/student/add",
     GET_ALL_STUDENTS: "/api/student/getAllStudents",
     GET_BY_ID: (id) => `/api/student/${id}`, // Get student by ID
+  },
+  ATTENDANCE: {
+    GET_ATTENDANCE: '/api/attendance/:studentId',
+    UPDATE_ATTENDANCE: '/api/attendance/:studentId'
   }
 };
