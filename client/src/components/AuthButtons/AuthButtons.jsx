@@ -14,7 +14,7 @@ const AuthButtons = () => {
           <button onClick={()=>navigate('/logout')} className="bg-red-500 text-white !px-1 rounded cursor-pointer">Logout</button>
         </div>
       ) : (
-        <button onClick={()=>navigate('/login')} className="bg-green-500 text-white px-4 py-3 rounded cursor-pointer">Login</button>
+        <button onClick={()=>navigate('/login')} className="bg-green-500 text-white !px-2 !py-1 rounded cursor-pointer">Login</button>
       )}
     </div>
   );

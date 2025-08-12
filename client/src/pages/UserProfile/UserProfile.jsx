@@ -11,18 +11,31 @@ import StudentHeatmapCalendar from "../../components/StudentCalendar/StudentHeat
 import SubjectHistory from "../../components/SubjectHistory/SubjectHistory";
 import { useAttendance } from "../../store/AttendanceContext";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 
 const UserProfile = () => {
   const { user } = useAuth();
-  const { student } = useStudent();
-  const { attendanceData, overallStats, isOverallCritical } = useAttendance();
+  const { student, fetchStudent } = useStudent();
+  const { attendanceData,fetchAttendanceData, overallStats, isOverallCritical } = useAttendance();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (user && !student) {
-      navigate("/add-student");
-    }
-  }, [student, user, navigate]);
+
+const location = useLocation();
+
+useEffect(() => {
+  if (user) {
+    fetchStudent();          // Fetch latest student data
+    fetchAttendanceData();   // Fetch latest attendance data
+  }
+}, [user]);
+
+useEffect(() => {
+  if (user && !student && location.pathname !== "/add-student") {
+    navigate("/add-student");
+  }
+}, [student, user, navigate, location.pathname]);
+
 
   if (!user) {
     return (

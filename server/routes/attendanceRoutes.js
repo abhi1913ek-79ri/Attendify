@@ -3,7 +3,7 @@ const router = express.Router();
 const {getAttendance, updateAttendance} = require('../controllers/AttendanceController');
 const protect = require('../middlewares/authMiddleware'); // your JWT middleware
 
-router.get('/:studentId', protect, getAttendance);
+router.get('/:studentId', getAttendance);
 router.put('/:studentId', protect, updateAttendance);
 
 

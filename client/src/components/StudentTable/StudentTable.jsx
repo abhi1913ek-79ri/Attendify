@@ -8,27 +8,32 @@ import { useNavigate } from 'react-router-dom';
 const StudentTable = ({ students, loading }) => {
   const navigate = useNavigate();
 
-  // Helper function to get last marked date from daily attendance
-  const getLastMarkedDate = (attendance) => {
-    if (!attendance || Object.keys(attendance).length === 0) {
-      return 'Never';
-    }
-    
-    // Get all dates and sort them in descending order
-    const dates = Object.keys(attendance).sort((a, b) => new Date(b) - new Date(a));
-    
-    if (dates.length === 0) {
-      return 'Never';
-    }
-    
-    // Return the most recent date in a readable format
-    const lastDate = new Date(dates[0]);
-    return lastDate.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
-    });
-  };
+const getLastMarkedDate = (attendance) => {
+  console.log('Attendance data:', attendance);
+  if (!attendance || Object.keys(attendance).length === 0) {
+    return 'Never';
+  }
+
+  // Extract date part after last underscore from each key
+  const dates = Object.keys(attendance)
+    .map(key => {
+      const parts = key.split('_');
+      return parts[parts.length - 1]; // get date string like "2025-08-12"
+    })
+    .filter(dateStr => !isNaN(new Date(dateStr))) // filter out invalid dates
+    .sort((a, b) => new Date(b) - new Date(a)); // descending order
+
+  if (dates.length === 0) {
+    return 'Never';
+  }
+
+  const lastDate = new Date(dates[0]);
+  return lastDate.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+};
 
   // Helper function to determine if student is critical
   const getIsCritical = (student) => {

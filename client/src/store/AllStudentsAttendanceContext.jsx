@@ -70,7 +70,7 @@ export const AllStudentsAttendanceProvider = ({ children }) => {
   };
 
   // Auto-fetch when allStudents changes
-  useEffect(() => {
+  (() => {
     if (allStudents && allStudents.length > 0) {
       fetchAllStudentsAttendance();
     }
@@ -131,7 +131,7 @@ export const AllStudentsAttendanceProvider = ({ children }) => {
   // Update attendance for a specific student
   const updateStudentAttendance = (studentId, attendanceData) => {
     setAllStudentsAttendance(prev => 
-      prev.map(student => 
+      prev.map(stuseEffectudent => 
         student._id === studentId || student.studentId === studentId
           ? {
               ...student,

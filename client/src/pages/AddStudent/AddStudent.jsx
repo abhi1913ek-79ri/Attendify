@@ -7,6 +7,8 @@ import "./AddStudent.css";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import { useStudent } from "../../store/StudentContext";
+import { useLocation } from "react-router-dom";
+
 
 const AddStudent = () => {
   const { student, setStudent} = useStudent();
@@ -23,11 +25,15 @@ const AddStudent = () => {
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (student) {
-      navigate("/user-profile");
-    }
-  }, [student, navigate]);
+
+const location = useLocation();
+
+useEffect(() => {
+  if (student && location.pathname !== "/user-profile") {
+    navigate("/user-profile");
+  }
+}, [student, navigate, location.pathname]);
+
 
   const handleChange = (e) => {
     setFormData((prev) => ({

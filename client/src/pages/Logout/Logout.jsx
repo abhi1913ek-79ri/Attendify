@@ -3,10 +3,11 @@ import './Logout.css';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../../store/AuthContext';
 import { useStudent } from '../../store/StudentContext';
+import AuthPrompt from '../../components/AuthPrompt/AuthPrompt';
 
 const Logout = () => {
   const navigate = useNavigate();
-  const { clearUser } = useAuth();
+  const { user, clearUser } = useAuth();
   const { clearStudent } = useStudent();
 
   const handleLogout = () => {
@@ -15,6 +16,17 @@ const Logout = () => {
     clearStudent();
     navigate('/Login');
   };
+
+  if(!user){
+     return (
+      <div className="user-profile-not-logged">
+        <AuthPrompt
+          message={"You are not logged in"}
+          purpose={"view your profile"}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="logout-container">

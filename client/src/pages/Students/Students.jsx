@@ -35,10 +35,15 @@ const Students = () => {
     isCritical: "",
   });
 
-  // Set filtered students initially
-  useEffect(() => {
+useEffect(() => {
+  fetchAllStudentsAttendance(true);
+}, []);
+
+useEffect(() => {
+  if (allStudentsAttendance && allStudentsAttendance.length > 0) {
     setFilteredStudents(allStudentsAttendance);
-  }, [allStudentsAttendance]);
+  }
+}, [allStudentsAttendance]);
 
 
   const handleSearch = () => {
@@ -55,19 +60,6 @@ const Students = () => {
     fetchAllStudentsAttendance(true); // Force refresh
   };
 
-  // Show loading state while fetching attendance data
-  if (isLoadingAttendance) {
-    return (
-      <div className="students">
-        <div className="students-heading">
-          🎓 Attendance Dashboard – All Students Overview
-        </div>
-        <div className="flex justify-center items-center py-20">
-          <div className="text-lg">Loading attendance data...</div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="students">
@@ -75,7 +67,7 @@ const Students = () => {
         🎓 Attendance Dashboard – All Students Overview
         <button 
           onClick={handleRefresh}
-          className="ml-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+          className="!ml-4 !px-4 !py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm cursor-pointer"
         >
           Refresh Data
         </button>

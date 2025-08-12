@@ -68,7 +68,7 @@ export const AttendanceProvider = ({ children }) => {
   const isOverallCritical = overallStats.percentage < 75;
 
   return (
-    <AttendanceContext.Provider value={{ attendanceData,setAttendanceData, overallStats, isOverallCritical}}>
+    <AttendanceContext.Provider value={{ attendanceData,setAttendanceData, fetchAttendanceData, overallStats, isOverallCritical}}>
       {children}
     </AttendanceContext.Provider>
   );
