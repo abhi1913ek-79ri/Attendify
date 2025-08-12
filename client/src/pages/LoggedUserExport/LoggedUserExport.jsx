@@ -12,8 +12,13 @@ const LoggedUserExport = () => {
   const { user } = useAuth();
   const { student } = useStudent();
   const { attendanceData, overallStats, isOverallCritical } = useAttendance();
-  const [fromDate, setFromDate] = useState('2025-07-01');
-  const [toDate, setToDate] = useState('2025-08-01');
+
+  const formatToDate = (date) => {
+  return date.toISOString().split("T")[0]; // YYYY-MM-DD
+};
+
+  const [fromDate, setFromDate] = useState('2025-08-01');
+  const [toDate, setToDate] = useState(() => formatToDate(new Date()));     // today's date
   const [isGenerating, setIsGenerating] = useState(false);
 
   if (!user) {
@@ -32,7 +37,8 @@ const LoggedUserExport = () => {
     );
   }
 
-  if (!student || !student?.subjects) {
+  // ✅ FIX 1: Check for attendanceData.subjects instead of student.subjects
+  if (!student || !attendanceData?.subjects) {
     return (
       <div className={styles.exportContainer}>
         <div className={styles.errorCard}>
@@ -125,21 +131,24 @@ const LoggedUserExport = () => {
         <div className={styles.overallStats}>
           <div className={styles.stat}>
             <BookOpen className="w-4 h-4" />
-           <span>{student?.subjects ? Object.keys(student.subjects).length : 0} Subjects</span>
-
+            {/* ✅ FIX 2: Use attendanceData.subjects instead of student.subjects */}
+            <span>{attendanceData?.subjects ? Object.keys(attendanceData.subjects).length : 0} Subjects</span>
           </div>
           <div className={styles.stat}>
             <Clock className="w-4 h-4" />
             <span>{overallStats?.totalClasses ?? 0} Total Classes</span>
           </div>
           <div className={`${styles.stat} ${parseFloat(overallStats?.percentage) >= 75 ? styles.good : styles.critical}`}>
-            {parseFloat(student.attendancePercentage) >= 75 ? 
+            {/* ✅ FIX 3: Use overallStats.percentage instead of student.attendancePercentage */}
+            {parseFloat(overallStats?.percentage) >= 75 ? 
               <CheckCircle className="w-4 h-4" /> : 
               <XCircle className="w-4 h-4" />
             }
-            <span> {overallStats?.percentage != null
-                  ? `${overallStats.percentage.toFixed(1)}%`
-                  : "0.0%"}% Attendance</span>
+            <span>
+              {overallStats?.percentage != null
+                ? `${overallStats.percentage.toFixed(1)}%`
+                : "0.0%"} Attendance
+            </span>
           </div>
         </div>
       </div>
