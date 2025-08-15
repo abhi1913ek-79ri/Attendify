@@ -37,28 +37,32 @@ export const StudentProvider = ({ children }) => {
 
 
   const fetchAllStudents = async () => {
-    setIsStudentLoading(true);
     try {
       const res = await axiosInstance.get(API_PATHS.STUDENT.GET_ALL_STUDENTS);
       setAllStudents(res.data);
     } catch (err) {
       console.error('Failed to fetch students:', err);
       setAllStudents([]);
-    } finally {
-      setIsStudentLoading(false);
     }
   };
 
   useEffect(() => {
       fetchAllStudents();
-      setIsStudentLoading(false);
   }, []); // ✅ Depend on user
 
  
   const clearStudent = () => setStudent(null);
 
   return (
-    <StudentContext.Provider value={{ student, setStudent, isStudentLoading, clearStudent, allStudents, fetchStudent }}>
+    <StudentContext.Provider value={{ 
+      student, 
+      setStudent, 
+      isStudentLoading, 
+      clearStudent, 
+      allStudents, 
+      fetchStudent,
+      fetchAllStudents 
+    }}>
       {children}
     </StudentContext.Provider>
   );

@@ -11,6 +11,7 @@ import axiosInstance from "../../utils/axiosInstance.js";
 import { API_PATHS } from "../../utils/ApiPaths.js";
 import { useState, useEffect } from "react";
 import SkeletonLoader from '../../components/Loader/SkeletonLoader.jsx'
+import ProfileImage from "../../components/ProfileImage/ProfileImage.jsx";
 
 const StudentProfile = () => {
   const { studentId } = useParams();
@@ -27,7 +28,6 @@ const StudentProfile = () => {
     return '-';
   }
 
-  console.log('Daily attendance data:', attendanceData.daily);
 
   let dailyData = {};
 
@@ -43,7 +43,6 @@ const StudentProfile = () => {
     .map(([key]) => key.split('_')[1]) // take only date
     .sort((a, b) => new Date(b) - new Date(a));
 
-  console.log('Present dates:', presentDates);
   return presentDates.length > 0 ? presentDates[0] : '-';
 };
 
@@ -153,7 +152,13 @@ useEffect(() => {
       <div className="profile-container">
         <div className="flex flex-col justify-between items-center space-y-2">
           <div className="profile-image-container">
-            <img src={assets.placeHolder.profile_placeholder_image} alt="profile" className="profile-image" />
+            <ProfileImage 
+                imageUrl={currentStudent?.profileImageUrl}
+                name={currentStudent?.name}
+                size="w-24 h-24"
+                textSize="text-2xl"
+                className="profile-image"
+              />
           </div>
           <h2 className="profile-heading">{currentStudent?.name} ( {currentStudent?.rollNo} )</h2>
         </div>
@@ -179,7 +184,7 @@ useEffect(() => {
           <p className="text-gray-600">
             <span className="label">Attendance:</span><span className="value"> {overallStats?.percentage != null
                   ? `${overallStats.percentage.toFixed(1)}%`
-                  : "0.0%"}%</span>
+                  : "0.0%"}</span>
           </p>
 
         </div>

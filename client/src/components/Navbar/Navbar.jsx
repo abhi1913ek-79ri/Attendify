@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { assets } from "../../assets/assets";
 import {
@@ -12,39 +12,65 @@ import {
   Menu,
   X
 } from "lucide-react";
+import { useAuth } from "../../store/AuthContext";
 
 const Navbar = () => {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const { user, clearUser } = useAuth();
 
-  // Navigation items for desktop
-  const navItems = [
+  // Desktop nav items
+  const authNavItems = [
     { to: "/", icon: Home, label: "Home" },
     { to: "/mark-attendance", icon: CheckCheckIcon, label: "Mark-Attendance" },
     { to: "/view", icon: View, label: "View" },
     { to: "/export", icon: DownloadCloudIcon, label: "Export" },
   ];
 
-  // Mobile menu items (includes additional items)
-  const mobileNavItems = [
-    ...navItems,
-    { 
-      to: "/logged-user-export", 
-      icon: DownloadCloudIcon, 
-      label: "Export Your Record" 
-    },
+  const guestNavItems = [
+    { to: "/", icon: Home, label: "Home" },
+    { to: "/view", icon: View, label: "View" },
+  ];
+
+  const navItems = user ? authNavItems : guestNavItems;
+
+  // Mobile menu items
+  const authMobileNavItems = [
+    ...authNavItems,
+    { to: "/logged-user-export", icon: DownloadCloudIcon, label: "Export Your Record" },
     { divider: true },
     { to: "/students", icon: User, label: "Students" },
     { to: "/settings", icon: Settings, label: "Settings" },
   ];
 
-  // Avatar dropdown items
-  const avatarDropdownItems = [
-    { to: "/login", label: "Login" },
-    { to: "/register", label: "Register" },
-    { to: "/user-profile", label: "Profile" },
+  const guestMobileNavItems = [
+    ...guestNavItems,
+    { divider: true },
+    { to: "/login", icon: User, label: "Login" },
+    { to: "/register", icon: User, label: "Register" },
   ];
 
+  const mobileNavItems = user ? authMobileNavItems : guestMobileNavItems;
+
+  // Avatar dropdown items
+  const avatarDropdownItems = user
+    ? [
+        { to: "/user-profile", label: "Profile" },
+        { to: "/settings", label: "Settings" },
+        { label: "Logout", action: "logout" },
+      ]
+    : [
+        { to: "/login", label: "Login" },
+        { to: "/register", label: "Register" },
+      ];
+
+  const handleLogout = () => {
+    clearUser?.();
+    setIsAvatarOpen(false);
+    setIsMenuOpen(false);
+    navigate("/login");
+  };
   const handleMenuToggle = () => {
     setIsMenuOpen(!isMenuOpen);
     setIsAvatarOpen(false);
@@ -108,7 +134,7 @@ const Navbar = () => {
               outline: "none"
             })}
           >
-            <item.icon />
+            {item.icon ? <item.icon /> : null}
             {item.label}
           </NavLink>
         ))}
@@ -125,16 +151,24 @@ const Navbar = () => {
         {isAvatarOpen && (
           <div className="avatar-dropdown">
             <div className="dropdown-arrow"></div>
-            {avatarDropdownItems.map((item) => (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                onClick={() => setIsAvatarOpen(false)}
-              >
-                {item.label}
-              </NavLink>
-            ))}
-            <button className="logout-btn">Logout</button>
+            {avatarDropdownItems.map((item, idx) => {
+              if (item.action === "logout") {
+                return (
+                  <button key={`action-${idx}`} className="logout-btn" onClick={handleLogout}>
+                    {item.label}
+                  </button>
+                );
+              }
+              return (
+                <NavLink
+                  key={item.to || idx}
+                  to={item.to}
+                  onClick={() => setIsAvatarOpen(false)}
+                >
+                  {item.label}
+                </NavLink>
+              );
+            })}
           </div>
         )}
       </div>
@@ -142,7 +176,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="mobile-menu">
-          {mobileNavItems.map((item, index) => {
+      {mobileNavItems.map((item, index) => {
             if (item.divider) {
               return <hr key={`divider-${index}`} className="text-gray-300" />;
             }
@@ -153,7 +187,7 @@ const Navbar = () => {
                 to={item.to}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <item.icon />
+        {item.icon ? <item.icon /> : null}
                 {item.label}
               </NavLink>
             );

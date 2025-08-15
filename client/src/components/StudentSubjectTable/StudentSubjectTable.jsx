@@ -5,8 +5,6 @@ import { useAttendance } from '../../store/AttendanceContext';
 
 const StudentSubjectTable = ({ student , attendanceData, overallStats, isOverallCritical}) => {
     
-    // Debug logs to see what data we're receiving
-    console.log('StudentSubjectTable - student:', student);
 
     // Get subjects from student.subjects Map (keys are subject names)
     const getSubjectsList = () => {
@@ -60,8 +58,6 @@ const StudentSubjectTable = ({ student , attendanceData, overallStats, isOverall
     return '-';
   }
 
-  console.log('Daily attendance data:', attendanceData.daily);
-
   let dailyData = {};
 
   if (attendanceData.daily instanceof Map) {
@@ -76,7 +72,6 @@ const StudentSubjectTable = ({ student , attendanceData, overallStats, isOverall
     .map(([key]) => key.split('_')[1]) // take only date
     .sort((a, b) => new Date(b) - new Date(a));
 
-  console.log('Present dates:', presentDates);
   return presentDates.length > 0 ? presentDates[0] : '-';
 };
 

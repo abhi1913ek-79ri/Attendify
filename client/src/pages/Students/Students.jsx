@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { SUBJECT_NAMES } from "../../config/subjectConfig";
 import "./Students.css";
 import Card from "../../components/Card/Card";
 import {
@@ -25,6 +26,18 @@ const Students = () => {
   
   const [loading, setLoading] = useState(false);
   const [filteredStudents, setFilteredStudents] = useState([]);
+  
+  // Build subjects list: prefer static catalog names; fallback to dynamic unique subjects from backend
+  const subjectsOptions = useMemo(() => {
+    if (Array.isArray(SUBJECT_NAMES) && SUBJECT_NAMES.length > 0) {
+      return SUBJECT_NAMES;
+    }
+    const set = new Set();
+    (allStudentsAttendance || []).forEach((stu) => {
+      (stu.subjects || []).forEach((s) => set.add(s));
+    });
+    return Array.from(set).sort((a, b) => a.localeCompare(b));
+  }, [allStudentsAttendance]);
 
   // filter logic
   const [filters, setFilters] = useState({
@@ -35,31 +48,38 @@ const Students = () => {
     isCritical: "",
   });
 
-useEffect(() => {
-  fetchAllStudentsAttendance(true);
-}, []);
+  useEffect(() => {
+    fetchAllStudentsAttendance(true);
+  }, []);
 
-useEffect(() => {
-  if (allStudentsAttendance && allStudentsAttendance.length > 0) {
-    setFilteredStudents(allStudentsAttendance);
-  }
-}, [allStudentsAttendance]);
-
+  useEffect(() => {
+    if (allStudentsAttendance && allStudentsAttendance.length > 0) {
+      setFilteredStudents(allStudentsAttendance);
+    }
+  }, [allStudentsAttendance]);
 
   const handleSearch = () => {
     setLoading(true);
-    setTimeout(() => {
-      const result = filterStudents(allStudentsAttendance, filters);
-      setFilteredStudents(result);
-      setLoading(false);
-    }, 1000);
+    const result = filterStudents(allStudentsAttendance, filters);
+    setFilteredStudents(result);
+    setLoading(false);
+  };
+
+  const handleReset = () => {
+    setFilters({
+      subject: "",
+      fromDate: "",
+      toDate: "",
+      searchTerm: "",
+      isCritical: "",
+    });
+    setFilteredStudents(allStudentsAttendance || []);
   };
 
   // Refresh button handler
   const handleRefresh = () => {
     fetchAllStudentsAttendance(true); // Force refresh
   };
-
 
   return (
     <div className="students">
@@ -123,19 +143,22 @@ useEffect(() => {
       </div>
 
       <div className="control-and-filter-section">
-        {/* Uncomment when ControlSection is working
         <ControlSection
           filters={filters}
           setFilters={setFilters}
           onSearch={handleSearch}
-          subjects={SUBJECTS}
-        /> */}
+          onReset={handleReset}
+          onRefresh={handleRefresh}
+          isSearching={loading}
+          isRefreshing={isLoadingAttendance}
+          subjects={subjectsOptions}
+        />
       </div>
 
       <div className="student-table">
         <StudentTable 
           students={filteredStudents} 
-          loading={loading} 
+          loading={loading || isLoadingAttendance} 
         />
       </div>
     </div>

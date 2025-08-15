@@ -11,6 +11,8 @@ export const API_PATHS = {
     ADD: "/api/student/add",
     GET_ALL_STUDENTS: "/api/student/getAllStudents",
     GET_BY_ID: (id) => `/api/student/${id}`, // Get student by ID
+    UPDATE_PROFILE_IMAGE: "/api/student/profile-image", // Update profile image
+    DELETE_PROFILE_IMAGE: "/api/student/profile-image", // Delete profile image
   },
   ATTENDANCE: {
     GET_ATTENDANCE: '/api/attendance/:studentId',

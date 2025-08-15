@@ -2,6 +2,7 @@ import React from 'react';
 import './StudentTable.css';
 import { AlertTriangle, SmileIcon } from 'lucide-react';
 import Loader from '../Loader/Loader';
+import ProfileImage from '../ProfileImage/ProfileImage';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 
@@ -48,7 +49,7 @@ const getLastMarkedDate = (attendance) => {
           <thead className="text-[#F9F9FB] bg-blue-950">
             <tr>
               <th className="table-rows">#</th>
-              <th className="table-rows">Name</th>
+              <th className="table-rows">Student</th>
               <th className="table-rows">Roll No</th>
               <th className="table-rows">Total Days</th>
               <th className="table-rows">Present</th>
@@ -88,7 +89,20 @@ const getLastMarkedDate = (attendance) => {
                     } cursor-pointer hover-scale-y-only`}
                   >
                     <td className="table-rows">{index + 1}</td>
-                    <td className="px-3 text-start">{student?.name || 'N/A'}</td>
+                    <td className="px-3 py-2">
+                      <div className="flex items-center space-x-3">
+                        {/* <ProfileImage 
+                          imageUrl={student?.profileImageUrl}
+                          name={student?.name}
+                          size="w-10 h-10"
+                          textSize="text-sm"
+                        /> */}
+                        <div className="flex flex-col">
+                          <span className="font-medium text-gray-900">{student?.name || 'N/A'}</span>
+                          <span className="text-sm text-gray-500">{student?.studentId || 'N/A'}</span>
+                        </div>
+                      </div>
+                    </td>
                     <td className="table-rows">{student?.rollNo || 'N/A'}</td>
                     <td className="table-rows">{student?.overall?.total || 0}</td>
                     <td className="table-rows">{student?.overall?.present || 0}</td>

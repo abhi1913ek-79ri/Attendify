@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import { useStudent } from "../../store/StudentContext";
 import { useLocation } from "react-router-dom";
+import { SUBJECT_CATALOG, NAME_TO_CODE, CODE_TO_NAME, SUBJECT_NAMES } from "../../config/subjectConfig";
 
 
 const AddStudent = () => {
@@ -16,13 +17,14 @@ const AddStudent = () => {
     name: "",
     rollNo: "",
     studentId: "",
-    // profileImageUrl: '',
     subjects: {}, // will be populated from inputs
   });
 
   const navigate = useNavigate();
+  // subjectInputs: { key: subjectName, value: subjectCode }
   const [subjectInputs, setSubjectInputs] = useState([{ key: "", value: "" }]);
-  const [image, setImage] = useState("");
+  const [profileImage, setProfileImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [loading, setLoading] = useState(false);
 
 
@@ -43,9 +45,19 @@ useEffect(() => {
   };
 
   const handleSubjectChange = (index, field, value) => {
-    const updatedSubjects = [...subjectInputs];
-    updatedSubjects[index][field] = value;
-    setSubjectInputs(updatedSubjects);
+    const updated = [...subjectInputs];
+    // If user selects a known subject name, auto-fill its code
+    if (field === 'key') {
+      const name = value;
+      const autoCode = NAME_TO_CODE[name] || updated[index].value;
+      updated[index] = { key: name, value: autoCode };
+    } else if (field === 'value') {
+      // If user types a known code, auto-fill the name
+      const code = value;
+      const autoName = CODE_TO_NAME[code] || updated[index].key;
+      updated[index] = { key: autoName, value: code };
+    }
+    setSubjectInputs(updated);
   };
 
   const addSubjectField = () => {
@@ -58,35 +70,89 @@ useEffect(() => {
     setSubjectInputs(updated);
   };
 
+  // Image handling functions
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select a valid image file');
+        return;
+      }
+      
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size should be less than 5MB');
+        return;
+      }
+
+      setProfileImage(file);
+      
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setProfileImage(null);
+    setImagePreview("");
+    // Clear the file input
+    const fileInput = document.getElementById('profileImageInput');
+    if (fileInput) fileInput.value = '';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Convert subjectInputs to an object
+    // Convert subjectInputs to an object: { [subjectName]: subjectCode }
     const subjectsObject = {};
     subjectInputs.forEach(({ key, value }) => {
-      if (key.trim()) {
-        subjectsObject[key.trim()] = value.trim();
+      const name = key?.trim();
+      const code = value?.trim();
+      if (name) {
+        // If name matches catalog and code is missing, auto derive
+        const finalCode = code || NAME_TO_CODE[name] || '';
+        subjectsObject[name] = finalCode;
       }
     });
 
     try {
-      const payload = {
-        ...formData,
-        subjects: subjectsObject,
-      };
+      // Create FormData to handle file upload
+      const formDataPayload = new FormData();
+      formDataPayload.append('name', formData.name);
+      formDataPayload.append('rollNo', formData.rollNo);
+      formDataPayload.append('studentId', formData.studentId);
+      formDataPayload.append('subjects', JSON.stringify(subjectsObject));
+      
+      // Add profile image if selected
+      if (profileImage) {
+        formDataPayload.append('profileImage', profileImage);
+      }
+
       setLoading(true);
-      const res = await axiosInstance.post(API_PATHS.STUDENT.ADD, payload);
+      const res = await axiosInstance.post(API_PATHS.STUDENT.ADD, formDataPayload, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
       toast.success("Student added successfully");
       setStudent(res.data);
       navigate("/user-profile");
+      
+      // Reset form
       setFormData({
         name: "",
         rollNo: "",
         studentId: "",
-        // profileImageUrl: '',
         subjects: {},
       });
       setSubjectInputs([{ key: "", value: "" }]);
+      removeImage();
     } catch (error) {
       const firstErr =
         error.response?.data?.errors?.[0]?.msg || "Error adding student";
@@ -96,14 +162,30 @@ useEffect(() => {
     }
   };
 
+    const handleFormKeyDown = (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
+  };
+
   return (
     <div className="form-container">
       <h2 className="form-title">Add As Student</h2>
-      <form onSubmit={handleSubmit} className="form">
-        <input type="file" accept="image/*" className="hidden" />
+      <form onSubmit={handleSubmit} onKeyDown={handleFormKeyDown} className="form">
+        {/* Profile Image Upload */}
+        <input 
+          type="file" 
+          id="profileImageInput"
+          accept="image/*" 
+          onChange={handleImageChange}
+          className="hidden" 
+        />
         <div className="img-upload">
-          {!image ? (
-            <div className="w-21 h-21 flex justify-center items-center bg-sky-100 rounded-full relative cursor-pointer">
+          {!imagePreview ? (
+            <div 
+              className="w-21 h-21 flex justify-center items-center bg-sky-100 rounded-full relative cursor-pointer"
+              onClick={() => document.getElementById('profileImageInput').click()}
+            >
               <LuUser className="text-4xl text-indigo-500" />
               <button
                 type="button"
@@ -115,13 +197,13 @@ useEffect(() => {
           ) : (
             <div className="relative">
               <img
-                src={preview || previewUrl}
+                src={imagePreview}
                 alt="profile photo"
                 className="w-21 h-21 rounded-full object-cover border-2 border-orange-200"
               />
               <button
                 type="button"
-                onClick={handleRemoveImage}
+                onClick={removeImage}
                 className="w-9 h-9 bg-rose-500 flex items-center justify-center text-white rounded-full absolute -bottom-2 -right-2 cursor-pointer"
               >
                 <LuTrash />
@@ -173,22 +255,22 @@ useEffect(() => {
           <label className="form-label">Subjects</label>
           {subjectInputs.map((input, index) => (
             <div key={index} className="subject-row">
+              {/* Code input with datalist */}
               <input
+                list="subject-codes"
                 type="text"
                 placeholder="Subject Code"
                 value={input.value}
-                onChange={(e) =>
-                  handleSubjectChange(index, "value", e.target.value)
-                }
+                onChange={(e) => handleSubjectChange(index, "value", e.target.value)}
                 className="form-input"
               />
-               <input
+              {/* Name input with datalist */}
+              <input
+                list="subject-names"
                 type="text"
-                placeholder="Subject"
+                placeholder="Subject Name"
                 value={input.key}
-                onChange={(e) =>
-                  handleSubjectChange(index, "key", e.target.value)
-                }
+                onChange={(e) => handleSubjectChange(index, "key", e.target.value)}
                 className="form-input"
               />
               <button
@@ -200,6 +282,17 @@ useEffect(() => {
               </button>
             </div>
           ))}
+          {/* Datalists for suggestions */}
+          <datalist id="subject-names">
+            {SUBJECT_NAMES.map((n) => (
+              <option key={n} value={n} />
+            ))}
+          </datalist>
+          <datalist id="subject-codes">
+            {SUBJECT_CATALOG.map((s) => (
+              <option key={s.code} value={s.code}>{s.name}</option>
+            ))}
+          </datalist>
           <button
             type="button"
             onClick={addSubjectField}
