@@ -75,6 +75,24 @@ const formatDate = (dateStr) => {
   return new Date(dateStr).toLocaleDateString('en-IN', options);
 };
 
+// 🔹 GET ALL DATES BETWEEN range (inclusive) in YYYY-MM-DD
+const getDatesInRange = (from, to) => {
+  const dates = [];
+  let curr = new Date(from);
+  const end = new Date(to);
+  // normalize time to avoid DST issues
+  curr.setHours(0,0,0,0);
+  end.setHours(0,0,0,0);
+  while (curr <= end) {
+    const y = curr.getFullYear();
+    const m = String(curr.getMonth() + 1).padStart(2, '0');
+    const d = String(curr.getDate()).padStart(2, '0');
+    dates.push(`${y}-${m}-${d}`);
+    curr.setDate(curr.getDate() + 1);
+  }
+  return dates;
+};
+
 // 🔹 MAIN PDF GENERATOR
 export const generateAttendancePDF = async (
   studentData,
@@ -153,15 +171,22 @@ export const generateAttendancePDF = async (
       margin: { left: 14 }
     });
 
-    // DAILY RECORDS
+    // DAILY RECORDS - iterate the requested date range and show Present/Absent (P/A)
+    const dateRange = getDatesInRange(fromDate, toDate);
     Object.keys(attendanceData?.subjects || {}).forEach((subject) => {
       if (doc.lastAutoTable.finalY > 250) doc.addPage();
       doc.setFontSize(11).setFont('helvetica', 'bold').setTextColor(70, 130, 180).text(`DAILY ATTENDANCE RECORD - ${subject.toUpperCase()}`, 14, doc.lastAutoTable.finalY + 15);
-      const detailRows = getPresentDatesForSubject(subject, attendanceData).map((date, idx) => {
+
+      const detailRows = dateRange.map((date, idx) => {
         const d = new Date(date);
         const day = d.toLocaleDateString('en-IN', { weekday: 'long' });
-        return [idx + 1, formatDate(date), day, 'Present', 'P', 'Regular Class'];
-      });
+        const key = `${subject}_${date}`;
+        const statusRaw = (attendanceData?.daily && attendanceData.daily[key]) || null;
+        const statusText = statusRaw === 'present' ? 'Present' : statusRaw === 'absent' ? 'Absent' : '-';
+        const mark = statusRaw === 'present' ? 'P' : statusRaw === 'absent' ? 'A' : '-';
+        return [idx + 1, formatDate(date), day, statusText, mark, statusRaw ? 'Recorded' : 'No data'];
+      }).filter(row => row[3] !== '-' ); // only include rows with recorded status
+
       autoTable(doc, {
         startY: doc.lastAutoTable.finalY + 20,
         headStyles: { fillColor: [105, 105, 105], textColor: 255, fontStyle: 'bold', fontSize: 9, halign: 'center' },

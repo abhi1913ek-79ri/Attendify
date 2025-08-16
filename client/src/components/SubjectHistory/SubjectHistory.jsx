@@ -27,6 +27,17 @@ const SubjectHistory = ({ student, attendanceData}) => {
       <div className="subject-wise-history-container">
         {Object.keys(attendanceData.subjects).map((subjectName, idx) => {
           const presentDates = getPresentDatesForSubject(subjectName);
+          // build a date -> status map for this subject (present/absent)
+          const dailyData = attendanceData.daily instanceof Map
+            ? Object.fromEntries(attendanceData.daily)
+            : attendanceData.daily || {};
+          const dateStatusMap = Object.entries(dailyData)
+            .filter(([key]) => key.startsWith(`${subjectName}_`))
+            .reduce((acc, [key, status]) => {
+              const date = key.split('_')[1];
+              acc[date] = status;
+              return acc;
+            }, {});
 
           return (
             <div
@@ -56,6 +67,7 @@ const SubjectHistory = ({ student, attendanceData}) => {
               <div className="subject-wise-history-calender">
                 <StudentHeatmapCalendar
                   presentDates={presentDates}
+                  dateStatusMap={dateStatusMap}
                   title={`${subjectName} Attendance History`}
                 />
               </div>

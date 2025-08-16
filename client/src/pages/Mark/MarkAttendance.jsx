@@ -175,7 +175,7 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
     const newAction = {
       id: Date.now(),
       subject,
-      action, // 'marked', 'unmarked', or 'class_added'
+      action, // 'marked' or 'absent'
       date,
       timestamp,
       duration,
@@ -302,7 +302,8 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
     try {
       const response = await updateAttendanceInBackend(updatedData);
       setAttendanceData(response.data || response);
-      addTodaysAction(subject, "class_added", date, durationHours);
+      // Record action as 'marked' (present) or 'absent' instead of 'class_added'
+      addTodaysAction(subject, isPresent ? "marked" : "absent", date, durationHours);
       toast.success(
         `${durationHours}hr class added for ${subject} on ${date}!`
       );
@@ -450,9 +451,10 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
     // Step 4: Save
     try {
       const response = await updateAttendanceInBackend(updatedData);
-      setAttendanceData(response.data || response);
-      addTodaysAction(subject, "unmarked", dateToUse, classDurationHours);
-      toast.success(`Attendance unmarked for ${subject} on ${dateToUse}!`);
+  setAttendanceData(response.data || response);
+  // Remove any today's action for this subject/date so it doesn't show in Today's Actions
+  setTodaysActions((prev) => prev.filter((a) => !(a.subject === subject && a.date === dateToUse)));
+  toast.success(`Attendance unmarked for ${subject} on ${dateToUse}!`);
     } catch (error) {
       // Error already handled in updateAttendanceInBackend
     }
@@ -717,27 +719,18 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
                       <td className="text-start">
                         <span
                           className={`status-badge ${
-                            action.action === "marked"
-                              ? "status-present"
-                              : action.action === "class_added"
-                              ? "status-info"
-                              : "status-absent"
+                            action.action === "marked" ? "status-present" : "status-absent"
                           }`}
                         >
                           {action.action === "marked" ? (
                             <>
                               <Check className="status-icon" />
-                              Marked
-                            </>
-                          ) : action.action === "class_added" ? (
-                            <>
-                              <Plus className="status-icon" />
-                              Class Added
+                              Present
                             </>
                           ) : (
                             <>
                               <X className="status-icon" />
-                              Unmarked
+                              Absent
                             </>
                           )}
                         </span>

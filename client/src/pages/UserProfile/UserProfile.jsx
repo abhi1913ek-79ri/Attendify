@@ -324,10 +324,28 @@ const UserProfile = () => {
           />
         </div>
         <div className="student-calendar">
-          <StudentHeatmapCalendar
-            presentDates={calculateOverallPresentDates(attendanceData)}
-            title={"Overall Attendance History"}
-          />
+          {
+            // Build overall dateStatusMap: any recorded date (present or absent) -> 'marked'
+            (() => {
+              const dailyData = attendanceData?.daily instanceof Map ? Object.fromEntries(attendanceData.daily) : attendanceData?.daily || {};
+              const overallDateStatus = Object.keys(dailyData).reduce((acc, key) => {
+                const parts = key.split('_');
+                if (parts.length >= 2) {
+                  const date = parts.slice(-1)[0];
+                  acc[date] = 'marked';
+                }
+                return acc;
+              }, {});
+
+              return (
+                <StudentHeatmapCalendar
+                  presentDates={calculateOverallPresentDates(attendanceData)}
+                  dateStatusMap={overallDateStatus}
+                  title={"Overall Attendance History"}
+                />
+              );
+            })()
+          }
         </div>
 
         <div className="subject-wise-attendance-history">
