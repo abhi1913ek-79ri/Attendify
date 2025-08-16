@@ -8,9 +8,15 @@ import {
   Home,
   Settings,
   User,
+  UserPlus,
   View,
+  School,
   Menu,
-  X
+  X,
+  LogIn,
+  UserCheck,
+  ArrowBigDownDash,
+  LogOut
 } from "lucide-react";
 import { useAuth } from "../../store/AuthContext";
 
@@ -40,15 +46,19 @@ const Navbar = () => {
     ...authNavItems,
     { to: "/logged-user-export", icon: DownloadCloudIcon, label: "Export Your Record" },
     { divider: true },
-    { to: "/students", icon: User, label: "Students" },
+    { to: "/user-profile", icon: UserCheck, label: "Profile" },
+    { to: "/students", icon: School, label: "Students" },
+    { to: "/logged-user-export", icon: ArrowBigDownDash, label: "Export Your Record" },
     { to: "/settings", icon: Settings, label: "Settings" },
+    { to: "/logout", icon: LogOut, label: "Logout" },
   ];
 
   const guestMobileNavItems = [
     ...guestNavItems,
     { divider: true },
-    { to: "/login", icon: User, label: "Login" },
-    { to: "/register", icon: User, label: "Register" },
+    { to: "/students", icon: School, label: "students" },
+    { to: "/login", icon: LogIn, label: "Login" },
+    { to: "/register", icon: UserPlus, label: "Register" },
   ];
 
   const mobileNavItems = user ? authMobileNavItems : guestMobileNavItems;
