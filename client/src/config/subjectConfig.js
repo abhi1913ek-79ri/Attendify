@@ -6,6 +6,7 @@ export const SUBJECTS = ['DBMS', 'OS', 'DSA', 'CN', 'Maths', 'AI', 'ML'];
 export const SUBJECT_CATALOG = [
 	{ code: 'ICT311', name: 'Artificial Intelligence' },
 	{ code: 'ICT301', name: 'Digital Signal Processing' },
+	{ code: 'ICT303', name: 'Compiler Design' },
 	{ code: 'ITE329', name: 'System Analysis and Design' },
 	{ code: 'ITE301', name: 'Statistics, Statistical Modelling & Data Analytics' },
 	{ code: 'ITE311', name: 'Software Measurements, Metrics, and Modelling' },

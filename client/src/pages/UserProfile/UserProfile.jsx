@@ -60,6 +60,12 @@ const UserProfile = () => {
     }
   }, [user, isAuthLoading]);
 
+  useEffect(() => {
+    // Only navigate if we're sure about the authentication state and student data
+    if (!isAuthLoading && !isStudentLoading && user && !student && location.pathname !== "/add-student") {
+      navigate("/add-student");
+    }
+  }, [student, user, navigate, location.pathname, isAuthLoading, isStudentLoading]);
 
   // Show loading while authentication is being checked
   if (isAuthLoading) {
