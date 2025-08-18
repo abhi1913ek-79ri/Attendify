@@ -30,13 +30,13 @@ const Navbar = () => {
   const authNavItems = [
     { to: "/", icon: Home, label: "Home" },
     { to: "/mark-attendance", icon: CheckCheckIcon, label: "Mark-Attendance" },
-    { to: "/view", icon: View, label: "View" },
-    { to: "/export", icon: DownloadCloudIcon, label: "Export" },
+    // { to: "/view", icon: View, label: "View" },
+    // { to: "/export", icon: DownloadCloudIcon, label: "Export" },
   ];
 
   const guestNavItems = [
     { to: "/", icon: Home, label: "Home" },
-    { to: "/view", icon: View, label: "View" },
+    // { to: "/view", icon: View, label: "View" },
   ];
 
   const navItems = user ? authNavItems : guestNavItems;
@@ -44,7 +44,7 @@ const Navbar = () => {
   // Mobile menu items
   const authMobileNavItems = [
     ...authNavItems,
-    { to: "/logged-user-export", icon: DownloadCloudIcon, label: "Export Your Record" },
+    // { to: "/logged-user-export", icon: DownloadCloudIcon, label: "Export Your Record" },
     { divider: true },
     { to: "/user-profile", icon: UserCheck, label: "Profile" },
     { to: "/students", icon: School, label: "Students" },

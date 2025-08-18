@@ -9,6 +9,7 @@ const {
   deleteProfileImage,
   testUpload
 } = require('../controllers/StudentController');
+const { updateSubjects } = require('../controllers/StudentController');
 const protect = require('../middlewares/authMiddleware'); // your JWT middleware
 const { uploadSingle } = require('../config/cloudinary');
 
@@ -22,5 +23,8 @@ router.get('/:studentId', getStudentById);
 // Image management routes
 router.put('/profile-image', protect, uploadSingle('profileImage'), updateProfileImage);
 router.delete('/profile-image', protect, deleteProfileImage);
+
+// Update subjects - add or remove subjects for the logged in student's profile
+router.patch('/subjects', protect, express.json(), updateSubjects);
 
 module.exports = router;

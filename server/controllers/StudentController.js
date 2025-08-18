@@ -1,4 +1,5 @@
 const Student = require('../models/Student');
+const Attendance = require('../models/Attendance');
 const { deleteImage, extractPublicId } = require('../config/cloudinary');
 
 // Test endpoint for file upload debugging
@@ -188,5 +189,107 @@ exports.deleteProfileImage = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+// Update subjects: add or remove subject entries on the student's subjects map
+exports.updateSubjects = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { add = {}, remove = [] } = req.body || {};
+
+    const student = await Student.findOne({ user: userId });
+    if (!student) return res.status(404).json({ message: 'Student not found', success: false });
+
+    // Ensure map exists
+    if (!student.subjects) student.subjects = {};
+
+    // Add/update subjects
+    Object.entries(add || {}).forEach(([name, code]) => {
+      if (name && code !== undefined) {
+        student.subjects.set ? student.subjects.set(name, code) : (student.subjects[name] = code);
+      }
+    });
+
+    // Remove specified subjects
+    (remove || []).forEach((name) => {
+      if (!name) return;
+      if (student.subjects.delete) student.subjects.delete(name);
+      else delete student.subjects[name];
+    });
+
+    await student.save();
+
+    // If any subjects were removed, purge their attendance entries from Attendance
+    if (Array.isArray(remove) && remove.length > 0) {
+      try {
+        const attendance = await Attendance.findOne({ student: student._id });
+        if (attendance) {
+          let changed = false;
+
+          // Remove daily keys that belong to removed subjects (keys like "Subject_YYYY-MM-DD")
+          for (const subj of remove) {
+            if (!subj) continue;
+            // attendance.daily is a Map
+            if (attendance.daily && typeof attendance.daily.forEach === 'function') {
+              const keysToDelete = [];
+              attendance.daily.forEach((val, key) => {
+                if (String(key).startsWith(`${subj}_`)) {
+                  keysToDelete.push(key);
+                }
+              });
+              keysToDelete.forEach((k) => {
+                attendance.daily.delete(k);
+                changed = true;
+              });
+            }
+
+            // Remove subject summary entry
+            if (attendance.subjects && typeof attendance.subjects.delete === 'function') {
+              if (attendance.subjects.has(subj)) {
+                attendance.subjects.delete(subj);
+                changed = true;
+              }
+            } else if (attendance.subjects && attendance.subjects[subj]) {
+              delete attendance.subjects[subj];
+              changed = true;
+            }
+          }
+
+          // Recalculate overall stats from remaining subjects
+          if (changed) {
+            let totalPresent = 0;
+            let totalClasses = 0;
+            if (attendance.subjects && typeof attendance.subjects.forEach === 'function') {
+              attendance.subjects.forEach((subVal) => {
+                totalPresent += (subVal.present || 0);
+                totalClasses += (subVal.total || 0);
+              });
+            } else if (attendance.subjects && typeof attendance.subjects === 'object') {
+              Object.values(attendance.subjects).forEach((subVal) => {
+                totalPresent += (subVal.present || 0);
+                totalClasses += (subVal.total || 0);
+              });
+            }
+
+            attendance.overall = {
+              present: totalPresent,
+              total: totalClasses,
+              percentage: totalClasses > 0 ? (totalPresent / totalClasses) * 100 : 0,
+            };
+
+            await attendance.save();
+          }
+        }
+      } catch (err) {
+        console.error('Error purging attendance for removed subjects:', err);
+        // don't fail the whole request if cleanup fails; return student update success
+      }
+    }
+
+    return res.status(200).json({ message: 'Subjects updated', student, success: true });
+  } catch (error) {
+    console.error('Error in updateSubjects:', error);
+    return res.status(500).json({ message: 'Server Error', success: false, error: error.message });
   }
 };

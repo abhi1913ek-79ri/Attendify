@@ -1,19 +1,30 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
-// 🔹 Get present dates for subject
-const getPresentDatesForSubject = (subjectName, attendanceData) => {
-  if (!attendanceData?.daily) return [];
-  const dailyData = attendanceData.daily instanceof Map
-    ? Object.fromEntries(attendanceData.daily)
-    : attendanceData.daily;
-  return Object.entries(dailyData || {})
-    .filter(([key, status]) => key.startsWith(`${subjectName}_`) && status === 'present')
-    .map(([key]) => key.split('_')[1])
-    .sort((a, b) => new Date(b) - new Date(a));
+// 🔹 DATE FORMAT UTILITY
+const formatDate = (dateStr) => {
+  const options = { day: '2-digit', month: 'short', year: 'numeric' };
+  return new Date(dateStr).toLocaleDateString('en-IN', options);
 };
 
-// 🔹 VERIFICATION SEAL UTILITY
+// 🔹 GET ALL DATES BETWEEN range (inclusive) in YYYY-MM-DD
+const getDatesInRange = (from, to) => {
+  const dates = [];
+  let curr = new Date(from);
+  const end = new Date(to);
+  curr.setHours(0,0,0,0);
+  end.setHours(0,0,0,0);
+  while (curr <= end) {
+    const y = curr.getFullYear();
+    const m = String(curr.getMonth() + 1).padStart(2, '0');
+    const d = String(curr.getDate()).padStart(2, '0');
+    dates.push(`${y}-${m}-${d}`);
+    curr.setDate(curr.getDate() + 1);
+  }
+  return dates;
+};
+
+// 🔹 VERIFICATION SEAL
 const drawVerificationSeal = (doc, x, y, size = 40) => {
   const centerX = x + size / 2;
   const centerY = y + size / 2;
@@ -69,31 +80,7 @@ const drawVerificationSeal = (doc, x, y, size = 40) => {
   doc.setLineWidth(currentLineWidth).setDrawColor(0, 0, 0).setTextColor(0, 0, 0);
 };
 
-// 🔹 DATE FORMAT UTILITY
-const formatDate = (dateStr) => {
-  const options = { day: '2-digit', month: 'short', year: 'numeric' };
-  return new Date(dateStr).toLocaleDateString('en-IN', options);
-};
-
-// 🔹 GET ALL DATES BETWEEN range (inclusive) in YYYY-MM-DD
-const getDatesInRange = (from, to) => {
-  const dates = [];
-  let curr = new Date(from);
-  const end = new Date(to);
-  // normalize time to avoid DST issues
-  curr.setHours(0,0,0,0);
-  end.setHours(0,0,0,0);
-  while (curr <= end) {
-    const y = curr.getFullYear();
-    const m = String(curr.getMonth() + 1).padStart(2, '0');
-    const d = String(curr.getDate()).padStart(2, '0');
-    dates.push(`${y}-${m}-${d}`);
-    curr.setDate(curr.getDate() + 1);
-  }
-  return dates;
-};
-
-// 🔹 MAIN PDF GENERATOR
+// 🔹 MAIN PDF GENERATOR (final fixed version)
 export const generateAttendancePDF = async (
   studentData,
   attendanceData,
@@ -107,7 +94,18 @@ export const generateAttendancePDF = async (
   try {
     const doc = new jsPDF();
 
-    const totalSubjects = Object.keys(attendanceData?.subjects || {}).length;
+    // Prefer subjects defined on the student. If student has subjects, use them; otherwise fall back to attendanceData subjects.
+    const studentSubjects = studentData?.subjects
+      ? (studentData.subjects instanceof Map ? Array.from(studentData.subjects.keys()) : Object.keys(studentData.subjects))
+      : [];
+
+    const attendanceSubjects = attendanceData?.subjects && typeof attendanceData.subjects === 'object'
+      ? Object.keys(attendanceData.subjects)
+      : [];
+
+    const subjectList = studentSubjects.length > 0 ? studentSubjects : attendanceSubjects;
+
+    const totalSubjects = subjectList.length;
     const totalPresent = Number(overallStats?.present) || 0;
     const totalClasses = Number(overallStats?.totalClasses) || 0;
     const overallPercentage = overallStats?.percentage ? Number(overallStats.percentage).toFixed(1) : "0.0";
@@ -150,17 +148,24 @@ export const generateAttendancePDF = async (
     });
 
     // SUBJECT-WISE DETAILS
-    doc.setFontSize(12).setFont('helvetica', 'bold').setTextColor(70, 130, 180).text('SUBJECT-WISE ATTENDANCE DETAILS', 14, doc.lastAutoTable.finalY + 15);
-    const subjectTableBody = Object.entries(attendanceData?.subjects || {}).map(([subject, stats], index) => {
-      const total = Number(stats?.total) || 0;
-      const present = Number(stats?.present) || 0;
-      const absent = total - present;
+    let currentY = doc.lastAutoTable.finalY + 8;
+    doc.setFontSize(12).setFont('helvetica', 'bold').setTextColor(70, 130, 180).text('SUBJECT-WISE ATTENDANCE DETAILS', 14, currentY);
+
+    // Build subject-wise table using authoritative subjectList
+    const subjectTableBody = subjectList.map((subject, index) => {
+      const statsRaw = attendanceData?.subjects instanceof Map
+        ? attendanceData.subjects.get(subject)
+        : (attendanceData?.subjects || {})[subject];
+      const total = Number(statsRaw?.total) || 0;
+      const present = Number(statsRaw?.present) || 0;
+      const absent = Math.max(0, total - present);
       const percent = total ? ((present / total) * 100).toFixed(1) : "0.0";
       const status = parseFloat(percent) >= 75 ? 'Good' : 'Critical';
       return [index + 1, subject, total, present, absent, `${percent}%`, status];
     });
+
     autoTable(doc, {
-      startY: doc.lastAutoTable.finalY + 20,
+      startY: doc.lastAutoTable.finalY + 5,
       headStyles: { fillColor: [100, 149, 237], textColor: 255, fontStyle: 'bold', fontSize: 9, halign: 'center' },
       bodyStyles: { fontSize: 9, halign: 'center', cellPadding: { top: 4, bottom: 4 } },
       head: [['S.No.', 'Subject Name', 'Total Classes', 'Present', 'Absent', 'Percentage', 'Status']],
@@ -171,24 +176,28 @@ export const generateAttendancePDF = async (
       margin: { left: 14 }
     });
 
-    // DAILY RECORDS - iterate the requested date range and show Present/Absent (P/A)
+    // DAILY RECORDS - iterate over authoritative subjectList and normalize daily lookup
     const dateRange = getDatesInRange(fromDate, toDate);
-    Object.keys(attendanceData?.subjects || {}).forEach((subject) => {
-      if (doc.lastAutoTable.finalY > 250) doc.addPage();
-      doc.setFontSize(11).setFont('helvetica', 'bold').setTextColor(70, 130, 180).text(`DAILY ATTENDANCE RECORD - ${subject.toUpperCase()}`, 14, doc.lastAutoTable.finalY + 15);
+    const rawDaily = attendanceData?.daily;
+    const dailyObj = rawDaily instanceof Map ? Object.fromEntries(rawDaily) : (rawDaily || {});
+
+    subjectList.forEach((subject) => {
+      if (doc.lastAutoTable.finalY > 260) doc.addPage();
+      let dailyStartY = doc.lastAutoTable.finalY + 8;
+      doc.setFontSize(11).setFont('helvetica', 'bold').setTextColor(70, 130, 180).text(`DAILY ATTENDANCE RECORD - ${subject.toUpperCase()}`, 14, dailyStartY);
 
       const detailRows = dateRange.map((date, idx) => {
         const d = new Date(date);
         const day = d.toLocaleDateString('en-IN', { weekday: 'long' });
         const key = `${subject}_${date}`;
-        const statusRaw = (attendanceData?.daily && attendanceData.daily[key]) || null;
+        const statusRaw = dailyObj[key] || null;
         const statusText = statusRaw === 'present' ? 'Present' : statusRaw === 'absent' ? 'Absent' : '-';
         const mark = statusRaw === 'present' ? 'P' : statusRaw === 'absent' ? 'A' : '-';
         return [idx + 1, formatDate(date), day, statusText, mark, statusRaw ? 'Recorded' : 'No data'];
-      }).filter(row => row[3] !== '-' ); // only include rows with recorded status
+      }).filter(row => row[3] !== '-' );
 
       autoTable(doc, {
-        startY: doc.lastAutoTable.finalY + 20,
+        startY: dailyStartY + 5,
         headStyles: { fillColor: [105, 105, 105], textColor: 255, fontStyle: 'bold', fontSize: 9, halign: 'center' },
         bodyStyles: { fontSize: 8, halign: 'center', cellPadding: { top: 3, bottom: 3 } },
         head: [['S.No.', 'Date', 'Day', 'Status', 'Mark', 'Remarks']],
@@ -200,24 +209,35 @@ export const generateAttendancePDF = async (
       });
     });
 
-    // CRITICAL NOTICE
+    // CRITICAL NOTICE with page break check
+    let lastY = doc.lastAutoTable.finalY + 10;
     if (isOverallCritical) {
-      const warningY = doc.lastAutoTable.finalY + 20;
       const warningText = '**CRITICAL NOTICE: Attendance is below 75%. Please attend all upcoming classes regularly.';
       const boxWidth = 182;
       const textLines = doc.splitTextToSize(warningText, boxWidth - 5);
       const boxHeight = textLines.length * 6 + 6;
-      doc.setLineWidth(0.2).setFillColor(255, 245, 245).setDrawColor(220, 20, 60).rect(14, warningY, boxWidth, boxHeight, 'FD');
+
+      if (lastY + boxHeight > doc.internal.pageSize.height - 60) {
+        doc.addPage();
+        lastY = 40;
+      }
+
+      doc.setLineWidth(0.2).setFillColor(255, 245, 245).setDrawColor(220, 20, 60).rect(14, lastY, boxWidth, boxHeight, 'FD');
       doc.setTextColor(220, 20, 60).setFont('times', 'bold').setFontSize(12);
       textLines.forEach((line, idx) => {
-        doc.text(line, 16, warningY + 10 + idx * 6);
+        doc.text(line, 16, lastY + 10 + idx * 6);
       });
       doc.setTextColor(0, 0, 0).setFont('helvetica', 'normal').setLineWidth(0.1);
+
+      lastY += boxHeight + 15;
     }
 
-    // SEAL
-    const sealY = isOverallCritical ? doc.lastAutoTable.finalY + 60 : doc.lastAutoTable.finalY + 20;
-    drawVerificationSeal(doc, 140, sealY, 45);
+    // SEAL with page break check
+    if (lastY + 60 > doc.internal.pageSize.height - 40) {
+      doc.addPage();
+      lastY = 40;
+    }
+    drawVerificationSeal(doc, 140, lastY, 45);
 
     // FOOTER
     const footerY = doc.internal.pageSize.height - 40;

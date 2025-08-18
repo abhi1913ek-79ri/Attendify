@@ -17,20 +17,33 @@ const SubjectHistory = ({ student, attendanceData}) => {
       .sort((a, b) => new Date(b) - new Date(a));
   };
 
-  if (!attendanceData?.subjects || Object.keys(attendanceData.subjects).length === 0) {
-    return <p>No attendance records found.</p>;
+  // Build the list of subjects to show.
+  // Prefer subjects defined on the student. If attendance contains extra subject keys (stale), ignore them.
+  const studentSubjects = student?.subjects
+    ? (student.subjects instanceof Map ? Array.from(student.subjects.keys()) : Object.keys(student.subjects))
+    : [];
+
+  const attendanceSubjects = attendanceData?.subjects && typeof attendanceData.subjects === 'object'
+    ? Object.keys(attendanceData.subjects).filter(s => studentSubjects.includes(s))
+    : [];
+
+  const subjectList = studentSubjects.length > 0 ? studentSubjects : Array.from(new Set([...attendanceSubjects]));
+
+  if (subjectList.length === 0) {
+    return <p>No subjects or attendance records found.</p>;
   }
 
   return (
     <div className="subject-wise-history">
       <h3 className="subject-wise-heading">Subject-wise Present Dates</h3>
       <div className="subject-wise-history-container">
-        {Object.keys(attendanceData.subjects).map((subjectName, idx) => {
+        {subjectList.map((subjectName, idx) => {
           const presentDates = getPresentDatesForSubject(subjectName);
           // build a date -> status map for this subject (present/absent)
-          const dailyData = attendanceData.daily instanceof Map
-            ? Object.fromEntries(attendanceData.daily)
-            : attendanceData.daily || {};
+          const rawDaily = attendanceData?.daily;
+          const dailyData = rawDaily instanceof Map
+            ? Object.fromEntries(rawDaily)
+            : rawDaily || {};
           const dateStatusMap = Object.entries(dailyData)
             .filter(([key]) => key.startsWith(`${subjectName}_`))
             .reduce((acc, [key, status]) => {

@@ -42,6 +42,15 @@ const getLastMarkedDate = (attendance) => {
     return percentage < 75;
   };
 
+  // Prepare students sorted by attendance percentage (descending) without mutating the prop
+  const sortedStudents = Array.isArray(students)
+    ? [...students].sort((a, b) => {
+        const pa = Number(a?.overall?.percentage ?? 0);
+        const pb = Number(b?.overall?.percentage ?? 0);
+        return pb - pa;
+      })
+    : [];
+
   return (
     <div className="w-full overflow-x-auto">
       <div id="table" className="min-w-full shadow-md border border-gray-200">
@@ -76,10 +85,10 @@ const getLastMarkedDate = (attendance) => {
             </tbody>
           ) : (
             <tbody className="divide-y divide-gray-200 bg-white">
-              {students.map((student, index) => {
+              {sortedStudents.map((student, index) => {
                 const isCritical = getIsCritical(student);
                 const lastMarked = getLastMarkedDate(student?.attendance);
-                
+
                 return (
                   <tr
                     onClick={() => navigate(`/student/${student?.studentId || student?._id}`)}
@@ -91,12 +100,6 @@ const getLastMarkedDate = (attendance) => {
                     <td className="table-rows">{index + 1}</td>
                     <td className="px-3 py-2">
                       <div className="flex items-center space-x-3">
-                        {/* <ProfileImage 
-                          imageUrl={student?.profileImageUrl}
-                          name={student?.name}
-                          size="w-10 h-10"
-                          textSize="text-sm"
-                        /> */}
                         <div className="flex flex-col">
                           <span className="font-medium text-gray-900">{student?.name || 'N/A'}</span>
                           <span className="text-sm text-gray-500">{student?.studentId || 'N/A'}</span>
