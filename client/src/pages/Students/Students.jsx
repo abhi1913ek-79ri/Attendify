@@ -85,12 +85,6 @@ const Students = () => {
     <div className="students">
       <div className="students-heading">
         🎓 Attendance Dashboard – All Students Overview
-        <button 
-          onClick={handleRefresh}
-          className="!ml-4 !px-4 !py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm cursor-pointer"
-        >
-          Refresh Data
-        </button>
       </div>
       <hr className="text-gray-300" />
 

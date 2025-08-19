@@ -193,7 +193,7 @@ function Register() {
         {/* Link to Login */}
         <p className="login-link">
           Already have an account?{" "}
-          <Link to="/login" className="text-blue-600">
+          <Link to="/login" className="text-blue-600 hover:text-indigo-700">
             Login
           </Link>
         </p>

@@ -89,7 +89,7 @@
   width: 36px;
   height: 36px;
   border-radius: 9999px;
-  border: 2px solid #007bff;
+  border: 2px solid #5190d4;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -113,8 +113,7 @@
   animation: fadeIn 0.2s ease-in-out;
 }
 
-.avatar-dropdown a,
-.avatar-dropdown button {
+.avatar-dropdown a{
   display: block;
   padding: 10px;
   text-align: left;
@@ -128,9 +127,27 @@
   text-decoration: none;
 }
 
-.avatar-dropdown a:hover,
+.avatar-dropdown button {
+  display: block;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+  color: #dc3545;
+  background: none;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+}
+
+.avatar-dropdown a:hover {
+  background: rgba(93, 158, 237, 0.1);
+}
+
 .avatar-dropdown button:hover {
-  background: rgba(185, 185, 185, 0.1);
+    background: rgba(220, 53, 69, 0.1);
+  color: #c82333;
 }
 
 .logout-btn {

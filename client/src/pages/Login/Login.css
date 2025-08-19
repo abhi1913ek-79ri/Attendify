@@ -15,10 +15,12 @@
   width: 100%;
   max-width: 420px;
   transition: 0.3s ease-in-out;
+   box-shadow: 0px 0px 10px rgb(92, 136, 215);
 }
 
 .login-card:hover {
-  transform: translateY(-4px);
+  box-shadow: 0px 0px 10px rgb(210, 112, 213), -2px -2px 5px rgb(73, 143, 199);
+
 }
 
 .login-title {
@@ -44,7 +46,7 @@
   top: 50%;
   left: 12px;
   transform: translateY(-50%);
-  color: #555;
+  color: #7142de;
   font-size: 16px;
 }
 
@@ -72,10 +74,11 @@
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.3s ease;
+   background: linear-gradient(135deg, #6366f1, #4f46e5);
 }
 
 .login-form button:hover {
-  background-color: #5a67d8;
+  opacity: 0.9;
 }
 
 .message {
