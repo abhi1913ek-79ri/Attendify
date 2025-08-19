@@ -4,7 +4,7 @@ import useAutoUpdatingTodayDate from '../../utils/useAutoUpdatingTodayDate';
 import './StudentHeatmapCalendar.css';
 import { CalendarSearch } from 'lucide-react';
 
-const StudentHeatmapCalendar = ({ presentDates ,title}) => {
+const StudentHeatmapCalendar = ({ presentDates, title, dateStatusMap }) => {
   const todayStr = useAutoUpdatingTodayDate();
   const today = new Date(todayStr);
 
@@ -12,18 +12,22 @@ const StudentHeatmapCalendar = ({ presentDates ,title}) => {
   const start = new Date(today);
   start.setDate(today.getDate() - daysToShow + 1);
 
-  const validDates = Array.isArray(presentDates)
+  const validPresentDates = Array.isArray(presentDates)
     ? presentDates.filter(date => !isNaN(new Date(date)))
     : [];
+
+  // dateStatusMap: { 'YYYY-MM-DD': 'present' | 'absent' | 'marked' }
+  const statusMap = dateStatusMap || {};
 
   const values = Array.from({ length: daysToShow }, (_, i) => {
     const date = new Date(start);
     date.setDate(start.getDate() + i);
     const dateStr = date.toISOString().split('T')[0];
+    const status = statusMap[dateStr] || (validPresentDates.includes(dateStr) ? 'present' : null);
     return {
       date,
       dateStr,
-      count: validDates.includes(dateStr) ? 1 : 0,
+      status, // 'present' | 'absent' | null
     };
   });
 
@@ -75,17 +79,23 @@ const StudentHeatmapCalendar = ({ presentDates ,title}) => {
               <div className="text-[10px] text-gray-500 mb-1">{monthLabels[weekIdx]}</div>
               {week.map((day, dayIdx) => {
                 const isFuture = day?.date > today;
-                const isPresent = day?.count === 1;
+                const status = day?.status; // 'present' | 'absent' | null
+                const bgClass = isFuture
+                  ? 'bg-black'
+                  : status === 'present' || status === 'marked'
+                  ? 'bg-green-300'
+                  : status === 'absent'
+                  ? 'bg-red-300'
+                  : 'bg-gray-100';
+
                 return (
                   <div
                     key={dayIdx}
-                    className={`w-5 h-5 rounded-sm border border-gray-200 ${
-                      isFuture ? 'bg-black' : isPresent ? 'bg-green-300' : 'bg-gray-100'
-                    }`}
+                    className={`w-5 h-5 rounded-sm border border-gray-200 ${bgClass}`}
                     data-tooltip-id="attendance-tooltip"
                     data-tooltip-content={
                       day?.date
-                        ? `${day.date.toDateString()} — ${isPresent ? 'Present' : isFuture ? 'Future' : 'Absent'}`
+                        ? `${day.date.toDateString()} — ${status === 'present' ? 'Present' : status === 'absent' ? 'Absent' : isFuture ? 'Future' : 'No data'}`
                         : ''
                     }
                   ></div>

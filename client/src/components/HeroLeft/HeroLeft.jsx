@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./HeroLeft.css";
 import { Link} from "react-router-dom";
+import { useAuth } from "../../store/AuthContext";
 
 const lines = [
     "Smart Attendance.",
@@ -12,6 +13,7 @@ const HeroLeft = () => {
     const [text, setText] = useState("");
     const [isDeleting, setIsDeleting] = useState(false);
     const [speed, setSpeed] = useState(100);
+    const {user} = useAuth();
 
     useEffect(() => {
         const current = lines[index % lines.length];
@@ -39,7 +41,7 @@ const HeroLeft = () => {
             <h1 className="typewriter-text my-0">{text}<span className="cursor"></span></h1>
             <p className="text-justify text-blue-950">Effortlessly mark and manage attendance — Attendify streamlines your academic life with a click. Built for classrooms that value time and clarity.</p>
             <div className="btn-conatiner w-full flex gap-2.5 ">
-                <button className="btn-register"><Link to='/register'>Get Started</Link></button>
+                <button className="btn-register"><Link to={user?`/user-profile` : `/register`}>Get Started</Link></button>
                 <a href="#features" className="btn-features">See Features</a>
             </div>
 

@@ -1,12 +1,25 @@
 import React from 'react';
 import './ControlSection.css';
 
-const ControlSection = ({ filters, setFilters, onSearch , subjects}) => {
+const ControlSection = ({
+  filters,
+  setFilters,
+  onSearch,
+  onReset,
+  onRefresh,
+  isSearching = false,
+  isRefreshing = false,
+  subjects = [],
+}) => {
   const handleChange = (key, value) => {
     setFilters(prev => ({
       ...prev,
       [key]: value
     }));
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') onSearch?.();
   };
 
   return (
@@ -24,6 +37,8 @@ const ControlSection = ({ filters, setFilters, onSearch , subjects}) => {
           </option>
         ))}
       </select>
+
+      {/* ⚠️ Critical Filter */}
       <select
         value={filters.isCritical}
         onChange={(e) => handleChange('isCritical', e.target.value)}
@@ -56,14 +71,38 @@ const ControlSection = ({ filters, setFilters, onSearch , subjects}) => {
         type="text"
         value={filters.searchTerm}
         onChange={(e) => handleChange('searchTerm', e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder="Search by name or roll no."
         className="search-term"
       />
 
-      {/* 📤 Search Button */}
-      <button className="search-btn" onClick={onSearch}>
-        Search
-      </button>
+      {/* Actions */}
+      <div className="actions">
+        <button
+          type="button"
+          className="search-btn"
+          onClick={onSearch}
+          disabled={isSearching || isRefreshing}
+        >
+          {isSearching ? 'Searching...' : 'Search'}
+        </button>
+        <button
+          type="button"
+          className="reset-btn"
+          onClick={onReset}
+          disabled={isRefreshing}
+        >
+          Reset
+        </button>
+        <button
+          type="button"
+          className="refresh-btn"
+          onClick={onRefresh}
+          disabled={isRefreshing}
+        >
+          {isRefreshing ? 'Refreshing...' : 'Refresh'}
+        </button>
+      </div>
     </div>
   );
 };

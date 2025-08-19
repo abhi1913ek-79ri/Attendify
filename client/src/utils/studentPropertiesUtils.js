@@ -75,14 +75,14 @@ export const avgAttendance = (students) => {
 
 // ✅ Critical Students
 export const criticalStudentsFinder = (students) => {
-  return students.filter((student) => student.isCritical === true);
+  return students.filter((student) => student?.isCritical === true);
 };
 
 export const todaysAttendanceFinder = (students, today) => {
   return students.filter((student) => {
     return Object.keys(student.attendance || {}).some(
       (subject) =>
-        student.attendance?.[subject]?.lastMarked === today
+        student?.attendance?.[subject]?.lastMarked === today
     );
   });
 };
@@ -97,7 +97,7 @@ export function getCriticalButAbsentStudents(students, todayDateStr) {
     return subjects.every(
       (subject) =>
         !student.attendance?.[subject]?.lastMarked ||
-        student.attendance[subject].lastMarked !== todayDateStr
+        student?.attendance[subject].lastMarked !== todayDateStr
     );
   });
 }
@@ -122,7 +122,7 @@ export const enhanceStudentsWithOverall = (students) => {
     const enhancedAttendance = {};
 
     for (const subject of Object.keys(student.attendance || {})) {
-      const record = student.attendance[subject];
+      const record = student?.attendance[subject];
       const percentage =
         record.totalClasses > 0
           ? parseFloat(((record.present / record.totalClasses) * 100).toFixed(2))

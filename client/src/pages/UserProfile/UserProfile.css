@@ -40,6 +40,13 @@
   @apply py-10 space-y-1 md:px-10 max-md:px-3 bg-white rounded-lg shadow-2xl;
 }
 
+.user-profile-loading {
+  @apply min-h-full bg-white flex flex-col justify-center items-center rounded-lg shadow-2xl;
+}
+
+.loader {
+  @apply text-lg text-gray-600 animate-pulse;
+}
 
 /* subject-wise-attendance-history */
 

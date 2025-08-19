@@ -16,14 +16,23 @@ import Logout from './pages/Logout/Logout'
 import Register from './pages/Register/Register'
 import MarkAttendance from './pages/Mark/MarkAttendance'
 import StudentProfile from './pages/StudentProfileWithoutLogin/StudentProfileWithoutLogin'
+import AddStudent from './pages/AddStudent/AddStudent'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserProfile from './pages/UserProfile/UserProfile'
 import LoggedUserExport from './pages/LoggedUserExport/LoggedUserExport'
+import { AuthProvider } from './store/AuthContext'
+import { StudentProvider } from './store/StudentContext'
+import { AttendanceProvider } from './store/AttendanceContext'
+import { AllStudentsAttendanceProvider } from './store/AllStudentsAttendanceContext'
 
 const App = () => {
   const [todaysActions, setTodaysActions] = useState([]);
   return (
+    <AuthProvider>
+        <StudentProvider>
+          <AttendanceProvider>
+            <AllStudentsAttendanceProvider>
     <div className='app'>
       <Navbar />
       <div className="sidebar-plus-content">
@@ -36,13 +45,14 @@ const App = () => {
               <Route path='/view' element={<View />} />
               <Route path='/export' element={<Export />} />
               <Route path='/user-profile' element={<UserProfile />} />
+              <Route path='/add-student' element={<AddStudent />} />
               <Route path='/students' element={<Students />} />
               <Route path='/logged-user-export' element={<LoggedUserExport />} />
               <Route path='/settings' element={<Settings />} />
               <Route path='/login' element={<Login />} />
               <Route path='/logout' element={<Logout />} />
               <Route path='/register' element={<Register />} />
-              <Route path="/students/:id" element={<StudentProfile />} />
+              <Route path='/student/:rollNo' element={<StudentProfile />} />
             </Routes>
           </Container>
           <Footer />
@@ -62,6 +72,10 @@ const App = () => {
         theme="light"           
       />
     </div>
+    </AllStudentsAttendanceProvider>
+    </AttendanceProvider>
+    </StudentProvider>
+    </AuthProvider>
   )
 }
 

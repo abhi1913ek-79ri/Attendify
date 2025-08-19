@@ -1,0 +1,159 @@
+/* Import Tailwind utilities */
+@import "tailwindcss";
+
+/* Container */
+.form-container {
+  padding: 24px;
+  max-width: 640px;
+  margin: 20px auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease-in-out;
+}
+
+.form-container:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Title */
+.form-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #1f2937; /* slate-800 */
+}
+
+/* Form */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Input Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #374151; /* slate-700 */
+}
+
+.form-input {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  width: 100%;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus {
+  border-color: #3b82f6; /* blue-500 */
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* Subject Row */
+.subject-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.subject-row .form-input {
+  flex: 1;
+  min-width: 140px;
+}
+
+.remove-subject-btn {
+  background: #fee2e2; /* red-100 */
+  border: none;
+  color: #dc2626; /* red-600 */
+  font-weight: bold;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.remove-subject-btn:hover {
+  background: #fecaca; /* red-200 */
+}
+
+/* Image Upload */
+.img-upload {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Add Subject Button */
+.add-subject-btn {
+  color: #2563eb; /* blue-600 */
+  font-weight: 600;
+  background: #eff6ff; /* blue-50 */
+  border: 1px solid #bfdbfe; /* blue-200 */
+  border-radius: 6px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.add-subject-btn:hover {
+  background: #dbeafe; /* blue-100 */
+  border-color: #93c5fd; /* blue-300 */
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  background-color: #2563eb; /* blue-600 */
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.1s ease-in-out;
+}
+
+.submit-btn:hover {
+  background-color: #1e40af; /* blue-800 */
+  transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+  background-color: #93c5fd; /* blue-300 */
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .form-container {
+    padding: 16px;
+    margin: 10px;
+  }
+
+  .form-title {
+    font-size: 1.25rem;
+  }
+
+  .subject-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .remove-subject-btn {
+    align-self: flex-start;
+  }
+}

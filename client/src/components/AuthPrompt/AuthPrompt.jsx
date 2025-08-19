@@ -23,14 +23,14 @@ const AuthPrompt = ({message,purpose}) => {
       <p className="text-gray-600 mt-2">Please login or register to {purpose}.</p>
       <div className="login_signup flex gap-2.5">
         <button
-          className="login-btn flex items-center gap-2"
+          className="login-btn flex items-center gap-2 cursor-pointer"
           onClick={() => navigate('/login')}
         >
           <LogIn size={18} />
           Login
         </button>
         <button
-          className="login-btn flex items-center gap-2"
+          className="login-btn flex items-center gap-2 cursor-pointer"
           onClick={() => navigate('/register')}
         >
           <UserPlus size={18} />

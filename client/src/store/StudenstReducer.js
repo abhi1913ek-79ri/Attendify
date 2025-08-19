@@ -10,13 +10,13 @@ export const studentReducer = (state, action) => {
 
     case STUDENT_ACTIONS.UPDATE_ATTENDANCE:
       return state.map((student) =>
-        student.id === action.payload.id
+        student?.id === action.payload.id
           ? { ...student, attendance: action.payload.attendance }
           : student
       );
 
     case STUDENT_ACTIONS.DELETE_STUDENT:
-      return state.filter((student) => student.id !== action.payload);
+      return state.filter((student) => student?.id !== action.payload);
 
     case STUDENT_ACTIONS.RESET:
       return [];

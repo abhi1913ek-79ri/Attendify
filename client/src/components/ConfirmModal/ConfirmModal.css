@@ -1,0 +1,25 @@
+.confirm-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.confirm-modal {
+  background: #fff;
+  padding: 18px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+.confirm-title { font-weight: 700; margin-bottom: 8px; }
+.confirm-message { color: #374151; margin-bottom: 14px; }
+.confirm-actions { display:flex; gap:8px; justify-content:flex-end; }
+
+.btn-muted { background:#eef2ff; color:#111827; padding:8px 12px; border-radius:6px; border:none; }
+.btn-danger { background:#ef4444; color:white; padding:8px 12px; border-radius:6px; border:none; }

@@ -6,6 +6,24 @@
   @apply min-h-screen py-6;
 }
 
+/* Loading States */
+.loader {
+  @apply flex items-center justify-center p-8 text-gray-600;
+  font-size: 16px;
+}
+
+.loader::after {
+  content: '';
+  @apply w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full ml-2;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Page Header */
 .page-header {
   @apply mb-6;
@@ -31,7 +49,8 @@
 /* Card Base Styles */
 .student-details-card,
 .date-picker-card,
-.attendance-table-card {
+.attendance-table-card,
+.add-class-card {
   @apply bg-white rounded-lg shadow-2xl border border-gray-200;
 }
 
@@ -44,7 +63,7 @@
 }
 
 .card-title {
-  @apply text-base font-medium text-blue-950 ;
+  @apply text-base font-medium text-blue-950;
 }
 
 /* Student Details Card */
@@ -73,6 +92,23 @@
   @apply text-green-600 bg-green-50 px-2 py-1 rounded text-xs font-medium;
 }
 
+/* Add Class Button Card */
+.add-class-card {
+  @apply flex justify-center p-5 mb-6;
+}
+
+.btn-primary {
+  @apply bg-gradient-to-br from-indigo-500 to-purple-600 text-white border-0 rounded-lg px-6 py-3 text-base font-semibold flex items-center gap-2 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.btn-primary:hover {
+  @apply shadow-indigo-500/40;
+}
+
+.btn-primary:disabled {
+  @apply bg-slate-400 cursor-not-allowed transform-none shadow-none;
+}
+
 /* Date Picker Card */
 .date-input-container {
   @apply p-5;
@@ -86,9 +122,57 @@
   @apply outline-none;
 }
 
+/* Modal Styles */
+.modal-overlay {
+  @apply fixed inset-0 bg-black/60 flex items-center justify-center z-50;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  @apply bg-white rounded-2xl p-0 max-w-lg w-11/12 max-h-screen overflow-y-auto shadow-2xl;
+  animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+  @apply flex justify-between items-center p-6 border-b border-gray-200;
+}
+
+.modal-header h3 {
+  @apply m-0 text-gray-800 text-xl font-semibold;
+}
+
+.modal-close {
+  @apply bg-transparent border-0 p-2 rounded-lg cursor-pointer text-gray-500 transition-all duration-200 hover:bg-gray-100 hover:text-gray-700;
+}
+
+.form-group {
+  @apply mb-5 px-6;
+}
+
+.form-group:first-child {
+  @apply pt-6;
+}
+
+.form-group label {
+  @apply block mb-2 font-semibold text-gray-700;
+}
+
+.form-group select,
+.form-group input {
+  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-lg text-base transition-all duration-200 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10;
+}
+
+.modal-actions {
+  @apply flex gap-3 p-6 border-t border-gray-200 justify-end;
+}
+
+.btn-secondary {
+  @apply bg-gray-100 text-gray-700 border-0 rounded-lg px-6 py-3 text-base font-medium cursor-pointer transition-all duration-200 hover:bg-gray-200;
+}
+
 /* Table Styles - Professional Look */
 .table-container {
-  @apply overflow-x-auto ;
+  @apply overflow-x-auto;
 }
 
 .attendance-table {
@@ -100,7 +184,7 @@
 }
 
 .attendance-table th {
-  @apply px-4 py-3 text-left text-xs font-medium text-white uppercase ;
+  @apply px-4 py-3 text-left text-xs font-medium text-white uppercase;
 }
 
 .attendance-table td {
@@ -140,6 +224,19 @@
   @apply py-2;
 }
 
+/* Duration Column Styles */
+.duration-cell {
+  @apply text-center py-3;
+}
+
+.duration-badge {
+  @apply bg-gradient-to-r from-green-500 to-green-600 text-white px-3 py-1.5 rounded-full text-sm font-semibold inline-block;
+}
+
+.duration-select {
+  @apply px-3 py-2 border-2 border-gray-200 rounded-md text-sm bg-white cursor-pointer transition-all duration-200 focus:outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/10;
+}
+
 /* Professional Status Badges */
 .status-badge {
   @apply inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium;
@@ -151,6 +248,14 @@
 
 .status-absent {
   @apply bg-red-100 text-red-700;
+}
+
+.status-no-class {
+  @apply bg-amber-100 text-amber-700;
+}
+
+.status-info {
+  @apply bg-blue-100 text-blue-700;
 }
 
 .status-icon {
@@ -167,7 +272,7 @@
 }
 
 .btn {
-  @apply inline-flex items-center gap-1 px-3 py-1 rounded text-xs font-medium transition-colors border;
+  @apply inline-flex items-center gap-1 px-3 py-1 rounded text-xs font-medium transition-all duration-300 border;
 }
 
 .btn-icon {
@@ -175,19 +280,43 @@
 }
 
 .btn-mark {
-  @apply bg-green-600 text-white border-green-600 hover:bg-green-700;
+  @apply bg-green-600 text-white border-green-600 hover:bg-green-700 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.btn-mark:not(:disabled):hover {
+  @apply shadow-green-500/40;
 }
 
 .btn-mark:disabled {
-  @apply bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed;
+  @apply bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed transform-none shadow-none opacity-60;
 }
 
 .btn-unmark {
-  @apply bg-red-600 text-white border-red-600 hover:bg-red-700;
+  @apply bg-gray-600 text-white border-gray-600 hover:bg-gray-600 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.btn-unmark:not(:disabled):hover {
+  @apply shadow-gray-500/40;
 }
 
 .btn-unmark:disabled {
-  @apply bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed;
+  @apply bg-gray-300 text-gray-500 border-gray-300 cursor-not-allowed transform-none shadow-none opacity-60;
+}
+
+.btn-present {
+  @apply bg-green-600 text-white border-green-600 hover:bg-green-700 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.btn-present:not(:disabled):hover {
+  @apply shadow-green-500/40;
+}
+
+.btn-absent {
+  @apply bg-red-600 text-white border-red-600 hover:bg-red-700 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+}
+
+.btn-absent:not(:disabled):hover {
+  @apply shadow-red-500/40;
 }
 
 /* Today's Actions Table - Professional */
@@ -206,7 +335,7 @@
 }
 
 .summary-stat-card {
-  @apply text-center p-3 bg-white rounded-lg border border-gray-200;
+  @apply text-center p-3 bg-white rounded-lg border border-gray-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl;
 }
 
 .summary-value {
@@ -220,6 +349,11 @@
 /* Error Card */
 .error-card {
   @apply p-5 bg-red-50 border border-red-200 rounded-lg text-red-800 text-sm;
+}
+
+/* Loading Card */
+.loading-card {
+  @apply p-5 bg-blue-50 border border-blue-200 rounded-lg text-blue-800 text-sm;
 }
 
 /* Professional Typography */
@@ -240,11 +374,35 @@
   @apply font-semibold text-sm;
 }
 
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Updated Table Styles for Duration Column */
+.attendance-table th:nth-child(3),
+.attendance-table td:nth-child(3) {
+  @apply w-32 text-center;
+}
+
 /* Responsive Design - Cleaner */
 @media (max-width: 768px) {
-  .mark-attendance {
-  }
-  
   .header-content {
     @apply p-4;
   }
@@ -273,19 +431,52 @@
   .action-buttons {
     @apply flex-col gap-1;
   }
+  
+  .modal-content {
+    @apply w-11/12 mx-5;
+  }
+  
+  .modal-actions {
+    @apply flex-col;
+  }
+  
+  .modal-actions button {
+    @apply w-full;
+  }
+  
+  .duration-cell {
+    @apply px-2;
+  }
+  
+  .duration-select {
+    @apply text-xs px-2 py-1.5;
+  }
 }
 
 @media (max-width: 640px) {
-  .table-container {
-    
-  }
-  
   .attendance-table-card {
     @apply mx-0 rounded-lg;
   }
   
   .subject-cell {
     @apply flex-col items-start gap-1 text-xs;
+  }
+  
+  .attendance-table {
+    @apply text-xs;
+  }
+  
+  .btn-mark,
+  .btn-unmark {
+    @apply px-2 py-1.5 text-xs;
+  }
+  
+  .btn-icon {
+    @apply w-4 h-4;
+  }
+  
+  .summary-stats .grid {
+    @apply grid-cols-2;
   }
 }
 
@@ -320,6 +511,7 @@
 .attendance-table tbody tr:hover {
   @apply bg-blue-50;
 }
+
 /* Number formatting in tables */
 .attendance-table td.text-center {
   @apply font-medium;
@@ -336,4 +528,26 @@
 
 .attendance-table td span.font-bold.text-green-600 {
   @apply bg-green-50 text-green-700;
+}
+
+/* Enhanced Loading States */
+.btn-mark:disabled,
+.btn-unmark:disabled {
+  @apply cursor-not-allowed transform-none;
+}
+
+/* Better Mobile Experience for Modal */
+@media (max-width: 640px) {
+  .modal-overlay {
+    @apply px-4;
+  }
+  
+  .modal-content {
+    @apply w-full;
+  }
+}
+
+/* Enhanced Today's Actions with Background */
+.today-actions-enhanced {
+  @apply bg-gradient-to-br from-slate-50 to-slate-100;
 }
