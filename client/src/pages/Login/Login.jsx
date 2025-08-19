@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./login.css";
+import "./Login.css";
 import { FaEnvelope, FaLock } from "react-icons/fa";
 import { API_PATHS } from "../../utils/ApiPaths";
 import axiosInstance from "../../utils/axiosInstance";
