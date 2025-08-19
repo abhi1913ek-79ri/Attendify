@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "npm --prefix client run dev"
+      "dev": "npm --prefix client run dev",
+      "start": "node server/index.js"
   },
   "dependencies": {
     "jspdf": "^3.0.1",

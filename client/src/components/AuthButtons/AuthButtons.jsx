@@ -8,14 +8,11 @@ const AuthButtons = () => {
 
   return (
     <div className="mb-4">
-      {user ? (
+      {user &&
         <div className='flex gap-2.5'>
           <p>👋 Welcome, <strong>{user.name}</strong></p>
-          <button onClick={()=>navigate('/logout')} className="bg-red-500 text-white !px-1 rounded cursor-pointer">Logout</button>
         </div>
-      ) : (
-        <button onClick={()=>navigate('/login')} className="bg-green-500 text-white !px-2 !py-1 rounded cursor-pointer">Login</button>
-      )}
+     }
     </div>
   );
 };

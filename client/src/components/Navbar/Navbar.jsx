@@ -4,12 +4,10 @@ import "./Navbar.css";
 import { assets } from "../../assets/assets";
 import {
   CheckCheckIcon,
-  DownloadCloudIcon,
   Home,
   Settings,
   User,
   UserPlus,
-  View,
   School,
   Menu,
   X,
@@ -19,12 +17,14 @@ import {
   LogOut
 } from "lucide-react";
 import { useAuth } from "../../store/AuthContext";
+import { useStudent } from "../../store/StudentContext";
 
 const Navbar = () => {
   const [isAvatarOpen, setIsAvatarOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const { user, clearUser } = useAuth();
+  const { student } = useStudent();
 
   // Desktop nav items
   const authNavItems = [
@@ -153,7 +153,7 @@ const Navbar = () => {
       {/* Right - Avatar */}
       <div className="navbar-avatar">
         <img
-          src={assets.avatar}
+          src={student?.profileImageUrl || assets.avatar}
           alt="Avatar"
           onClick={handleAvatarToggle}
           className="avatar-img"

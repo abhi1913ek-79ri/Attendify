@@ -42,7 +42,6 @@ const Settings = () => {
     }
   }, [student]);
 
-  // dark mode removed: no effect
 
   const handleAdd = async () => {
     const name = (newSubjectName || '').trim();
@@ -236,17 +235,35 @@ const Settings = () => {
   return (
     <div className="settings-page">
       <h2 className="settings-title">Settings</h2>
-
+      
       <div className="settings-container">
-        <aside className="settings-menu">
-          <button className={`menu-item ${selectedSection === 'profile' ? 'active' : ''}`} onClick={() => setSelectedSection('profile')}>Update Profile</button>
-          <button className={`menu-item ${selectedSection === 'subjects' ? 'active' : ''}`} onClick={() => setSelectedSection('subjects')}>Update Subjects</button>
-        </aside>
+        
 
-        <section className="settings-content card">
-          {selectedSection === 'profile' && renderProfileSection()}
-          {selectedSection === 'subjects' && renderSubjectsSection()}
-        </section>
+        <div className="settings-grid">
+          <div className="settings-panel card">
+            <div className="card-header">
+              <div className="tabs">
+                <button
+                  className={`tab-pill ${selectedSection === 'profile' ? 'active' : ''}`}
+                  onClick={() => setSelectedSection('profile')}
+                >
+                  Update Profile
+                </button>
+                <button
+                  className={`tab-pill ${selectedSection === 'subjects' ? 'active' : ''}`}
+                  onClick={() => setSelectedSection('subjects')}
+                >
+                  Update Subjects
+                </button>
+              </div>
+            </div>
+
+            <div className="card-body">
+              {selectedSection === 'profile' && renderProfileSection()}
+              {selectedSection === 'subjects' && renderSubjectsSection()}
+            </div>
+          </div>
+        </div>
       </div>
 
       <ConfirmModal

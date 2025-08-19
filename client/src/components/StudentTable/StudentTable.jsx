@@ -1,7 +1,7 @@
 import React from 'react';
 import './StudentTable.css';
 import { AlertTriangle, SmileIcon } from 'lucide-react';
-import Loader from '../Loader/Loader';
+import StudentTableLoader from './StudentTableLoader';
 import ProfileImage from '../ProfileImage/ProfileImage';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
@@ -70,8 +70,8 @@ const getLastMarkedDate = (attendance) => {
           {loading ? (
             <tbody className="no-scroll-loader w-full ">
               <tr>
-                <td colSpan="8" className="py-10">
-                  <Loader />
+                <td colSpan="8" className="py-6">
+                  <StudentTableLoader rows={6} />
                 </td>
               </tr>
             </tbody>
