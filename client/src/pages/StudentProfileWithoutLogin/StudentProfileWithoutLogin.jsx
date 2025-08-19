@@ -14,7 +14,7 @@ import SkeletonLoader from '../../components/Loader/SkeletonLoader.jsx'
 import ProfileImage from "../../components/ProfileImage/ProfileImage.jsx";
 
 const StudentProfile = () => {
-  const { studentId } = useParams();
+  const { rollNo } = useParams();
   const [currentStudent, setCurrentStudent] = useState(null);
   const [attendanceData, setAttendanceData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -49,7 +49,7 @@ const StudentProfile = () => {
   const getStudentById = async () => {
     setLoading(true);
     try {
-      const res = await axiosInstance.get(API_PATHS.STUDENT.GET_BY_ID(studentId));
+      const res = await axiosInstance.get(API_PATHS.STUDENT.GET_BY_ID(rollNo));
       setCurrentStudent(res.data.currentStudent);
     } catch(err) {
       console.error('Failed to fetch students:', err);
@@ -59,14 +59,14 @@ const StudentProfile = () => {
     }
   };
   const fetchAttendanceData = async () => {
-    if (!currentStudent?.studentId) {
-      console.error('No student ID available');
+    if (!currentStudent?.rollNo) {
+      console.error('No roll number available');
       return;
     }
 
     try {
       setIsAttendanceLoading(true);
-      const url = API_PATHS.ATTENDANCE.GET_ATTENDANCE.replace(':studentId', currentStudent.studentId);
+      const url = API_PATHS.ATTENDANCE.GET_ATTENDANCE.replace(':rollNo', currentStudent.rollNo);
       
       const response = await axiosInstance.get(url);
       setAttendanceData(response.data);
@@ -77,7 +77,7 @@ const StudentProfile = () => {
       if (error.response?.status === 404) {
         // If no attendance record exists, initialize empty structure
         setAttendanceData({
-          student: currentStudent._id, // Use _id instead of studentId
+          student: currentStudent._id, // Use _id instead of rollNo
           daily: {},
           subjects: {},
           overall: { present: 0, total: 0, percentage: 0 }
@@ -128,7 +128,7 @@ const calculateOverallPresentDates = (attendanceData) => {
 }, []);
 
 useEffect(() => {
-  if (currentStudent?.studentId) {
+  if (currentStudent?.rollNo) {
     fetchAttendanceData(); // fetch attendance only when student is ready
   }
 }, [currentStudent]);
@@ -167,10 +167,10 @@ useEffect(() => {
             <span className="label">Name : </span><span className="value">{currentStudent?.name}</span>
           </p>
           <p className="text-gray-600">
-            <span className="label">Student ID : </span><span className="value">{currentStudent?.studentId}</span>
+            <span className="label">Roll No. : </span><span className="value">{currentStudent?.rollNo}</span>
           </p>
           <p className="text-gray-600">
-            <span className="label">Roll No : </span><span className="value">{currentStudent?.rollNo}</span>
+            <span className="label">Course : </span><span className="value">{currentStudent?.course}</span>
           </p>
 
           <p className="text-gray-600">

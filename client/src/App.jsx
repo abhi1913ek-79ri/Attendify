@@ -52,7 +52,7 @@ const App = () => {
               <Route path='/login' element={<Login />} />
               <Route path='/logout' element={<Logout />} />
               <Route path='/register' element={<Register />} />
-              <Route path='/student/:studentId' element={<StudentProfile />} />
+              <Route path='/student/:rollNo' element={<StudentProfile />} />
             </Routes>
           </Container>
           <Footer />

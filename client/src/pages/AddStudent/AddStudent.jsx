@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/ApiPaths";
 import { toast } from "react-toastify";
@@ -15,12 +15,14 @@ const AddStudent = () => {
   const { student, setStudent} = useStudent();
   const [formData, setFormData] = useState({
     name: "",
+    course: "",
     rollNo: "",
-    studentId: "",
     subjects: {}, // will be populated from inputs
   });
 
   const navigate = useNavigate();
+  const rollInputRef = useRef(null);
+  const didPrefillRef = useRef(false);
   // subjectInputs: { key: subjectName, value: subjectCode }
   const [subjectInputs, setSubjectInputs] = useState([{ key: "", value: "" }]);
   const [profileImage, setProfileImage] = useState(null);
@@ -35,6 +37,22 @@ useEffect(() => {
     navigate("/user-profile");
   }
 }, [student, navigate, location.pathname]);
+
+// Prefill name and auto-focus roll number when student info is available
+useEffect(() => {
+  if (!student) return;
+  if (didPrefillRef.current) return;
+  // only prefill when name input is empty
+  setFormData((prev) => {
+    if (prev.name && prev.name.trim() !== '') return prev;
+    return { ...prev, name: student.name || prev.name };
+  });
+  // focus roll number input after a short delay
+  setTimeout(() => {
+    try { rollInputRef.current?.focus(); } catch (e) {}
+  }, 50);
+  didPrefillRef.current = true;
+}, [student]);
 
 
   const handleChange = (e) => {
@@ -124,8 +142,8 @@ useEffect(() => {
       // Create FormData to handle file upload
       const formDataPayload = new FormData();
       formDataPayload.append('name', formData.name);
+      formDataPayload.append('course', formData.course);
       formDataPayload.append('rollNo', formData.rollNo);
-      formDataPayload.append('studentId', formData.studentId);
       formDataPayload.append('subjects', JSON.stringify(subjectsObject));
       
       // Add profile image if selected
@@ -147,8 +165,8 @@ useEffect(() => {
       // Reset form
       setFormData({
         name: "",
+        course: "",
         rollNo: "",
-        studentId: "",
         subjects: {},
       });
       setSubjectInputs([{ key: "", value: "" }]);
@@ -224,12 +242,13 @@ useEffect(() => {
           />
         </div>
 
-        {/* Roll No */}
+        {/* Roll No. */}
         <div className="form-group">
-          <label className="form-label">Roll Number</label>
+          <label className="form-label">Roll No.</label>
           <input
             type="text"
             name="rollNo"
+            ref={rollInputRef}
             value={formData.rollNo}
             onChange={handleChange}
             className="form-input"
@@ -237,19 +256,18 @@ useEffect(() => {
           />
         </div>
 
-        {/* Student ID */}
+  {/* Course & Sem */}
         <div className="form-group">
-          <label className="form-label">Student ID</label>
+          <label className="form-label">Course & Semester</label>
           <input
             type="text"
-            name="studentId"
-            value={formData.studentId}
+            name="course"
+            value={formData.course}
             onChange={handleChange}
             className="form-input"
             required
           />
         </div>
-
         {/* Subjects Input */}
         <div className="form-group">
           <label className="form-label">Subjects</label>

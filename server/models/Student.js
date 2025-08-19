@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const studentSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   name: { type: String, required: true },
-  rollNo: { type: String, required: true },
-  studentId: { type: String, required: true },
+  course: { type: String, required: true },
+  rollNo: { type: String, required: true, unique: true },
   profileImageUrl: { type: String, default: '' },
 
   // Allow dynamic subjects like { math: "90%", science: "80%" }

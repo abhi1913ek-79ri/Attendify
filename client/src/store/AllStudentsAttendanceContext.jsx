@@ -57,8 +57,8 @@ export const AllStudentsAttendanceProvider = ({ children }) => {
       const aggregated = await Promise.all(
         students.map(async (stu) => {
           try {
-            const sid = stu.studentId || stu._id;
-            const url = API_PATHS.ATTENDANCE.GET_ATTENDANCE.replace(':studentId', sid);
+            const sid = stu.rollNo || stu._id;
+            const url = API_PATHS.ATTENDANCE.GET_ATTENDANCE.replace(':rollNo', sid);
             const { data: att } = await axiosInstance.get(url);
 
             const dailyObj = att?.daily || {};
@@ -91,8 +91,8 @@ export const AllStudentsAttendanceProvider = ({ children }) => {
             return {
               _id: stu._id,
               name: stu.name,
-              rollNo: stu.rollNo,
-              studentId: sid,
+              course: stu.course,
+              rollNo: sid,
               subjects: subjectsArray,
               // daily attendance object kept for today checks/stats
               attendance: dailyObj,
@@ -113,8 +113,8 @@ export const AllStudentsAttendanceProvider = ({ children }) => {
             return {
               _id: stu._id,
               name: stu.name,
-              rollNo: stu.rollNo,
-              studentId: stu.studentId || stu._id,
+              course: stu.course,
+              rollNo: stu.rollNo || stu._id,
               subjects: subjectsArray,
               attendance: {},
               attendanceData: {
@@ -215,10 +215,10 @@ export const AllStudentsAttendanceProvider = ({ children }) => {
   const stats = calculateStats();
 
   // Update attendance for a specific student
-  const updateStudentAttendance = (studentId, attendanceData) => {
+  const updateStudentAttendance = (rollNo, attendanceData) => {
     setAllStudentsAttendance((prev) =>
       prev.map((student) => {
-        const matches = student._id === studentId || student.studentId === studentId;
+        const matches = student._id === rollNo || student.rollNo === rollNo;
         if (!matches) return student;
 
         const dailyObj = attendanceData?.daily || {};

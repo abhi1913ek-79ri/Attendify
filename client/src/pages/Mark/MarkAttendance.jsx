@@ -40,8 +40,8 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
     try {
       // console.log("Updating attendance with data:", updatedData);
       const url = API_PATHS.ATTENDANCE.UPDATE_ATTENDANCE.replace(
-        ":studentId",
-        student.studentId
+        ":rollNo",
+        student.rollNo
       );
       console.log("PUT request to:", `${axiosInstance.defaults.baseURL}${url}`);
       const response = await axiosInstance.put(url, updatedData);
@@ -507,12 +507,12 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
               <span className="info-value">{student?.name}</span>
             </div>
             <div className="info-item">
-              <span className="info-label">Student ID</span>
-              <span className="info-value">{student?.studentId}</span>
+              <span className="info-label">Roll No. </span>
+              <span className="info-value">{student?.rollNo}</span>
             </div>
             <div className="info-item">
-              <span className="info-label">Roll No</span>
-              <span className="info-value">{student?.rollNo}</span>
+              <span className="info-label">Course</span>
+              <span className="info-value">{student?.course}</span>
             </div>
             <div className="info-item">
               <span className="info-label">Total Subjects</span>

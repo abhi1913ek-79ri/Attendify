@@ -32,7 +32,7 @@ exports.getStudentProfile = async (req, res) => {
 }
 exports.addStudent = async (req, res) => {
   try {
-    const { name, rollNo, studentId } = req.body;
+    const { name, course, rollNo } = req.body;
     let { subjects } = req.body;
     const userId = req.user._id;
 
@@ -40,7 +40,7 @@ exports.addStudent = async (req, res) => {
     console.log('Request file:', req.file);
 
     // Check required fields
-    if (!name || !rollNo || !studentId) {
+    if (!name || !course || !rollNo) {
       return res.status(400).json({ message: "All fields are required", success: false });
     }
 
@@ -69,8 +69,8 @@ exports.addStudent = async (req, res) => {
     const student = new Student({
       user: userId,
       name,
+      course,
       rollNo,
-      studentId,
       profileImageUrl,
       subjects: subjects || {}, // should be an object: { math: '90%', science: '85%' } etc.
     });
@@ -99,7 +99,7 @@ exports.getAllStudents = async(req,res) => {
 
 exports.getStudentById = async (req, res) => {
   try {
-    const currentStudent = await Student.findOne({ studentId: req.params.studentId });
+    const currentStudent = await Student.findOne({ rollNo: req.params.rollNo });
 
     if (!currentStudent) {
       return res.status(404).json({ message: "Student not found", success: false });
@@ -189,6 +189,26 @@ exports.deleteProfileImage = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Server error", success: false });
+  }
+};
+
+// Update student profile (name, course, semester)
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const student = await Student.findOne({ user: userId });
+    if (!student) return res.status(404).json({ message: 'Student not found', success: false });
+
+    const { name, course, semester } = req.body || {};
+    if (name) student.name = name;
+    if (course !== undefined) student.course = course;
+    if (semester !== undefined) student.semester = semester;
+
+    await student.save();
+    return res.status(200).json({ message: 'Profile updated', student, success: true });
+  } catch (error) {
+    console.error('Error updating profile:', error);
+    return res.status(500).json({ message: 'Server Error', success: false, error: error.message });
   }
 };
 

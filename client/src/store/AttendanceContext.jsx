@@ -12,21 +12,21 @@ export const AttendanceProvider = ({ children }) => {
 
  // Fetch attendance data when component mounts or student changes
   useEffect(() => {
-    if (student?.studentId) {
+    if (student?.rollNo) {
       fetchAttendanceData();
     }
-  }, [student?.studentId]);
+  }, [student?.rollNo]);
 
   // Fetch attendance data from backend using axiosInstance
   const fetchAttendanceData = async () => {
-    if (!student?.studentId) {
-      console.error('No student ID available');
+    if (!student?.rollNo) {
+      console.error('No roll number available');
       return;
     }
 
     try {
       setIsAttendanceLoading(true);
-      const url = API_PATHS.ATTENDANCE.GET_ATTENDANCE.replace(':studentId', student.studentId);
+      const url = API_PATHS.ATTENDANCE.GET_ATTENDANCE.replace(':rollNo', student.rollNo);
       
       const response = await axiosInstance.get(url);
       setAttendanceData(response.data);
@@ -37,7 +37,7 @@ export const AttendanceProvider = ({ children }) => {
       if (error.response?.status === 404) {
         // If no attendance record exists, initialize empty structure
         setAttendanceData({
-          student: student._id, // Use _id instead of studentId
+          student: student._id, // Use _id instead of rollNo
           daily: {},
           subjects: {},
           overall: { present: 0, total: 0, percentage: 0 }

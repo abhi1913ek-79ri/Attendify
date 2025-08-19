@@ -17,8 +17,9 @@ const { uploadSingle } = require('../config/cloudinary');
 router.post('/test-upload', protect, uploadSingle('profileImage'), testUpload);
 router.post('/add', protect, uploadSingle('profileImage'), addStudent);
 router.get('/profile', protect, getStudentProfile);
+router.put('/profile', protect, express.json(), require('../controllers/StudentController').updateProfile);
 router.get('/getAllStudents', getAllStudents);
-router.get('/:studentId', getStudentById);
+router.get('/:rollNo', getStudentById);
 
 // Image management routes
 router.put('/profile-image', protect, uploadSingle('profileImage'), updateProfileImage);

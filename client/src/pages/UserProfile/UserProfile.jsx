@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./UserProfile.css";
 import { useAuth } from "../../store/AuthContext";
-import { BadgeCheck, CalendarDays, UserCheck, Camera, Trash2 } from "lucide-react";
+import { BadgeCheck, CalendarDays, UserCheck } from "lucide-react";
 import AuthPrompt from "../../components/AuthPrompt/AuthPrompt";
 import { useStudent } from "../../store/StudentContext";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
@@ -25,8 +25,6 @@ const UserProfile = () => {
   const navigate = useNavigate();
   const location = useLocation();
   
-  // Image management state - must be declared at component top level
-  const [isUpdatingImage, setIsUpdatingImage] = useState(false);
 
   // Function to get last marked date (most recent date when student was present)
   const getLastMarkedDate = () => {
@@ -107,77 +105,6 @@ const UserProfile = () => {
     );
   }
 
-  // Image management functions
-  const handleImageUpdate = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    // Validate file type
-    if (!file.type.startsWith('image/')) {
-      toast.error('Please select a valid image file');
-      return;
-    }
-    
-    // Validate file size (5MB limit)
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image size should be less than 5MB');
-      return;
-    }
-
-    try {
-      setIsUpdatingImage(true);
-      const formData = new FormData();
-      formData.append('profileImage', file);
-
-      const response = await axiosInstance.put(
-        API_PATHS.STUDENT.UPDATE_PROFILE_IMAGE, 
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-
-      if (response.data.success) {
-        toast.success('Profile image updated successfully!');
-        fetchStudent(); // Refresh student data
-      }
-    } catch (error) {
-      console.error('Error updating image:', error);
-      toast.error(error.response?.data?.message || 'Failed to update image');
-    } finally {
-      setIsUpdatingImage(false);
-      // Clear the file input
-      e.target.value = '';
-    }
-  };
-
-  const handleImageDelete = async () => {
-    if (!student?.profileImageUrl) {
-      toast.info('No profile image to delete');
-      return;
-    }
-
-    if (!window.confirm('Are you sure you want to delete your profile image?')) {
-      return;
-    }
-
-    try {
-      setIsUpdatingImage(true);
-      const response = await axiosInstance.delete(API_PATHS.STUDENT.DELETE_PROFILE_IMAGE);
-
-      if (response.data.success) {
-        toast.success('Profile image deleted successfully!');
-        fetchStudent(); // Refresh student data
-      }
-    } catch (error) {
-      console.error('Error deleting image:', error);
-      toast.error(error.response?.data?.message || 'Failed to delete image');
-    } finally {
-      setIsUpdatingImage(false);
-    }
-  };
 
   const calculateOverallPresentDates = (attendanceData) => {
     if (!attendanceData?.daily) return [];
@@ -214,42 +141,7 @@ const UserProfile = () => {
                 className="profile-image"
               />
               
-              {/* Image management buttons */}
-              <div className="absolute -bottom-2 -right-2 flex space-x-1">
-                <input
-                  type="file"
-                  id="profileImageInput"
-                  accept="image/*"
-                  onChange={handleImageUpdate}
-                  className="hidden"
-                  disabled={isUpdatingImage}
-                />
-                <button
-                  onClick={() => document.getElementById('profileImageInput').click()}
-                  disabled={isUpdatingImage}
-                  className="w-8 h-8 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center transition-colors duration-200 disabled:opacity-50"
-                  title="Update profile image"
-                >
-                  <Camera size={14} />
-                </button>
-                
-                {student?.profileImageUrl && (
-                  <button
-                    onClick={handleImageDelete}
-                    disabled={isUpdatingImage}
-                    className="w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors duration-200 disabled:opacity-50"
-                    title="Delete profile image"
-                  >
-                    <Trash2 size={14} />
-                  </button>
-                )}
-              </div>
-              
-              {isUpdatingImage && (
-                <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
-                  <div className="animate-spin w-6 h-6 border-2 border-white border-t-transparent rounded-full"></div>
-                </div>
-              )}
+              {/* Profile image is managed from Settings */}
             </div>
             <h2 className="profile-heading">
               {student?.name || "Name"} ({student?.rollNo || "Roll No"})
@@ -262,12 +154,12 @@ const UserProfile = () => {
               <span className="value">{student?.name || "-"}</span>
             </p>
             <p>
-              <span className="label">Student ID:</span>{" "}
-              <span className="value">{student?.studentId || "-"}</span>
+              <span className="label">Roll No. :</span>{" "}
+              <span className="value">{student?.rollNo || "-"}</span>
             </p>
             <p>
-              <span className="label">Roll No:</span>{" "}
-              <span className="value">{student?.rollNo || "-"}</span>
+              <span className="label">Course:</span>{" "}
+              <span className="value">{student?.course || "-"}</span>
             </p>
             <p>
               <span className="label">Total Days:</span>{" "}

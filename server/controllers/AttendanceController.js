@@ -3,23 +3,23 @@ const Student = require('../models/Student');
 const mongoose = require('mongoose');
 
 // @desc    Get attendance for a specific student
-// @route   GET /api/attendance/:studentId
+// @route   GET /api/attendance/:rollNo
 // @access  Private
 const getAttendance = async (req, res) => {
   try {
-    const { studentId } = req.params;
+    const { rollNo } = req.params;
 
-    // First try to find student by MongoDB _id, then by studentId field
+    // First try to find student by MongoDB _id, then by rollNo field
     let student;
     
-    if (mongoose.Types.ObjectId.isValid(studentId)) {
+    if (mongoose.Types.ObjectId.isValid(rollNo)) {
       // If it's a valid ObjectId, search by _id
-      student = await Student.findById(studentId);
+      student = await Student.findById(rollNo);
     }
     
-    // If not found by _id or not a valid ObjectId, search by studentId field
+    // If not found by _id or not a valid ObjectId, search by rollNo field
     if (!student) {
-      student = await Student.findOne({ studentId: studentId });
+      student = await Student.findOne({ rollNo: rollNo });
     }
 
     if (!student) {
@@ -78,34 +78,34 @@ const getAttendance = async (req, res) => {
 };
 
 // @desc    Update attendance for a specific student
-// @route   PUT /api/attendance/:studentId
+// @route   PUT /api/attendance/:rollNo
 // @access  Private
 const updateAttendance = async (req, res) => {
   try {
-    const { studentId } = req.params;
+    const { rollNo } = req.params;
     const { daily, subjects, overall } = req.body;
 
-    console.log('Update request for studentId:', studentId);
+    console.log('Update request for rollNo:', rollNo);
     console.log('Request body:', req.body);
 
-    // First try to find student by MongoDB _id, then by studentId field
+    // First try to find student by MongoDB _id, then by rollNo field
     let student;
     
-    if (mongoose.Types.ObjectId.isValid(studentId)) {
+    if (mongoose.Types.ObjectId.isValid(rollNo)) {
       // If it's a valid ObjectId, search by _id
-      student = await Student.findById(studentId);
+      student = await Student.findById(rollNo);
     }
     
-    // If not found by _id or not a valid ObjectId, search by studentId field
+    // If not found by _id or not a valid ObjectId, search by rollNo field
     if (!student) {
-      student = await Student.findOne({ studentId: studentId });
+      student = await Student.findOne({ rollNo: rollNo });
     }
 
     if (!student) {
       return res.status(404).json({ message: 'Student not found' });
     }
 
-    console.log('Found student:', { _id: student._id, studentId: student.studentId, name: student.name });
+    console.log('Found student:', { _id: student._id, rollNo: student.rollNo, name: student.name });
 
     // Validate required fields
     if (!daily || !subjects || !overall) {
@@ -205,21 +205,21 @@ const updateAttendance = async (req, res) => {
 };
 
 // @desc    Delete attendance record for a student
-// @route   DELETE /api/attendance/:studentId
+// @route   DELETE /api/attendance/:rollNo
 // @access  Private
 const deleteAttendance = async (req, res) => {
   try {
-    const { studentId } = req.params;
+    const { rollNo } = req.params;
 
-    // First try to find student by MongoDB _id, then by studentId field
+    // First try to find student by MongoDB _id, then by rollNo field
     let student;
     
-    if (mongoose.Types.ObjectId.isValid(studentId)) {
-      student = await Student.findById(studentId);
+    if (mongoose.Types.ObjectId.isValid(rollNo)) {
+      student = await Student.findById(rollNo);
     }
     
     if (!student) {
-      student = await Student.findOne({ studentId: studentId });
+      student = await Student.findOne({ rollNo: rollNo });
     }
 
     if (!student) {
@@ -247,21 +247,21 @@ const deleteAttendance = async (req, res) => {
 };
 
 // @desc    Get attendance statistics for a student
-// @route   GET /api/attendance/:studentId/stats
+// @route   GET /api/attendance/:rollNo/stats
 // @access  Private
 const getAttendanceStats = async (req, res) => {
   try {
-    const { studentId } = req.params;
+    const { rollNo } = req.params;
 
-    // First try to find student by MongoDB _id, then by studentId field
+    // First try to find student by MongoDB _id, then by rollNo field
     let student;
     
-    if (mongoose.Types.ObjectId.isValid(studentId)) {
-      student = await Student.findById(studentId);
+    if (mongoose.Types.ObjectId.isValid(rollNo)) {
+      student = await Student.findById(rollNo);
     }
     
     if (!student) {
-      student = await Student.findOne({ studentId: studentId });
+      student = await Student.findOne({ rollNo: rollNo });
     }
 
     if (!student) {
@@ -269,7 +269,7 @@ const getAttendanceStats = async (req, res) => {
     }
 
     // Find attendance record using student's _id
-    const attendance = await Attendance.findOne({ student: student._id }).populate('student', 'name rollNo studentId');
+    const attendance = await Attendance.findOne({ student: student._id }).populate('student', 'name course rollNo');
 
     if (!attendance) {
       return res.status(404).json({ message: 'Attendance record not found' });

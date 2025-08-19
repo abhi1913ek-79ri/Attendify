@@ -125,7 +125,7 @@ const LoggedUserExport = () => {
           <User className="w-5 h-5" />
           <div>
             <h3>{student?.name}</h3>
-            <p>Roll No: {student?.rollNo}</p>
+            <p>Course: {student?.course}</p>
           </div>
         </div>
         <div className={styles.overallStats}>

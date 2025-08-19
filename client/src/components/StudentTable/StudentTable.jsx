@@ -91,8 +91,8 @@ const getLastMarkedDate = (attendance) => {
 
                 return (
                   <tr
-                    onClick={() => navigate(`/student/${student?.studentId || student?._id}`)}
-                    key={student?._id || student?.studentId || uuidv4()}
+                    onClick={() => navigate(`/student/${student?.rollNo || student?._id}`)}
+                    key={student?._id || student?.rollNo || uuidv4()}
                     className={`${
                       index % 2 === 0 ? 'bg-white' : 'bg-[#aecaf5]'
                     } cursor-pointer hover-scale-y-only`}
@@ -102,7 +102,7 @@ const getLastMarkedDate = (attendance) => {
                       <div className="flex items-center space-x-3">
                         <div className="flex flex-col">
                           <span className="font-medium text-gray-900">{student?.name || 'N/A'}</span>
-                          <span className="text-sm text-gray-500">{student?.studentId || 'N/A'}</span>
+                          <span className="text-sm text-gray-500">({student?.course || 'N/A'})</span>
                         </div>
                       </div>
                     </td>
