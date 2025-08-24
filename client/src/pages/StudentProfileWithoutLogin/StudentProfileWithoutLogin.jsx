@@ -174,7 +174,7 @@ useEffect(() => {
           </p>
 
           <p className="text-gray-600">
-            <span className="label">Total Days : </span><span className="value">{overallStats?.totalClasses ?? 0}</span>
+            <span className="label">Total Classes : </span><span className="value">{overallStats?.totalClasses ?? 0}</span>
           </p>
 
           <p className="text-gray-600">
@@ -218,24 +218,52 @@ useEffect(() => {
       </div>
 
       <div className="student-calendar">
-        {
-          (() => {
-            const dailyData = attendanceData?.daily instanceof Map ? Object.fromEntries(attendanceData.daily) : attendanceData?.daily || {};
-            const overallDateStatus = Object.keys(dailyData).reduce((acc, key) => {
-              const parts = key.split('_');
-              if (parts.length >= 2) {
-                const date = parts.slice(-1)[0];
-                acc[date] = 'marked';
-              }
-              return acc;
-            }, {});
+          {
+            (() => {
+              const dailyData = attendanceData?.daily instanceof Map
+                ? Object.fromEntries(attendanceData.daily)
+                : attendanceData?.daily || {};
 
-            return (
-              <StudentHeatmapCalendar presentDates={calculateOverallPresentDates(attendanceData)} dateStatusMap={overallDateStatus} title={'Attendance History'} />
-            );
-          })()
-        }
-      </div>
+              let overallDateStatus = {};
+
+              // Step 1: group subjects by date
+              Object.keys(dailyData).forEach((key) => {
+                const parts = key.split("_");
+                if (parts.length >= 2) {
+                  const date = parts.slice(-1)[0]; // e.g. 2025-08-22
+                  const status = dailyData[key];   // "present" | "absent"
+
+                  if (!overallDateStatus[date]) {
+                    overallDateStatus[date] = [];
+                  }
+                  overallDateStatus[date].push(status);
+                }
+              });
+
+              // Step 2: decide final status per date
+              for (const date in overallDateStatus) {
+                const statuses = overallDateStatus[date];
+
+                if (statuses.includes("present")) {
+                  overallDateStatus[date] = "present"; // at least one present
+                } else if (statuses.every(s => s === "absent")) {
+                  overallDateStatus[date] = "absent";  // all absent
+                } else {
+                  overallDateStatus[date] = "no data"; // edge case
+                }
+              }
+
+              return (
+                <StudentHeatmapCalendar
+                  presentDates={calculateOverallPresentDates(attendanceData)}
+                  dateStatusMap={overallDateStatus}
+                  title={"Overall Attendance History"}
+                />
+              );
+            })()
+          }
+        </div>
+
     </div>
 
   );

@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* Professional MarkAttendance.css */
 
@@ -13,7 +13,7 @@
 }
 
 .loader::after {
-  content: '';
+  content: "";
   @apply w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full ml-2;
   animation: spin 1s linear infinite;
 }
@@ -312,7 +312,7 @@
 }
 
 .btn-absent {
-  @apply bg-red-600 text-white border-red-600 hover:bg-red-700 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
+  @apply bg-amber-700 text-white border-red-500 hover:bg-red-500 cursor-pointer transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5;
 }
 
 .btn-absent:not(:disabled):hover {
@@ -320,12 +320,22 @@
 }
 
 /* Today's Actions Table - Professional */
-.attendance-table tbody tr:has(.card-title:contains("Today's Actions")) + * .attendance-table thead {
+.attendance-table
+  tbody
+  tr:has(.card-title:contains("Today's Actions"))
+  + *
+  .attendance-table
+  thead {
   @apply bg-indigo-800;
 }
 
-/* Summary Table - Professional */  
-.attendance-table tbody tr:has(.card-title:contains("Attendance Summary")) + * .attendance-table thead {
+/* Summary Table - Professional */
+.attendance-table
+  tbody
+  tr:has(.card-title:contains("Attendance Summary"))
+  + *
+  .attendance-table
+  thead {
   @apply bg-slate-700;
 }
 
@@ -406,48 +416,48 @@
   .header-content {
     @apply p-4;
   }
-  
+
   .header-title {
     @apply text-lg;
   }
-  
+
   .page-content {
     @apply space-y-6;
   }
-  
+
   .student-info {
     @apply p-4 grid-cols-2;
   }
-  
+
   .date-input-container {
     @apply p-4;
   }
-  
+
   .attendance-table th,
   .attendance-table td {
     @apply px-3 py-2;
   }
-  
+
   .action-buttons {
     @apply flex-col gap-1;
   }
-  
+
   .modal-content {
     @apply w-11/12 mx-5;
   }
-  
+
   .modal-actions {
     @apply flex-col;
   }
-  
+
   .modal-actions button {
     @apply w-full;
   }
-  
+
   .duration-cell {
     @apply px-2;
   }
-  
+
   .duration-select {
     @apply text-xs px-2 py-1.5;
   }
@@ -457,24 +467,24 @@
   .attendance-table-card {
     @apply mx-0 rounded-lg;
   }
-  
+
   .subject-cell {
     @apply flex-col items-start gap-1 text-xs;
   }
-  
+
   .attendance-table {
     @apply text-xs;
   }
-  
+
   .btn-mark,
   .btn-unmark {
     @apply px-2 py-1.5 text-xs;
   }
-  
+
   .btn-icon {
     @apply w-4 h-4;
   }
-  
+
   .summary-stats .grid {
     @apply grid-cols-2;
   }
@@ -541,7 +551,7 @@
   .modal-overlay {
     @apply px-4;
   }
-  
+
   .modal-content {
     @apply w-full;
   }

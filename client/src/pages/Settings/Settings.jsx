@@ -37,8 +37,8 @@ const Settings = () => {
         : (student.subjects || {});
       setSubjects(s);
       setEditName(student.name || '');
-  setEditCourse(student.course || '');
-  setEditRollNo(student.rollNo || '');
+      setEditCourse(student.course || '');
+      setEditRollNo(student.rollNo || '');
     }
   }, [student]);
 
@@ -96,11 +96,11 @@ const Settings = () => {
     const f = e.target.files?.[0];
     if (!f) return;
     if (!f.type.startsWith('image/')) return toast.error('Choose an image file');
-  setProfileImageFile(f);
-  // create preview
-  const reader = new FileReader();
-  reader.onloadend = () => setProfileImagePreview(reader.result || '');
-  reader.readAsDataURL(f);
+    setProfileImageFile(f);
+    // create preview
+    const reader = new FileReader();
+    reader.onloadend = () => setProfileImagePreview(reader.result || '');
+    reader.readAsDataURL(f);
   };
 
   const uploadProfileImage = async () => {
@@ -112,8 +112,8 @@ const Settings = () => {
       const res = await axiosInstance.put(API_PATHS.STUDENT.UPDATE_PROFILE_IMAGE, fd, { headers: { 'Content-Type': 'multipart/form-data' } });
       if (res.data.success) {
         toast.success('Profile image updated');
-  setProfileImageFile(null);
-  setProfileImagePreview('');
+        setProfileImageFile(null);
+        setProfileImagePreview('');
         fetchStudent?.();
       }
     } catch (err) {
@@ -235,33 +235,29 @@ const Settings = () => {
   return (
     <div className="settings-page">
       <h2 className="settings-title">Settings</h2>
-      
+
       <div className="settings-container">
-        
-
-        <div className="settings-grid">
-          <div className="settings-panel card">
-            <div className="card-header">
-              <div className="tabs">
-                <button
-                  className={`tab-pill ${selectedSection === 'profile' ? 'active' : ''}`}
-                  onClick={() => setSelectedSection('profile')}
-                >
-                  Update Profile
-                </button>
-                <button
-                  className={`tab-pill ${selectedSection === 'subjects' ? 'active' : ''}`}
-                  onClick={() => setSelectedSection('subjects')}
-                >
-                  Update Subjects
-                </button>
-              </div>
+        <div className="settings-panel">
+          <div className="card-header">
+            <div className="tabs">
+              <button
+                className={`tab-pill ${selectedSection === 'profile' ? 'active' : ''}`}
+                onClick={() => setSelectedSection('profile')}
+              >
+                Update Profile
+              </button>
+              <button
+                className={`tab-pill ${selectedSection === 'subjects' ? 'active' : ''}`}
+                onClick={() => setSelectedSection('subjects')}
+              >
+                Update Subjects
+              </button>
             </div>
+          </div>
 
-            <div className="card-body">
-              {selectedSection === 'profile' && renderProfileSection()}
-              {selectedSection === 'subjects' && renderSubjectsSection()}
-            </div>
+          <div className="card-body">
+            {selectedSection === 'profile' && renderProfileSection()}
+            {selectedSection === 'subjects' && renderSubjectsSection()}
           </div>
         </div>
       </div>

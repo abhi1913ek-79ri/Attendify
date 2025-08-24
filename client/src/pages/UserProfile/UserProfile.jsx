@@ -25,7 +25,7 @@ const UserProfile = () => {
   const { attendanceData, fetchAttendanceData, overallStats, isOverallCritical } = useAttendance();
   const navigate = useNavigate();
   const location = useLocation();
-  
+
 
   // Function to get last marked date (most recent date when student was present)
   const getLastMarkedDate = () => {
@@ -122,14 +122,14 @@ const UserProfile = () => {
         <div className="profile-container">
           <div className="flex flex-col justify-between items-center space-y-2">
             <div className="profile-image-container relative">
-              <ProfileImage 
+              <ProfileImage
                 imageUrl={student?.profileImageUrl}
                 name={student?.name}
                 size="w-24 h-24"
                 textSize="text-2xl"
                 className="profile-image"
               />
-              
+
               {/* Profile image is managed from Settings */}
             </div>
             <h2 className="profile-heading">
@@ -206,17 +206,39 @@ const UserProfile = () => {
         </div>
         <div className="student-calendar">
           {
-            // Build overall dateStatusMap: any recorded date (present or absent) -> 'marked'
             (() => {
-              const dailyData = attendanceData?.daily instanceof Map ? Object.fromEntries(attendanceData.daily) : attendanceData?.daily || {};
-              const overallDateStatus = Object.keys(dailyData).reduce((acc, key) => {
-                const parts = key.split('_');
+              const dailyData = attendanceData?.daily instanceof Map
+                ? Object.fromEntries(attendanceData.daily)
+                : attendanceData?.daily || {};
+
+              let overallDateStatus = {};
+
+              // Step 1: group subjects by date
+              Object.keys(dailyData).forEach((key) => {
+                const parts = key.split("_");
                 if (parts.length >= 2) {
-                  const date = parts.slice(-1)[0];
-                  acc[date] = 'marked';
+                  const date = parts.slice(-1)[0]; // e.g. 2025-08-22
+                  const status = dailyData[key];   // "present" | "absent"
+
+                  if (!overallDateStatus[date]) {
+                    overallDateStatus[date] = [];
+                  }
+                  overallDateStatus[date].push(status);
                 }
-                return acc;
-              }, {});
+              });
+
+              // Step 2: decide final status per date
+              for (const date in overallDateStatus) {
+                const statuses = overallDateStatus[date];
+
+                if (statuses.includes("present")) {
+                  overallDateStatus[date] = "present"; // at least one present
+                } else if (statuses.every(s => s === "absent")) {
+                  overallDateStatus[date] = "absent";  // all absent
+                } else {
+                  overallDateStatus[date] = "no data"; // edge case
+                }
+              }
 
               return (
                 <StudentHeatmapCalendar
@@ -228,6 +250,7 @@ const UserProfile = () => {
             })()
           }
         </div>
+
 
         <div className="subject-wise-attendance-history">
           <SubjectHistory student={student} attendanceData={attendanceData} />
