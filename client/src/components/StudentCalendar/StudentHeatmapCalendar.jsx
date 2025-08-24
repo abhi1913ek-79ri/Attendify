@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Tooltip } from 'react-tooltip';
 import useAutoUpdatingTodayDate from '../../utils/useAutoUpdatingTodayDate';
 import './StudentHeatmapCalendar.css';
@@ -6,6 +6,7 @@ import { CalendarSearch } from 'lucide-react';
 
 const StudentHeatmapCalendar = ({ presentDates, title, dateStatusMap }) => {
   const todayStr = useAutoUpdatingTodayDate();
+  const containerRef = useRef(null);
   const today = new Date(todayStr);
 
   const daysToShow = 275;
@@ -58,6 +59,17 @@ const StudentHeatmapCalendar = ({ presentDates, title, dateStatusMap }) => {
 
   const monthLabels = getMonthLabels();
 
+  // Auto-scroll to the right (most recent weeks) on small screens
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    // Only auto-scroll on narrow screens where overflow exists
+    if (window.innerWidth <= 640) {
+      // scroll to rightmost position
+      el.scrollLeft = el.scrollWidth;
+    }
+  }, [weeks.length]);
+
   return (
     <div className="heat-calendar bg-white p-4 rounded-lg shadow-2xl ">
       <h2 className="heat-calendar-heading text-2xl font-semibold text-blue-950  flex justify-center items-center gap-0.5">
@@ -72,8 +84,8 @@ const StudentHeatmapCalendar = ({ presentDates, title, dateStatusMap }) => {
           ))}
         </div>
 
-        {/* Heatmap grid */}
-        <div className="flex gap-1 overflow-x-auto">
+  {/* Heatmap grid */}
+  <div className="flex gap-1 overflow-x-auto" ref={containerRef}>
           {weeks.map((week, weekIdx) => (
             <div key={weekIdx} className="flex flex-col gap-1 items-center">
               <div className="text-[10px] text-gray-500 mb-1">{monthLabels[weekIdx]}</div>

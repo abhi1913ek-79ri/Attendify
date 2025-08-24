@@ -3,6 +3,7 @@ import "./UserProfile.css";
 import { useAuth } from "../../store/AuthContext";
 import { BadgeCheck, CalendarDays, UserCheck } from "lucide-react";
 import AuthPrompt from "../../components/AuthPrompt/AuthPrompt";
+import UserProfileLoader from "../../components/UserProfileLoader/UserProfileLoader";
 import { useStudent } from "../../store/StudentContext";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { assets } from "../../assets/assets";
@@ -67,11 +68,7 @@ const UserProfile = () => {
 
   // Show loading while authentication is being checked
   if (isAuthLoading) {
-    return (
-      <div className="user-profile-loading">
-        <div className="loader">Checking authentication...</div>
-      </div>
-    );
+    return <UserProfileLoader />;
   }
 
   // If not authenticated, show auth prompt
@@ -88,21 +85,13 @@ const UserProfile = () => {
 
   // Show loading while student data is being fetched
   if (isStudentLoading) {
-    return (
-      <div className="user-profile-loading">
-        <div className="loader">Loading student data...</div>
-      </div>
-    );
+    return <UserProfileLoader />;
   }
 
   // If user is authenticated but no student data exists, show loading message
   // The useEffect will handle navigation to add-student page
   if (!student) {
-    return (
-      <div className="user-profile-loading">
-        <div className="loader">Redirecting to add student...</div>
-      </div>
-    );
+    return <UserProfileLoader />;
   }
 
 
@@ -162,7 +151,7 @@ const UserProfile = () => {
               <span className="value">{student?.course || "-"}</span>
             </p>
             <p>
-              <span className="label">Total Days:</span>{" "}
+              <span className="label">Total Classes:</span>{" "}
               <span className="value">{overallStats?.totalClasses ?? 0}</span>
             </p>
             <p>

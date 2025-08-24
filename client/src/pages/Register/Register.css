@@ -106,3 +106,16 @@ padding: 10px;
   display: flex;
   margin-top: 6px;
 }
+
+.otp-actions{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.resend-btn{
+  background-color: gray;
+}
