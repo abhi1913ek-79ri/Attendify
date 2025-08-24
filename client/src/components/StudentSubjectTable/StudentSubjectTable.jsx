@@ -51,33 +51,45 @@ const StudentSubjectTable = ({ student , attendanceData, overallStats, isOverall
         };
     };
 
-    // Function to get last marked date (most recent date when student was present)
-  const getLastMarkedDate = () => {
-  if (!attendanceData?.daily) {
-    console.log('No daily attendance data found');
-    return '-';
-  }
+    // Prepare dailyData object once for lookups
+    let dailyData = {};
+    if (attendanceData?.daily) {
+        if (attendanceData.daily instanceof Map) {
+            dailyData = Object.fromEntries(attendanceData.daily);
+        } else if (typeof attendanceData.daily === 'object') {
+            dailyData = attendanceData.daily;
+        }
+    }
 
-  let dailyData = {};
+    // Helper: get last marked date for a given subject by scanning dailyData keys
+    const getLastMarkedDateForSubject = (subject) => {
+        if (!dailyData || Object.keys(dailyData).length === 0) return '-';
 
-  if (attendanceData.daily instanceof Map) {
-    dailyData = Object.fromEntries(attendanceData.daily);
-  } else if (typeof attendanceData.daily === 'object') {
-    dailyData = attendanceData.daily;
-  }
+        const dates = Object.entries(dailyData)
+            .filter(([key, status]) => {
+                if (status !== 'present') return false;
+                const parts = key.split('_');
+                const keySubject = parts.slice(0, -1).join('_');
+                return keySubject === subject;
+            })
+            .map(([key]) => {
+                const parts = key.split('_');
+                return parts.slice(-1)[0]; // date
+            })
+            .sort((a, b) => new Date(b) - new Date(a));
 
-  // Extract date part from "subject_YYYY-MM-DD"
-  const presentDates = Object.entries(dailyData)
-    .filter(([key, status]) => status === 'present')
-    .map(([key]) => key.split('_')[1]) // take only date
-    .sort((a, b) => new Date(b) - new Date(a));
+        return dates.length > 0 ? dates[0] : '-';
+    };
 
-  return presentDates.length > 0 ? presentDates[0] : '-';
-};
-
-
-    // Get the last marked date once for all subjects (since daily attendance is student-wide, not subject-specific)
-    const lastMarkedDate = getLastMarkedDate();
+    // Compute overall last marked date across all subjects
+    const overallLastMarked = (() => {
+        if (!dailyData || Object.keys(dailyData).length === 0) return '-';
+        const dates = Object.entries(dailyData)
+            .filter(([key, status]) => status === 'present')
+            .map(([key]) => key.split('_').slice(-1)[0])
+            .sort((a, b) => new Date(b) - new Date(a));
+        return dates.length > 0 ? dates[0] : '-';
+    })();
 
     return (
         <div className="student-subject-list scrollbar-hide">
@@ -120,7 +132,7 @@ const StudentSubjectTable = ({ student , attendanceData, overallStats, isOverall
                                 <td className={`table-data ${percentage < 75 ? 'text-red-600 font-semibold' : 'text-green-600 font-semibold'}`}>
                                     {typeof percentage === 'number' ? `${percentage.toFixed(1)}%` : '0.0%'}
                                 </td>
-                                <td className="table-data">{lastMarkedDate}</td>
+                        <td className="table-data">{getLastMarkedDateForSubject(subject)}</td>
                             </tr>
                         );
                     })}
@@ -134,7 +146,7 @@ const StudentSubjectTable = ({ student , attendanceData, overallStats, isOverall
                                 {overallStats?.percentage !== undefined ? `${overallStats.percentage.toFixed(1)}%` : '0.0%'}
                             </span>
                         </td>
-                        <td className="table-data">{lastMarkedDate}</td>
+                        <td className="table-data">{overallLastMarked}</td>
                     </tr>
                 </tbody>
             </table>

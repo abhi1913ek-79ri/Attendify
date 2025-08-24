@@ -3,6 +3,8 @@ export const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
 export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", // Signup
+    SEND_OTP: "/api/auth/send-otp", // Send OTP
+    VERIFY_OTP: "/api/auth/verify-otp", // Verify OTP
     LOGIN: "/api/auth/login", // Authenticate user & return JWT token
     GET_PROFILE: "/api/auth/profile", // Get logged-in user details
   },

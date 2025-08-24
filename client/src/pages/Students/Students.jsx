@@ -13,6 +13,7 @@ import {
 import ControlSection from "../../components/ControlSection/ControlSection";
 import AttendanceStatsChart from "../../components/AttendanceGraphAllStudents/AttendanceGraphAllStudents";
 import StudentTable from "../../components/StudentTable/StudentTable";
+import StudentsLoader from "../../components/StudentsLoader/StudentsLoader";
 import { filterStudents } from "../../utils/filterStudent";
 import { useAllStudentsAttendance } from "../../store/AllStudentsAttendanceContext";
 
@@ -87,74 +88,79 @@ const Students = () => {
         🎓 Attendance Dashboard – All Students Overview
       </div>
       <hr className="text-gray-300" />
-
-      <div className="stats-summary">
-        <div className="stats-summary-heading">
-          <ChartNoAxesCombined /> Stats Summary
+    {isLoadingAttendance ? (
+      <StudentsLoader />
+    ) : (
+      <>
+        <div className="stats-summary">
+          <div className="stats-summary-heading">
+            <ChartNoAxesCombined /> Stats Summary
+          </div>
+          <div className="stats-summary-cards-container">
+            <Card
+              icon={<User />}
+              title={"Total Students"}
+              desc={stats.totalStudents}
+              style={"text-center bg-white"}
+            />
+            <Card
+              icon={<UserCheck />}
+              title={"Avg Attendance %"}
+              desc={`${stats.averageAttendance}%`}
+              style={"text-center bg-white"}
+            />
+            <Card
+              icon={<CalendarDays />}
+              title={"Today's Attendance"}
+              desc={`${stats.presentToday}/${stats.totalStudents}`}
+              style={"text-center bg-white"}
+            />
+            <Card
+              icon={<ShieldAlert />}
+              title={"Critical (<75%)"}
+              desc={stats.criticalStudents}
+              style={"text-center text-red-500 bg-white"}
+            />
+          </div>
         </div>
-        <div className="stats-summary-cards-container">
-          <Card
-            icon={<User />}
-            title={"Total Students"}
-            desc={stats.totalStudents}
-            style={"text-center bg-white"}
-          />
-          <Card
-            icon={<UserCheck />}
-            title={"Avg Attendance %"}
-            desc={`${stats.averageAttendance}%`}
-            style={"text-center bg-white"}
-          />
-          <Card
-            icon={<CalendarDays />}
-            title={"Today's Attendance"}
-            desc={`${stats.presentToday}/${stats.totalStudents}`}
-            style={"text-center bg-white"}
-          />
-          <Card
-            icon={<ShieldAlert />}
-            title={"Critical (<75%)"}
-            desc={stats.criticalStudents}
-            style={"text-center text-red-500 bg-white"}
+
+        <div className="overall-attendance-graph px-4">
+          <AttendanceStatsChart
+            totalStudents={stats.totalStudents}
+            presentToday={stats.presentToday}
+            absentToday={stats.absentToday}
+            numberOfCriticalStudents={stats.criticalStudents}
+            criticalAndAbsent={stats.criticalAndAbsent}
           />
         </div>
-      </div>
 
-      <div className="overall-attendance-graph px-4">
-        <AttendanceStatsChart
-          totalStudents={stats.totalStudents}
-          presentToday={stats.presentToday}
-          absentToday={stats.absentToday}
-          numberOfCriticalStudents={stats.criticalStudents}
-          criticalAndAbsent={stats.criticalAndAbsent}
-        />
-      </div>
+        <hr className="text-gray-300" />
 
-      <hr className="text-gray-300" />
+        <div className="font-light text-blue-950 flex flex-col justify-between items-center text-center gap-2.5 text-3xl">
+          <NotebookPenIcon /> Records
+        </div>
 
-      <div className="font-light text-blue-950 flex flex-col justify-between items-center text-center gap-2.5 text-3xl">
-        <NotebookPenIcon /> Records
-      </div>
+        <div className="control-and-filter-section">
+          <ControlSection
+            filters={filters}
+            setFilters={setFilters}
+            onSearch={handleSearch}
+            onReset={handleReset}
+            onRefresh={handleRefresh}
+            isSearching={loading}
+            isRefreshing={isLoadingAttendance}
+            subjects={subjectsOptions}
+          />
+        </div>
 
-      <div className="control-and-filter-section">
-        <ControlSection
-          filters={filters}
-          setFilters={setFilters}
-          onSearch={handleSearch}
-          onReset={handleReset}
-          onRefresh={handleRefresh}
-          isSearching={loading}
-          isRefreshing={isLoadingAttendance}
-          subjects={subjectsOptions}
-        />
-      </div>
-
-      <div className="student-table">
-        <StudentTable 
-          students={filteredStudents} 
-          loading={loading || isLoadingAttendance} 
-        />
-      </div>
+        <div className="student-table">
+          <StudentTable
+            students={filteredStudents}
+            loading={loading || isLoadingAttendance}
+          />
+        </div>
+      </>
+    )}
     </div>
   );
 };

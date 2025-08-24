@@ -60,7 +60,7 @@ const getLastMarkedDate = (attendance) => {
               <th className="table-rows">#</th>
               <th className="table-rows">Student</th>
               <th className="table-rows">Roll No</th>
-              <th className="table-rows">Total Days</th>
+              <th className="table-rows">Total Classes</th>
               <th className="table-rows">Present</th>
               <th className="table-rows">%</th>
               <th className="table-rows">Last Marked</th>
