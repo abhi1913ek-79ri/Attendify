@@ -162,9 +162,6 @@ const userProfile = async (req, res) => {
   }
 };
 
-
-module.exports = {registerUser, loginUser, userProfile};
-
 // Additional OTP endpoints
 const sendOTP = async (req, res) => {
   try {
@@ -220,4 +217,4 @@ const verifyOTP = async (req, res) => {
   }
 };
 
-module.exports = {sendOTP, verifyOTP};
+module.exports = {registerUser, loginUser, userProfile, sendOTP, verifyOTP};
