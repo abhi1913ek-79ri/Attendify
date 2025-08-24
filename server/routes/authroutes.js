@@ -10,7 +10,7 @@ const {
   verifyOTP
 } = require('../controllers/AuthController');
 
-// POST /api/students
+
 router.post('/register', registerUser);
 router.post('/send-otp', sendOTP);
 router.post('/verify-otp', verifyOTP);

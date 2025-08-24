@@ -1,0 +1,130 @@
+.students-loader {
+  --shimmer-duration: 2.8s; /* slower shimmer */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loader-stats {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.stat-skel {
+  height: 172px;
+  background: linear-gradient(90deg, #eee, #f7f7f7, #eee);
+  background-size: 800px 100%;
+  flex: 1;
+  border-radius: 8px;
+  animation: shimmer var(--shimmer-duration) linear infinite;
+}
+
+.loader-graph {
+  height: 220px;
+  background: linear-gradient(90deg, #eee, #f7f7f7, #eee);
+  background-size: 800px 100%;
+  border-radius: 8px;
+  animation: shimmer var(--shimmer-duration) linear infinite;
+}
+
+.records-title-skel {
+  height: 28px;
+  width: 200px;
+  background: #eee;
+  border-radius: 6px;
+  background-size: 800px 100%;
+  animation: shimmer var(--shimmer-duration) linear infinite;
+  margin: 12px 0;
+}
+
+.table-skel {
+  background: transparent;
+}
+
+.table-header-skel {
+  display: flex;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.th-skel {
+  flex: 1;
+  height: 18px;
+  background: #eee;
+  border-radius: 6px;
+  background-size: 800px 100%;
+  animation: shimmer var(--shimmer-duration) linear infinite;
+}
+
+.table-body-skel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.skeleton-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.skeleton-cell {
+  flex: 1;
+  height: 36px;
+  background: #efefef;
+  border-radius: 8px;
+  background-size: 800px 100%;
+  animation: shimmer var(--shimmer-duration) linear infinite;
+}
+
+.skeleton-cell.small {
+  flex: 0.6;
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 640px) {
+  .loader-stats {
+    flex-direction: column;
+  }
+  .stat-skel {
+    height: 92px;
+  }
+  .loader-graph {
+    height: 140px;
+  }
+  .records-title-skel {
+    width: 140px;
+  }
+  .table-header-skel {
+    display: inline-flex;
+    gap: 10px;
+    padding: 6px 0;
+    overflow-x: auto;
+  }
+  .table-skel {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .skeleton-row {
+    gap: 8px;
+  }
+  .skeleton-cell {
+    height: 30px;
+  }
+  .students-loader {
+    gap: 12px;
+  }
+  /* slightly slower shimmer on very small devices */
+  .students-loader { --shimmer-duration: 3.5s; }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -800px 0;
+  }
+  100% {
+    background-position: 800px 0;
+  }
+}
