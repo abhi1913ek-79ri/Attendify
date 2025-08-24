@@ -1,6 +1,6 @@
 # Attendify - Smart Attendance Tracker
 
-![Attendify Banner](https://yourimageurl.com/banner.png)
+![Attendify Banner](/client/src/assets/Banner.png)
 
 ## 🚀 Overview
 
