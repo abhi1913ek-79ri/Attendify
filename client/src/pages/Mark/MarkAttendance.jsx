@@ -357,6 +357,7 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
           // total remains same as class already exists
         },
       },
+      classes: attendanceData.classes, // Include classes data
     };
 
     // Step 2: Recalculate overall from subjects
@@ -416,7 +417,11 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
     const updatedDaily = { ...attendanceData.daily };
     delete updatedDaily[subjectAttendanceKey];
 
-    // Step 2: Update subject counts (reduce present only if it was marked present, and reduce total)
+    // Step 2: Remove from classes (this was missing and causing the bug)
+    const updatedClasses = { ...attendanceData.classes };
+    delete updatedClasses[subjectAttendanceKey];
+
+    // Step 3: Update subject counts (reduce present only if it was marked present, and reduce total)
     const updatedSubjects = {
       ...attendanceData.subjects,
       [subject]: {
@@ -427,7 +432,7 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
       },
     };
 
-    // Step 3: Recalculate overall from subjects
+    // Step 4: Recalculate overall from subjects
     const totalPresent = Object.values(updatedSubjects).reduce(
       (sum, subj) => sum + subj.present,
       0
@@ -441,6 +446,7 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
       ...attendanceData,
       daily: updatedDaily,
       subjects: updatedSubjects,
+      classes: updatedClasses, // Include the updated classes object
       overall: {
         present: totalPresent,
         total: totalClasses,
@@ -451,10 +457,10 @@ const MarkAttendance = ({ todaysActions, setTodaysActions }) => {
     // Step 4: Save
     try {
       const response = await updateAttendanceInBackend(updatedData);
-  setAttendanceData(response.data || response);
-  // Remove any today's action for this subject/date so it doesn't show in Today's Actions
-  setTodaysActions((prev) => prev.filter((a) => !(a.subject === subject && a.date === dateToUse)));
-  toast.success(`Attendance unmarked for ${subject} on ${dateToUse}!`);
+      setAttendanceData(response.data || response);
+      // Remove any today's action for this subject/date so it doesn't show in Today's Actions
+      setTodaysActions((prev) => prev.filter((a) => !(a.subject === subject && a.date === dateToUse)));
+      toast.success(`Attendance unmarked for ${subject} on ${dateToUse}!`);
     } catch (error) {
       // Error already handled in updateAttendanceInBackend
     }

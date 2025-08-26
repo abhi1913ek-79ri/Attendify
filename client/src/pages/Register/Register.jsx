@@ -6,6 +6,7 @@ import Loader from "../../components/Loader/Loader";
 import "./Register.css";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaKey } from "react-icons/fa";
 import { toast } from "react-toastify";
+import CircularLoader from "../../components/Loader/circularLoader";
 
 function Register() {
   const navigate = useNavigate();
@@ -159,7 +160,7 @@ function Register() {
                 <input
                   type={showPassword ? "text" : "password"}
                   name="password"
-                  placeholder="Password"
+                  placeholder="New Password"
                   value={formData.password}
                   onChange={handleChange}
                   required
@@ -186,41 +187,16 @@ function Register() {
                   placeholder="Confirm Password"
                   value={formData.confirmPassword}
                   onChange={handleChange}
+                  onPaste={(e) => e.preventDefault()}
                   required
                 />
               </div>
 
-              {/* Role Selection */}
-              <div className="role-selection">
-                <label className="text-sm font-medium text-gray-700">
-                  Register as:
-                </label>
-                <div className="role-options">
-                  <label className="radio-label">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="student"
-                      checked={formData.role === "student"}
-                      onChange={handleChange}
-                    />
-                    Student
-                  </label>
-                  <label className="radio-label">
-                    <input
-                      type="radio"
-                      name="role"
-                      value="admin"
-                      checked={formData.role === "admin"}
-                      onChange={handleChange}
-                    />
-                    Admin
-                  </label>
-                </div>
-              </div>
-
               <button type="submit" disabled={isLoading}>
-                {isLoading ? <Loader /> : "Register"}
+               <div className="flex flex-row items-center justify-center gap-2"> 
+                {isLoading ? "Sending OTP" : "Register"}
+                {isLoading && <CircularLoader />}
+                </div>
               </button>
             </form>
           </>

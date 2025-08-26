@@ -23,7 +23,18 @@ const attendanceSchema = new mongoose.Schema({
     default: {},
   },
 
-  // 3. Overall stats
+  // 3. Class metadata for frontend (duration, date info)
+  classes: {
+    type: Map,
+    of: new mongoose.Schema({
+      duration: { type: Number, default: 1 },
+      conducted: { type: Boolean, default: true },
+      date: { type: String, required: true },
+    }),
+    default: {},
+  },
+
+  // 4. Overall stats
   overall: {
     present: { type: Number, default: 0 },
     total: { type: Number, default: 0 },

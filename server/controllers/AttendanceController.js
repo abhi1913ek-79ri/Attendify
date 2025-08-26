@@ -35,6 +35,7 @@ const getAttendance = async (req, res) => {
         student: student._id,
         daily: new Map(),
         subjects: new Map(),
+        classes: new Map(), // Initialize empty classes Map
         overall: {
           present: 0,
           total: 0,
@@ -62,6 +63,7 @@ const getAttendance = async (req, res) => {
       student: attendance.student,
       daily: Object.fromEntries(attendance.daily || new Map()),
       subjects: Object.fromEntries(attendance.subjects || new Map()),
+      classes: Object.fromEntries(attendance.classes || new Map()), // Return stored classes
       overall: attendance.overall,
       createdAt: attendance.createdAt,
       updatedAt: attendance.updatedAt
@@ -83,7 +85,7 @@ const getAttendance = async (req, res) => {
 const updateAttendance = async (req, res) => {
   try {
     const { rollNo } = req.params;
-    const { daily, subjects, overall } = req.body;
+    const { daily, subjects, overall, classes } = req.body;
 
     console.log('Update request for rollNo:', rollNo);
     console.log('Request body:', req.body);
@@ -133,12 +135,18 @@ const updateAttendance = async (req, res) => {
         student: student._id,
         daily: new Map(),
         subjects: new Map(),
+        classes: new Map(), // Initialize empty classes Map
         overall: {
           present: overall.present,
           total: overall.total,
           percentage: calculatedPercentage
         }
       });
+    } else {
+      // Ensure backward compatibility - initialize classes if it doesn't exist
+      if (!attendance.classes) {
+        attendance.classes = new Map();
+      }
     }
 
     // Update daily attendance - handle null/undefined daily
@@ -167,6 +175,22 @@ const updateAttendance = async (req, res) => {
       attendance.subjects = subjectMap;
     }
 
+    // Update classes metadata - handle null/undefined classes
+    if (classes && typeof classes === 'object') {
+      const classMap = new Map();
+      for (const [classKey, classData] of Object.entries(classes)) {
+        // Validate class data
+        if (classData && typeof classData === 'object') {
+          classMap.set(classKey, {
+            duration: classData.duration || 1,
+            conducted: classData.conducted !== false, // default to true
+            date: classData.date || new Date().toISOString().split('T')[0]
+          });
+        }
+      }
+      attendance.classes = classMap;
+    }
+
     // Update overall stats
     attendance.overall = {
       present: overall.present,
@@ -185,6 +209,7 @@ const updateAttendance = async (req, res) => {
       student: attendance.student,
       daily: Object.fromEntries(attendance.daily || new Map()),
       subjects: Object.fromEntries(attendance.subjects || new Map()),
+      classes: Object.fromEntries(attendance.classes || new Map()), // Return stored classes from database
       overall: attendance.overall,
       createdAt: attendance.createdAt,
       updatedAt: attendance.updatedAt
