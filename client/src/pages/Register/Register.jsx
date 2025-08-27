@@ -6,7 +6,7 @@ import Loader from "../../components/Loader/Loader";
 import "./Register.css";
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash, FaKey } from "react-icons/fa";
 import { toast } from "react-toastify";
-import CircularLoader from "../../components/Loader/circularLoader";
+import CircularLoader from "../../components/Loader/CircularLoader";
 
 function Register() {
   const navigate = useNavigate();
