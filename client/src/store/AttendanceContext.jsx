@@ -40,6 +40,7 @@ export const AttendanceProvider = ({ children }) => {
           student: student._id, // Use _id instead of rollNo
           daily: {},
           subjects: {},
+          classes: {}, // Add missing classes field
           overall: { present: 0, total: 0, percentage: 0 }
         });
       } else {

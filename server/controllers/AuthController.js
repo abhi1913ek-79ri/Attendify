@@ -30,16 +30,23 @@ const registerUser = [
     .withMessage("Please enter a valid email")
     .normalizeEmail()
     .custom(async (value) => {
-      try {
-        const existingUser = await User.findOne({ email: value });
-        if (existingUser) {
+     try {
+      const existingUser = await User.findOne({ email: value });
+
+      if (existingUser) {
+        if (existingUser.isVerified) {
+          // Already verified → stop
           throw new Error("User already exists with this email");
+        } else {
+          // Not verified → allow but update OTP later
+          return true;
         }
-        return true;
-      } catch (error) {
-        throw new Error(error.message);
       }
-    }),
+      return true; // no user exists
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }),
 
   // Password validation
   check("password")
@@ -86,18 +93,29 @@ async (req, res) => {
     const otp = generateOTP();
     const otpExpires = new Date(Date.now() + 5 * 60 * 1000);
 
-    // Create new user
-    const user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role,
-      otp,
-      otpExpires
-    });
+   let user = await User.findOne({ email });
 
-    await user.save();
-
+if (user && !user.isVerified) {
+  
+  // Update old unverified user
+  user.name = name;
+  user.password = hashedPassword;
+  user.role = role;
+  user.otp = otp;
+  user.otpExpires = otpExpires;
+} else {
+  // Create new user
+  user = new User({
+    name,
+    email,
+    password: hashedPassword,
+    role,
+    otp,
+    otpExpires
+  });
+}
+  await user.save();
+  
    try {
   await sendEmail(email, otp);
 } catch (err) {
