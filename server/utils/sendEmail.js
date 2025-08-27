@@ -1,12 +1,15 @@
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
-  service: "gmail", // or use host: "smtp.gmail.com"
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // SSL use karo
   auth: {
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASSWORD,
   },
 });
+
 
 async function sendEmail(email, otp) {
   try {
