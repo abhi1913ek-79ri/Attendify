@@ -11,8 +11,12 @@ const attendanceRoutes = require('./routes/attendanceRoutes');
 connectDB();
 
 const corsOptions = {
-  origin: ["https://attendifyattendkarle.vercel.app"], // frontend URL
-   methods: ["GET","POST","PUT","DELETE"],
+  origin: [
+    "https://attendifyattendkarle.vercel.app", // Vercel default
+    "https://attendifyattendkarley.me",        // Custom domain (non-www)
+    "https://www.attendifyattendkarley.me"     // Custom domain (www)
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 };
 
