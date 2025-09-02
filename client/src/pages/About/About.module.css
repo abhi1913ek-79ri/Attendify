@@ -1,0 +1,274 @@
+.teamGrid {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+  .teamGrid {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+.teamCard {
+  background: #eef2ff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: box-shadow 0.2s;
+}
+.teamCard:hover {
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+}
+.teamHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.teamName {
+  font-size: 1.15rem;
+  color: #6366f1;
+}
+.teamInfo {
+  font-size: 1rem;
+  color: #334155;
+  margin-bottom: 10px;
+}
+.teamUniv {
+  font-size: 0.98rem;
+  color: #64748b;
+}
+.teamLinks {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+.teamLinks a {
+  color: #6366f1;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+}
+.teamLinks a:hover {
+  color: #4338ca;
+}
+/* About.module.css */
+
+.aboutPage {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Inter", sans-serif;
+  color: #1f2937; /* gray-800 */
+  line-height: 1.6;
+}
+
+/* Project Overview Card */
+.projectCard {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.projectInfo h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #4b5563; /* gray-600 */
+}
+
+/* Sections */
+.section {
+  background: white;
+  padding: 20px;
+  margin: 20px 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #6366f1;
+  padding-left: 0.75rem;
+}
+
+/* Why Attendify List */
+.whyList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.whyList li {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+/* Features Grid */
+.featuresGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.featureCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.featureCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(99, 102, 241, 0.2);
+}
+
+.icon {
+  color: #6366f1;
+  margin-bottom: 0.75rem;
+}
+
+.featureCard h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.featureCard p {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.featureList li {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+/* How It Works */
+.howList {
+  list-style: none;
+  padding: 0;
+}
+
+.howList li {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+
+/* Tech List */
+.techList {
+  list-style: disc;
+  margin-left: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.techList li {
+  margin-bottom: 0.5rem;
+}
+
+/* Live Link */
+.liveLink {
+  display: inline-block;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #6366f1;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.liveLink:hover {
+  background-color: #4f46e5;
+}
+
+/* Creator Section */
+.creatorBox {
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.creatorBox p {
+  margin: 0.5rem 0;
+}
+
+.creatorBox a {
+  color: #6366f1;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.creatorBox a:hover {
+  text-decoration: underline;
+}
+
+/* Acknowledgments */
+.ackList {
+  list-style: disc;
+  margin-left: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.ackList li {
+  margin-bottom: 0.5rem;
+}
+
+.ackList a {
+  color: #6366f1;
+  font-weight: 500;
+}
+
+/* Tagline */
+.tagline {
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1.25rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #374151;
+  border-top: 1px solid #e5e7eb;
+  font-style: italic;
+}

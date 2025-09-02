@@ -11,6 +11,7 @@ import {
   School,
   Menu,
   X,
+  Mail,
   LogIn,
   UserCheck,
   ArrowBigDownDash,
@@ -27,21 +28,27 @@ const Navbar = () => {
   const { student } = useStudent();
 
   // Desktop nav items
+
   const authNavItems = [
     { to: "/", icon: Home, label: "Home" },
     { to: "/mark-attendance", icon: CheckCheckIcon, label: "Mark-Attendance" },
+    { to: "/about", icon: User, label: "About" },
+    { to: "/contact", icon: Mail, label: "Contact" },
     // { to: "/view", icon: View, label: "View" },
     // { to: "/export", icon: DownloadCloudIcon, label: "Export" },
   ];
 
   const guestNavItems = [
     { to: "/", icon: Home, label: "Home" },
+    { to: "/about", icon: User, label: "About" },
+    { to: "/contact", icon: Mail, label: "Contact" },
     // { to: "/view", icon: View, label: "View" },
   ];
 
   const navItems = user ? authNavItems : guestNavItems;
 
   // Mobile menu items
+
   const authMobileNavItems = [
     ...authNavItems,
     // { to: "/logged-user-export", icon: DownloadCloudIcon, label: "Export Your Record" },
@@ -66,14 +73,14 @@ const Navbar = () => {
   // Avatar dropdown items
   const avatarDropdownItems = user
     ? [
-        { to: "/user-profile", label: "Profile" },
-        { to: "/settings", label: "Settings" },
-        { label: "Logout", action: "logout" },
-      ]
+      { to: "/user-profile", label: "Profile" },
+      { to: "/settings", label: "Settings" },
+      { label: "Logout", action: "logout" },
+    ]
     : [
-        { to: "/login", label: "Login" },
-        { to: "/register", label: "Register" },
-      ];
+      { to: "/login", label: "Login" },
+      { to: "/register", label: "Register" },
+    ];
 
   const handleLogout = () => {
     clearUser?.();
@@ -100,8 +107,7 @@ const Navbar = () => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex gap-2 ${className} ${
-          isActive ? "nav-link active-link" : "nav-link"
+        `flex gap-2 ${className} ${isActive ? "nav-link active-link" : "nav-link"
         }`
       }
       onClick={closeMenus}
@@ -186,7 +192,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="mobile-menu">
-      {mobileNavItems.map((item, index) => {
+          {mobileNavItems.map((item, index) => {
             if (item.divider) {
               return <hr key={`divider-${index}`} className="text-gray-300" />;
             }
@@ -197,7 +203,7 @@ const Navbar = () => {
                 to={item.to}
                 onClick={() => setIsMenuOpen(false)}
               >
-        {item.icon ? <item.icon /> : null}
+                {item.icon ? <item.icon /> : null}
                 {item.label}
               </NavLink>
             );
