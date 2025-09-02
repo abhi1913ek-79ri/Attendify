@@ -7,12 +7,14 @@ import analys_and_export_illustration from './analys_and_export_illustration.web
 import login_illustration from './login_illustration.webp'
 import profile_placeholder_image from './profile_placeholder_image.webp';
 import no_data_illustration from './no_data_illustration.png'
+import pdf_logo from './pdf_logo.png'
 
 
 export const assets = {
     logo,
     avatar,
     hero_image,
+    pdf_logo,
     ilustrations: {
         create_account_illustration,
         daily_attendance_mark_illustration,
