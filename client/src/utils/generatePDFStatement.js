@@ -315,8 +315,12 @@ export const generateAttendancePDF = async (
 
     // DAILY ATTENDANCE RECORDS
     const dateRange = getDatesInRange(fromDate, toDate);
-    const rawDaily = attendanceData?.daily;
-    const dailyObj = rawDaily instanceof Map ? Object.fromEntries(rawDaily) : (rawDaily || {});
+  const rawDaily = attendanceData?.daily;
+  const dailyObj = rawDaily instanceof Map ? Object.fromEntries(rawDaily) : (rawDaily || {});
+
+  // classes may be stored as Map or plain object; convert to object for lookups
+  const rawClasses = attendanceData?.classes;
+  const classesObj = rawClasses instanceof Map ? Object.fromEntries(rawClasses) : (rawClasses || {});
 
     subjectList.forEach((subject, subjectIndex) => {
       // Estimate space needed for this subject's daily record
@@ -338,7 +342,7 @@ export const generateAttendancePDF = async (
       doc.text(`DAILY ATTENDANCE RECORD - ${subject.toUpperCase()}`, 14, currentY);
       currentY += 5;
 
-      // Build daily records
+      // Build daily records (include class duration if available)
       const detailRows = dateRange.map((date, idx) => {
         const d = new Date(date);
         const day = d.toLocaleDateString('en-IN', { weekday: 'long' });
@@ -346,11 +350,14 @@ export const generateAttendancePDF = async (
         const statusRaw = dailyObj[key] || null;
         const statusText = statusRaw === 'present' ? 'Present' : statusRaw === 'absent' ? 'Absent' : '-';
         const mark = statusRaw === 'present' ? 'P' : statusRaw === 'absent' ? 'A' : '-';
-        return [idx + 1, formatDate(date), day, statusText, mark, statusRaw ? 'Recorded' : 'No data'];
-      }).filter(row => row[3] !== '-');
+        const classData = classesObj[key];
+        const durationText = classData && classData.duration ? `${classData.duration} hr` : '-';
+        // Columns: S.No., Date, Day, Duration, Status, Mark, Remarks
+        return [idx + 1, formatDate(date), day, durationText, statusText, mark, statusRaw ? 'Recorded' : 'No data'];
+      }).filter(row => row[4] !== '-');
 
       if (detailRows.length === 0) {
-        detailRows.push(['-', '-', '-', 'No Records', '-', 'No data']);
+        detailRows.push(['-', '-', '-', '-', 'No Records', '-', 'No data']);
       }
 
       autoTable(doc, {
@@ -367,7 +374,7 @@ export const generateAttendancePDF = async (
           halign: 'center',
           cellPadding: { top: 3, bottom: 3 }
         },
-        head: [['S.No.', 'Date', 'Day', 'Status', 'Mark', 'Remarks']],
+        head: [['S.No.', 'Date', 'Day', 'Duration', 'Status', 'Mark', 'Remarks']],
         body: detailRows,
         theme: 'grid',
         styles: { lineWidth: 0.2, lineColor: [220, 220, 220] },
