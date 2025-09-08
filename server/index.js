@@ -14,7 +14,8 @@ const corsOptions = {
   origin: [
     "https://attendifyattendkarle.vercel.app", // Vercel default
     "https://attendifyattendkarley.me",        // Custom domain (non-www)
-    "https://www.attendifyattendkarley.me"     // Custom domain (www)
+    "https://www.attendifyattendkarley.me",     // Custom domain (www)
+    "http://localhost:5173" // Local development
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true

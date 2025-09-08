@@ -11,6 +11,7 @@ import {
   School,
   Menu,
   X,
+  Mail,
   LogIn,
   UserCheck,
   ArrowBigDownDash,
@@ -27,38 +28,51 @@ const Navbar = () => {
   const { student } = useStudent();
 
   // Desktop nav items
+
   const authNavItems = [
     { to: "/", icon: Home, label: "Home" },
     { to: "/mark-attendance", icon: CheckCheckIcon, label: "Mark-Attendance" },
+    { to: "/about", icon: User, label: "About" },
+    { to: "/contact", icon: Mail, label: "Contact" },
     // { to: "/view", icon: View, label: "View" },
     // { to: "/export", icon: DownloadCloudIcon, label: "Export" },
   ];
 
   const guestNavItems = [
     { to: "/", icon: Home, label: "Home" },
+    { to: "/about", icon: User, label: "About" },
+    { to: "/contact", icon: Mail, label: "Contact" },
     // { to: "/view", icon: View, label: "View" },
   ];
 
   const navItems = user ? authNavItems : guestNavItems;
 
   // Mobile menu items
+
   const authMobileNavItems = [
-    ...authNavItems,
-    // { to: "/logged-user-export", icon: DownloadCloudIcon, label: "Export Your Record" },
+    // All except About/Contact
+    ...authNavItems.filter(item => item.label !== "About" && item.label !== "Contact"),
     { divider: true },
     { to: "/user-profile", icon: UserCheck, label: "Profile" },
     { to: "/students", icon: School, label: "Students" },
     { to: "/logged-user-export", icon: ArrowBigDownDash, label: "Export Your Record" },
     { to: "/settings", icon: Settings, label: "Settings" },
     { to: "/logout", icon: LogOut, label: "Logout" },
+    // About and Contact at the end
+    { to: "/about", icon: User, label: "About" },
+    { to: "/contact", icon: Mail, label: "Contact" },
   ];
 
   const guestMobileNavItems = [
-    ...guestNavItems,
+    // All except About/Contact
+    ...guestNavItems.filter(item => item.label !== "About" && item.label !== "Contact"),
     { divider: true },
     { to: "/students", icon: School, label: "students" },
     { to: "/login", icon: LogIn, label: "Login" },
     { to: "/register", icon: UserPlus, label: "Register" },
+    // About and Contact at the end
+    { to: "/about", icon: User, label: "About" },
+    { to: "/contact", icon: Mail, label: "Contact" },
   ];
 
   const mobileNavItems = user ? authMobileNavItems : guestMobileNavItems;
@@ -66,14 +80,14 @@ const Navbar = () => {
   // Avatar dropdown items
   const avatarDropdownItems = user
     ? [
-        { to: "/user-profile", label: "Profile" },
-        { to: "/settings", label: "Settings" },
-        { label: "Logout", action: "logout" },
-      ]
+      { to: "/user-profile", label: "Profile" },
+      { to: "/settings", label: "Settings" },
+      { label: "Logout", action: "logout" },
+    ]
     : [
-        { to: "/login", label: "Login" },
-        { to: "/register", label: "Register" },
-      ];
+      { to: "/login", label: "Login" },
+      { to: "/register", label: "Register" },
+    ];
 
   const handleLogout = () => {
     clearUser?.();
@@ -100,8 +114,7 @@ const Navbar = () => {
     <NavLink
       to={to}
       className={({ isActive }) =>
-        `flex gap-2 ${className} ${
-          isActive ? "nav-link active-link" : "nav-link"
+        `flex gap-2 ${className} ${isActive ? "nav-link active-link" : "nav-link"
         }`
       }
       onClick={closeMenus}
@@ -186,9 +199,9 @@ const Navbar = () => {
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="mobile-menu">
-      {mobileNavItems.map((item, index) => {
+          {mobileNavItems.map((item, index) => {
             if (item.divider) {
-              return <hr key={`divider-${index}`} className="text-gray-300" />;
+              return null;
             }
             return (
               <NavLink
@@ -197,7 +210,7 @@ const Navbar = () => {
                 to={item.to}
                 onClick={() => setIsMenuOpen(false)}
               >
-        {item.icon ? <item.icon /> : null}
+                {item.icon ? <item.icon /> : null}
                 {item.label}
               </NavLink>
             );

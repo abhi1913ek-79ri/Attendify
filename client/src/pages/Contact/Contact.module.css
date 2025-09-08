@@ -1,0 +1,103 @@
+.teamGrid {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+@media (max-width: 768px) {
+  .teamGrid {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+/* Full width responsive contact page */
+.contactPage {
+  width: 100%;
+  min-height: 100vh;
+  background: #f8fafc;
+  font-family: "Inter", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto;
+}
+.header {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+.subtitle {
+  color: #6366f1;
+  font-size: 1.1rem;
+  margin-top: 8px;
+}
+.section {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.07);
+  margin: 32px auto;
+  padding: 24px 18px;
+  max-width: 700px;
+  width: 100%;
+}
+.sectionTitle {
+  color: #6366f1;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: left;
+}
+.officialEmailBox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.08rem;
+  color: #334155;
+  background: #eef2ff;
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.teamCard {
+  background: #eef2ff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.08);
+  padding: 24px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: box-shadow 0.2s;
+}
+.teamCard:hover {
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
+}
+.teamHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.teamLinks {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+}
+.teamLinks a {
+  color: #6366f1;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s;
+}
+.teamLinks a:hover {
+  color: #4338ca;
+}

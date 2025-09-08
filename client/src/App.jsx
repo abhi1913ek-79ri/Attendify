@@ -25,6 +25,8 @@ import { AuthProvider } from './store/AuthContext'
 import { StudentProvider } from './store/StudentContext'
 import { AttendanceProvider } from './store/AttendanceContext'
 import { AllStudentsAttendanceProvider } from './store/AllStudentsAttendanceContext'
+import About from './pages/About/About'
+import Contact from './pages/Contact/Contact'
 
 const App = () => {
   const [todaysActions, setTodaysActions] = useState([]);
@@ -53,6 +55,8 @@ const App = () => {
               <Route path='/logout' element={<Logout />} />
               <Route path='/register' element={<Register />} />
               <Route path='/student/:rollNo' element={<StudentProfile />} />
+              <Route path='/about' element={<About />} />
+              <Route path='/contact' element={<Contact />} />
             </Routes>
           </Container>
           <Footer />
