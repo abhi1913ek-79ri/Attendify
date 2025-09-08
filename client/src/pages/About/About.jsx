@@ -1,27 +1,37 @@
 import React from 'react';
 import styles from './About.module.css';
-import { CalendarDays, Users, ShieldCheck, Rocket, BarChart3, FileDown, AlarmClock, Smartphone, CheckCircle, Cloud, Bell, User, Briefcase, Github, Mail } from 'lucide-react';
+import { CalendarDays, Users, ShieldCheck, Rocket, BarChart3, FileDown, AlarmClock, Smartphone, CheckCircle, Cloud, Bell, User, Briefcase, Github, Mail, CalendarCheck } from 'lucide-react';
 
 const features = [
     {
-        icon: <CalendarDays size={32} />,
-        title: 'Effortless Attendance',
-        desc: 'Mark and manage attendance with a single click. No paperwork, no hassle—just clarity and speed.',
+        icon: <CalendarCheck size={32} />,
+        title: 'One-Click Attendance',
+        desc: 'Mark attendance instantly with just one click.',
     },
     {
-        icon: <Users size={32} />,
-        title: 'For Every Classroom',
-        desc: 'Built for students and educators. Attendify adapts to any branch, semester, or course.',
+        icon: <BarChart3 size={32} />,
+        title: 'Live Dashboard',
+        desc: 'See your attendance stats in real-time.',
+    },
+    {
+        icon: <FileDown size={32} />,
+        title: 'Export to Excel/PDF',
+        desc: 'Download attendance reports in Excel or PDF.',
+    },
+    {
+        icon: <AlarmClock size={32} />,
+        title: 'Smart Reminders',
+        desc: 'Get notified when attendance is missed.',
     },
     {
         icon: <ShieldCheck size={32} />,
         title: 'Secure & Private',
-        desc: 'Your data is encrypted and protected. Only you control your academic records.',
+        desc: 'Your data is encrypted and securely stored.',
     },
     {
-        icon: <Rocket size={32} />,
-        title: 'Fast & Modern',
-        desc: 'Lightning-fast, mobile-friendly, and always up-to-date with the latest tech.',
+        icon: <Smartphone size={32} />,
+        title: 'Mobile Friendly',
+        desc: 'Access Attendify smoothly on all screen sizes.',
     },
 ];
 
@@ -66,17 +76,6 @@ export default function About() {
                         </div>
                     ))}
                 </div>
-                <ul className={styles.featureList}>
-                    <li><CheckCircle size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>One-Click Attendance</b> — Mark attendance instantly</li>
-                    <li><BarChart3 size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>Live Dashboard</b> — Visualize attendance trends</li>
-                    <li><Users size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>Student Profiles</b> — View stats & last attendance dates</li>
-                    <li><CalendarDays size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>Date-wise Filtering</b> — Organize records by days or weeks</li>
-                    <li><FileDown size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>Export Options</b> — Download reports in Excel/PDF</li>
-                    <li><Bell size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>Smart Reminders</b> — Notifications for missed attendance</li>
-                    <li><ShieldCheck size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>Secure & Private</b> — Your data stays encrypted</li>
-                    <li><Cloud size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>Cloud Sync</b> — Access from any device</li>
-                    <li><Smartphone size={18} style={{ marginRight: 4, color: '#6366f1' }} /><b>Mobile Friendly</b> — Works on desktop, tablet & phone</li>
-                </ul>
             </section>
 
             {/* How It Works Section */}

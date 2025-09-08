@@ -1,3 +1,5 @@
+@import 'tailwindcss';
+
 .teamGrid {
   display: flex;
   flex-direction: row;
@@ -127,6 +129,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  @apply max-md:text-left max-md:px-4;
 }
 
 .whyList li {
@@ -148,6 +151,7 @@
   border-radius: 0.75rem;
   padding: 1.5rem;
   text-align: center;
+  justify-content: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
@@ -188,6 +192,7 @@
 .howList {
   list-style: none;
   padding: 0;
+  @apply max-md:text-left max-md:px-4;
 }
 
 .howList li {
@@ -200,6 +205,7 @@
   list-style: disc;
   margin-left: 1.5rem;
   font-size: 0.95rem;
+  @apply max-md:text-left max-md:px-4;
 }
 
 .techList li {

@@ -50,22 +50,29 @@ const Navbar = () => {
   // Mobile menu items
 
   const authMobileNavItems = [
-    ...authNavItems,
-    // { to: "/logged-user-export", icon: DownloadCloudIcon, label: "Export Your Record" },
+    // All except About/Contact
+    ...authNavItems.filter(item => item.label !== "About" && item.label !== "Contact"),
     { divider: true },
     { to: "/user-profile", icon: UserCheck, label: "Profile" },
     { to: "/students", icon: School, label: "Students" },
     { to: "/logged-user-export", icon: ArrowBigDownDash, label: "Export Your Record" },
     { to: "/settings", icon: Settings, label: "Settings" },
     { to: "/logout", icon: LogOut, label: "Logout" },
+    // About and Contact at the end
+    { to: "/about", icon: User, label: "About" },
+    { to: "/contact", icon: Mail, label: "Contact" },
   ];
 
   const guestMobileNavItems = [
-    ...guestNavItems,
+    // All except About/Contact
+    ...guestNavItems.filter(item => item.label !== "About" && item.label !== "Contact"),
     { divider: true },
     { to: "/students", icon: School, label: "students" },
     { to: "/login", icon: LogIn, label: "Login" },
     { to: "/register", icon: UserPlus, label: "Register" },
+    // About and Contact at the end
+    { to: "/about", icon: User, label: "About" },
+    { to: "/contact", icon: Mail, label: "Contact" },
   ];
 
   const mobileNavItems = user ? authMobileNavItems : guestMobileNavItems;
@@ -194,7 +201,7 @@ const Navbar = () => {
         <div className="mobile-menu">
           {mobileNavItems.map((item, index) => {
             if (item.divider) {
-              return <hr key={`divider-${index}`} className="text-gray-300" />;
+              return null;
             }
             return (
               <NavLink
