@@ -27,58 +27,60 @@ import { AttendanceProvider } from './store/AttendanceContext'
 import { AllStudentsAttendanceProvider } from './store/AllStudentsAttendanceContext'
 import About from './pages/About/About'
 import Contact from './pages/Contact/Contact'
+import HowToUse from './pages/HowToUse/HowToUse'
 
 const App = () => {
   const [todaysActions, setTodaysActions] = useState([]);
   return (
     <AuthProvider>
-        <StudentProvider>
-          <AttendanceProvider>
-            <AllStudentsAttendanceProvider>
-    <div className='app'>
-      <Navbar />
-      <div className="sidebar-plus-content">
-        <Sidebar />
-        <div className="container-plus-footer">
-          <Container >
-            <Routes >
-              <Route path='/' element={<Home />} />
-              <Route path='/mark-attendance' element={<MarkAttendance todaysActions={todaysActions} setTodaysActions={setTodaysActions} />} />
-              <Route path='/view' element={<View />} />
-              <Route path='/export' element={<Export />} />
-              <Route path='/user-profile' element={<UserProfile />} />
-              <Route path='/add-student' element={<AddStudent />} />
-              <Route path='/students' element={<Students />} />
-              <Route path='/logged-user-export' element={<LoggedUserExport />} />
-              <Route path='/settings' element={<Settings />} />
-              <Route path='/login' element={<Login />} />
-              <Route path='/logout' element={<Logout />} />
-              <Route path='/register' element={<Register />} />
-              <Route path='/student/:rollNo' element={<StudentProfile />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/contact' element={<Contact />} />
-            </Routes>
-          </Container>
-          <Footer />
-        </div>
+      <StudentProvider>
+        <AttendanceProvider>
+          <AllStudentsAttendanceProvider>
+            <div className='app'>
+              <Navbar />
+              <div className="sidebar-plus-content">
+                <Sidebar />
+                <div className="container-plus-footer">
+                  <Container >
+                    <Routes >
+                      <Route path='/' element={<Home />} />
+                      <Route path='/mark-attendance' element={<MarkAttendance todaysActions={todaysActions} setTodaysActions={setTodaysActions} />} />
+                      <Route path='/view' element={<View />} />
+                      <Route path='/export' element={<Export />} />
+                      <Route path='/user-profile' element={<UserProfile />} />
+                      <Route path='/add-student' element={<AddStudent />} />
+                      <Route path='/students' element={<Students />} />
+                      <Route path='/logged-user-export' element={<LoggedUserExport />} />
+                      <Route path='/settings' element={<Settings />} />
+                      <Route path='/login' element={<Login />} />
+                      <Route path='/logout' element={<Logout />} />
+                      <Route path='/register' element={<Register />} />
+                      <Route path='/student/:rollNo' element={<StudentProfile />} />
+                      <Route path='/about' element={<About />} />
+                      <Route path='/contact' element={<Contact />} />
+                      <Route path='/how-to-use' element={<HowToUse />} />
+                    </Routes>
+                  </Container>
+                  <Footer />
+                </div>
 
-      </div>
-      <ToastContainer
-        position="top-right"           
-        autoClose={2000}               
-        hideProgressBar={false}        
-        newestOnTop={true}            
-        closeOnClick={true}            
-        rtl={false}                    
-        pauseOnFocusLoss={true}
-        draggable={true}               
-        pauseOnHover={true}
-        theme="light"           
-      />
-    </div>
-    </AllStudentsAttendanceProvider>
-    </AttendanceProvider>
-    </StudentProvider>
+              </div>
+              <ToastContainer
+                position="top-right"
+                autoClose={2000}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick={true}
+                rtl={false}
+                pauseOnFocusLoss={true}
+                draggable={true}
+                pauseOnHover={true}
+                theme="light"
+              />
+            </div>
+          </AllStudentsAttendanceProvider>
+        </AttendanceProvider>
+      </StudentProvider>
     </AuthProvider>
   )
 }
