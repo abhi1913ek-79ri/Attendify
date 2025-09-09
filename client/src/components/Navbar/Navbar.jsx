@@ -32,6 +32,7 @@ const Navbar = () => {
   const authNavItems = [
     { to: "/", icon: Home, label: "Home" },
     { to: "/mark-attendance", icon: CheckCheckIcon, label: "Mark-Attendance" },
+    { to: "/how-to-use", icon: UserCheck, label: "How To Use" },
     { to: "/about", icon: User, label: "About" },
     { to: "/contact", icon: Mail, label: "Contact" },
     // { to: "/view", icon: View, label: "View" },
@@ -40,6 +41,7 @@ const Navbar = () => {
 
   const guestNavItems = [
     { to: "/", icon: Home, label: "Home" },
+    { to: "/how-to-use", icon: UserCheck, label: "How To Use" },
     { to: "/about", icon: User, label: "About" },
     { to: "/contact", icon: Mail, label: "Contact" },
     // { to: "/view", icon: View, label: "View" },
@@ -50,27 +52,29 @@ const Navbar = () => {
   // Mobile menu items
 
   const authMobileNavItems = [
-    // All except About/Contact
-    ...authNavItems.filter(item => item.label !== "About" && item.label !== "Contact"),
+    // All except How To Use, About, Contact
+    ...authNavItems.filter(item => item.label !== "How To Use" && item.label !== "About" && item.label !== "Contact"),
     { divider: true },
     { to: "/user-profile", icon: UserCheck, label: "Profile" },
     { to: "/students", icon: School, label: "Students" },
     { to: "/logged-user-export", icon: ArrowBigDownDash, label: "Export Your Record" },
     { to: "/settings", icon: Settings, label: "Settings" },
     { to: "/logout", icon: LogOut, label: "Logout" },
-    // About and Contact at the end
+    // How To Use, About, Contact at the end
+    { to: "/how-to-use", icon: UserCheck, label: "How To Use" },
     { to: "/about", icon: User, label: "About" },
     { to: "/contact", icon: Mail, label: "Contact" },
   ];
 
   const guestMobileNavItems = [
-    // All except About/Contact
-    ...guestNavItems.filter(item => item.label !== "About" && item.label !== "Contact"),
+    // All except How To Use, About, Contact
+    ...guestNavItems.filter(item => item.label !== "How To Use" && item.label !== "About" && item.label !== "Contact"),
     { divider: true },
     { to: "/students", icon: School, label: "students" },
     { to: "/login", icon: LogIn, label: "Login" },
     { to: "/register", icon: UserPlus, label: "Register" },
-    // About and Contact at the end
+    // How To Use, About, Contact at the end
+    { to: "/how-to-use", icon: UserCheck, label: "How To Use" },
     { to: "/about", icon: User, label: "About" },
     { to: "/contact", icon: Mail, label: "Contact" },
   ];

@@ -1,0 +1,57 @@
+@import 'tailwindcss';
+
+.howToUsePage {
+  @apply  mx-auto w-full ;
+}
+
+.title {
+  @apply text-3xl font-bold text-indigo-950 mb-6 text-center;
+}
+
+.stepsList {
+  @apply list-decimal pl-6 space-y-4 text-lg text-gray-800;
+}
+
+.stepsList li {
+  @apply bg-white border border-gray-300 rounded-lg mb-8 shadow-md p-6 transition-shadow duration-200;
+  @apply relative z-10;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  margin-bottom: 1.75rem;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
+  padding: 1rem 0.75rem;
+  transition: box-shadow 0.3s cubic-bezier(0.4,0,0.2,1), transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  position: relative;
+  z-index: 1;
+}
+
+.stepsList li:hover {
+  @apply shadow-lg;
+  @apply transform scale-102;
+  @apply z-20;
+  box-shadow: 0 8px 32px 0 rgba(99,102,241,0.18);
+  border-color: transparent;
+  transform: scale(1.015);
+  z-index: 10;
+}
+
+.icon {
+  @apply inline-block mr-2 text-indigo-500 align-middle;
+}
+
+.tipsSection {
+  @apply mt-8 p-4 bg-indigo-50 rounded-lg;
+}
+
+.tipsSection h2 {
+  @apply text-xl font-semibold text-indigo-700 mb-2;
+}
+
+.tipsSection ul {
+  @apply list-disc pl-5 space-y-2 text-gray-700;
+}
+
+.stepImage img {
+  @apply w-full block mt-4 rounded;
+}
