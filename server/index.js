@@ -17,7 +17,7 @@ const corsOptions = {
     "https://www.attendifyattendkarley.me",     // Custom domain (www)
     "http://localhost:5173" // Local development
   ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true
 };
 
