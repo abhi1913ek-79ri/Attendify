@@ -1,6 +1,8 @@
 .teamGrid {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 32px;
   margin-top: 24px;
   margin-bottom: 24px;
@@ -40,7 +42,7 @@
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.07);
   margin: 32px auto;
   padding: 24px 18px;
-  max-width: 700px;
+  max-width: 1200px;
   width: 100%;
 }
 .sectionTitle {
@@ -73,6 +75,8 @@
   align-items: center;
   text-align: center;
   transition: box-shadow 0.2s;
+  width: 260px;
+  min-width: 220px;
 }
 .teamCard:hover {
   box-shadow: 0 4px 16px rgba(99, 102, 241, 0.15);
